@@ -15,7 +15,7 @@ const HomeSelector = (userToken) => {
 };
 
 var currentEmail = "-";
-
+var x;
 export default function App() {
   const [isLoading, setIsLoading] = React.useState(true);
   const [userToken, setUserToken] = React.useState(null);
