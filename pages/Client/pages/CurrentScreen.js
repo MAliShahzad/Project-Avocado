@@ -5,12 +5,13 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  StyleSheet,
 } from "react-native";
-import { Card } from "react-native-elements";
+import { Card, Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
+
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
-import { Button } from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
 
 fetchData = async (w) => {
   var response = await fetch("http://119.153.164.237:3000/" + w);
@@ -200,7 +201,7 @@ export const CurrentScreen = ({ navigation }) => {
 
   if (isLoading == false) {
     return (
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View>
           {taskList.map((task) => {
             if (task.pending != "Complete") {
@@ -216,28 +217,87 @@ export const CurrentScreen = ({ navigation }) => {
                     }
                   }}
                 >
-                  <Card title={task.name}>
-                    <Text style={{ marginBottom: 10 }}>{task.status}</Text>
-                    <Text style={{ fontWeight: "bold" }}>
-                      Deadline: {task.date.substring(0, 10)}
+                  <Card
+                    title={task.name}
+                    titleStyle={{
+                      fontSize: 20,
+                      // color: "white",
+                    }}
+                    containerStyle={{
+                      borderRadius: 15,
+                      backgroundColor: "rgba(255,255,255,0.9)",
+                      borderWidth: 0,
+                    }}
+                  >
+                    <View
+                      style={{
+                        alignItems: "center",
+                      }}
+                    >
+                      <TouchableOpacity
+                        disabled={true}
+                        style={{
+                          backgroundColor: "#255d00",
+                          // width: 100,
+                          borderRadius: 100,
+                          // alignSelf: "center",
+                          flexDirection: "row",
+                          height: 25,
+                          justifyContent: "center",
+                          alignItems: "center",
+                          alignContent: "center",
+                        }}
+                      >
+                        <Text> </Text>
+                        <Text> </Text>
+                        <Text
+                          style={{
+                            textAlign: "center",
+                            color: "white",
+                          }}
+                        >
+                          category
+                        </Text>
+                        <Text> </Text>
+                        <Text> </Text>
+                      </TouchableOpacity>
+                    </View>
+                    <Text style={{ marginVertical: 10, color: "black" }}>
+                      {task.status}
                     </Text>
-                    <ProgressBar
-                      color="green"
-                      borderRadius={20}
-                      progress={
-                        difference(task.today, task.created_date) /
-                        difference(task.date, task.created_date)
-                      }
-                      width={Dimensions.get("window").width - 40 - 10}
-                      height={15}
-                    />
-
-                    <Button
-                      onPress={() => submitHandler(task.id)}
-                      icon={<Icon name="trash" size={30} color="red" />}
-                      title=""
-                      type="clear"
-                    />
+                    <Text style={{ fontWeight: "bold" }}>
+                      DEADLINE: {task.date.substring(0, 10)}
+                    </Text>
+                    <View
+                      style={{
+                        alignItems: "center",
+                        marginVertical: 10,
+                      }}
+                    >
+                      <ProgressBar
+                        color="#524c00"
+                        borderRadius={20}
+                        progress={
+                          difference(task.today, task.created_date) /
+                          difference(task.date, task.created_date)
+                        }
+                        width={Dimensions.get("window").width - 40 - 10}
+                        height={15}
+                      />
+                    </View>
+                    <View
+                      style={{
+                        justifyContent: "flex-end",
+                        alignItems: "flex-end",
+                      }}
+                    >
+                      <Button
+                        onPress={() => submitHandler(task.id)}
+                        icon={<Icon name="trash" size={20} color="red" />}
+                        title=""
+                        type="clear"
+                      />
+                    </View>
                   </Card>
                 </TouchableOpacity>
               );
@@ -298,3 +358,14 @@ export const CurrentScreen = ({ navigation }) => {
     );
   }
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: "#558b2f",
+    // alignItems: "center",
+    // justifyContent: "center",
+    // paddingVertical: 100,
+    // paddingBottom: 300,
+  },
+});
