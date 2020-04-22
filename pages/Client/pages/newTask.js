@@ -81,18 +81,6 @@ const InsertTask = async (
 
   return "Done";
 };
-// const constructor = (props) => {
-//   super(props);
-//   this.state = {
-//     newValue: "",
-//     height: 40,
-//   };
-// };
-// const updateSize = (height) => {
-//   this.setState({
-//     height,
-//   });
-// };
 export const NewTask = ({ navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const [title, settitle] = useState("");
@@ -160,57 +148,60 @@ export const NewTask = ({ navigation }) => {
           onChangeText={(val) => setdescription(val)}
         />
         {/* <Text>Category</Text> */}
-        <View>
-          <TouchableOpacity style={styles.boxStyle} disabled={true}>
-            <TouchableOpacity style={{ width: 190 }} disabled={true}>
-              <Picker
-                style={{
-                  color: "#ffffff",
-                  transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
-                  textAlign: "center",
-                }}
-                selectedValue={category}
-                onValueChange={(itemValue, itemIndex) => setcategory(itemValue)}
-              >
-                <Picker.Item
-                  style={{ color: "#fffff" }}
-                  label="Select a Category"
-                  value=""
-                />
-                <Picker.Item label="Content Writing" value="Content Writing" />
-                <Picker.Item
-                  label="Program Development"
-                  value="Program Development"
-                />
-                <Picker.Item label="Photography" value="Photography" />
-                <Picker.Item label="Photo Editing" value="Photo Editing" />
-                <Picker.Item label="Video Editing" value="Video Editing" />
-              </Picker>
-            </TouchableOpacity>
+        <TouchableOpacity style={styles.boxStyle} disabled={true}>
+          <TouchableOpacity
+            style={{ width: width - width / 8 }}
+            disabled={true}
+          >
+            <Picker
+              style={{
+                color: "#ffffff",
+                transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
+                textAlign: "center",
+              }}
+              selectedValue={category}
+              onValueChange={(itemValue, itemIndex) => setcategory(itemValue)}
+            >
+              <Picker.Item
+                style={{ color: "#fffff" }}
+                label="Select a Category"
+                value=""
+              />
+              <Picker.Item label="Content Writing" value="Content Writing" />
+              <Picker.Item
+                label="Program Development"
+                value="Program Development"
+              />
+              <Picker.Item label="Photography" value="Photography" />
+              <Picker.Item label="Photo Editing" value="Photo Editing" />
+              <Picker.Item label="Video Editing" value="Video Editing" />
+            </Picker>
+          </TouchableOpacity>
+        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity style={styles.dateStyle} disabled={true}>
+            <DatePicker
+              style={{ width: width - width / 1.7 - 20 }}
+              date={deadline}
+              mode="date"
+              placeholder="Pick a Deadline"
+              showIcon={false}
+              onDateChange={(date) => {
+                setDeadline(date);
+              }}
+              customStyles={{
+                dateInput: { borderWidth: 0 },
+                placeholderText: {
+                  fontSize: 15,
+                  color: "white",
+                },
+              }}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dateStyle}>
+            <Text style={styles.attachText}>Add an Attachment</Text>
           </TouchableOpacity>
         </View>
-        <TouchableOpacity style={styles.dateStyle} disabled={true}>
-          <DatePicker
-            style={{ width: width - width / 8 - 20 }}
-            date={deadline}
-            mode="date"
-            placeholder="Pick a Deadline"
-            showIcon={false}
-            onDateChange={(date) => {
-              setDeadline(date);
-            }}
-            customStyles={{
-              dateInput: { borderWidth: 0 },
-              placeholderText: {
-                fontSize: 15,
-                color: "white",
-              },
-            }}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.dateStyle}>
-          <Text style={styles.attachText}>Add an Attachment</Text>
-        </TouchableOpacity>
         {/*<Text>{deadline.substring(0,4) + deadline.substring(5,7) + deadline.substring(8,10)}</Text>*/}
         <View style={{ padding: 10, marginBottom: 10 }}>
           <TouchableOpacity
@@ -239,7 +230,7 @@ export const NewTask = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#558b2f",
+    backgroundColor: "#689f38",
     padding: 20,
   },
   boxStyle: {
@@ -254,7 +245,8 @@ const styles = StyleSheet.create({
     // color: "#ffffff",
   },
   dateStyle: {
-    width: width - width / 8,
+    width: width - width / 1.7,
+    marginHorizontal: 10,
     height: 55,
     backgroundColor: "rgba(255,255,255,0.3)",
     marginVertical: 10,
@@ -272,13 +264,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: 28,
     color: "#ffffff",
     justifyContent: "center",
-    textAlign: "center",
+    // textAlign: "center",
     fontSize: 14,
   },
   button: {
     width: 300,
     height: 55,
-    backgroundColor: "#255d00",
+    backgroundColor: "#387002",
     marginVertical: 10,
     borderRadius: 50,
     justifyContent: "center",
