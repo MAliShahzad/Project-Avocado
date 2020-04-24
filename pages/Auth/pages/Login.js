@@ -12,52 +12,54 @@ import { TextBar } from "../../../components/TextBar";
 import { AuthContext } from "../Navigators/context";
 
 fetchData = async (w) => {
-  console.log('----------------')
-  var response = await fetch("http://119.153.131.168:3000/" + w);
+  console.log("----------------");
+  var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
   console.log(response);
   return await response;
 };
 
 const validatelogin = async (email, password) => {
+  // password = await bcrypt.hash(password, rounds);
 
-    // password = await bcrypt.hash(password, rounds);
+  var params = ["login='" + email + "'"];
+  params = { table: "U_SERS", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  if (params.length == 0) {
+    return "not user";
+  }
 
-    var params = ["login=\'" + email + "\'"]
-    params = { table: 'U_SERS', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
+  params = params[0];
+
+  console.log("--");
+  // if (email != params.login) {
+  //     return "not user"
+  // }
+  if (password != params.secrets) {
+    return "invalid password";
+  } else if (password == params.secrets && email == params.login) {
+    var role = [`id=${params.id}`];
+    role = { table: "roles", item: "*", arr: role };
+    role = JSON.stringify(role);
+    role = "getlogin" + role;
     try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; };
-    if(params.length == 0){
-      return 'not user';
+      role = await fetchData(role);
+    } catch (err) {
+      console.log(err);
+      return "";
     }
-
-    params = params[0];
-
-    console.log('--')
-    // if (email != params.login) {
-    //     return "not user"
-    // }
-    if (password != params.secrets) {
-
-        return "invalid password";
-    }
-    else if (password == params.secrets && email == params.login) {
-        var role = [`id=${params.id}`];
-        role = { table: 'roles', item: '*', arr: role };
-        role = JSON.stringify(role);
-        role = 'getlogin' + role;
-        try {
-            role = await fetchData(role);
-        } catch (err) { console.log(err); return ""; };
-        role = role[0];
-        console.log('...')
-        return await role.name;
-    }
-}
-
+    role = role[0];
+    console.log("...");
+    return await role.name;
+  }
+};
 
 export const Login = ({ navigation }) => {
   const [Email, setEmail] = useState("");
@@ -68,19 +70,16 @@ export const Login = ({ navigation }) => {
   const UserType = async (email, password) => {
     // await setout(await validatelogin(email, password));
     var outcome = await validatelogin(email, password);
-    console.log(outcome)
-    if(outcome == "customer"){
+    console.log(outcome);
+    if (outcome == "customer") {
       clientSignIn(email);
-    }
-    else if(outcome == "freelancer"){
+    } else if (outcome == "freelancer") {
       freelancerSignIn(email);
-    }
-    else if(outcome == "not user"){
-      alert("Email incorrect. Please try again.")
+    } else if (outcome == "not user") {
+      alert("Email incorrect. Please try again.");
       outcome = "";
-    }
-    else if(outcome == "invalid password"){
-      alert("Password Incorrect. Please try again.")
+    } else if (outcome == "invalid password") {
+      alert("Password Incorrect. Please try again.");
       outcome = "";
     }
   };
@@ -115,7 +114,7 @@ export const Login = ({ navigation }) => {
         <View style={styles.signupTextContainer}>
           <Text style={styles.signupText}>Dont have an account yet? </Text>
           <TouchableOpacity onPress={() => navigation.push("Signup")}>
-            <Text style={styles.signupButton}>SignUp!</Text>
+            <Text style={styles.signupButton}>Sign Up!</Text>
           </TouchableOpacity>
         </View>
         <View style={styles.signupTextContainer}>
@@ -136,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: 100,
-    paddingBottom: 300
+    paddingBottom: 300,
   },
   inputBox: {
     marginVertical: 10,
