@@ -6,7 +6,7 @@ import { ClientApp } from "./pages/Client/ClientApp";
 import { FreelancerApp } from "./pages/Freelancer/FreelancerApp";
 import { AuthScreens } from "./pages/Auth/Navigators/AuthoScreens";
 
-const myIp = "http://119.153.148.170:3000/";
+const myIp = "http://39.46.200.250:3000/";
 
 const HomeSelector = (userToken) => {
   if (userToken == "CT") return <ClientApp />;
