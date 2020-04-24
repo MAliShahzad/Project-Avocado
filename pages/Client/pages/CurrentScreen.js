@@ -14,7 +14,7 @@ import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
 
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.164.237:3000/" + w);
+  var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;

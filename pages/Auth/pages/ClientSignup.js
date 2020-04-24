@@ -1,5 +1,12 @@
 import React, { Component, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity, TextInput, Alert } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  TextInput,
+  Alert,
+} from "react-native";
 import Logo from "../../../components/Logo";
 import { TextBar } from "../../../components/TextBar";
 import { AuthContext } from "../Navigators/context";
@@ -7,131 +14,149 @@ import RNSimpleCrypto from "react-native-simple-crypto";
 // import { validateSignup } from "../../../temp_fetch";
 
 fetchData = async (w) => {
-  var response = await fetch('http://119.153.131.168:3000/' + w);
+  var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
   return await response;
 };
 const validatePassword = (password) => {
-    if (password.length < 8) { return false }
-    var c = password.charCodeAt(0);
-    var num_check = false;
+  if (password.length < 8) {
+    return false;
+  }
+  var c = password.charCodeAt(0);
+  var num_check = false;
 
-    if (c < 65 || c > 122 || (c > 90 && c < 97)) { return false }
+  if (c < 65 || c > 122 || (c > 90 && c < 97)) {
+    return false;
+  }
 
-    for (let index = 0; index < password.length; index++) {
-        var d = password.charCodeAt(index);
-        if (d < 65 || d > 122 || (d > 90 && d < 97)) { num_check = true }
-
-        if (d == 13 || d == 32 || d == 0 || d == 8) { return false }
-
+  for (let index = 0; index < password.length; index++) {
+    var d = password.charCodeAt(index);
+    if (d < 65 || d > 122 || (d > 90 && d < 97)) {
+      num_check = true;
     }
 
-    return num_check
-}
+    if (d == 13 || d == 32 || d == 0 || d == 8) {
+      return false;
+    }
+  }
 
-
-
-
+  return num_check;
+};
 
 const validateEmail = (email) => {
-    var chec = email.split("@");
+  var chec = email.split("@");
 
-    if (
-        email.includes("..") ||
+  if (email.includes("..") || email.includes(".@") || email.includes("@.")) {
+    return false;
+  }
 
-        email.includes(".@") ||
+  if (chec.length != 2) {
+    return false;
+  }
+  var c = chec[0].charCodeAt(0);
 
-        email.includes("@.")
-    ) { return false }
+  if (c < 48 || (c > 57 && c < 65) || (c > 90 && c < 97) || c > 122) {
+    return false;
+  }
 
-    if (chec.length != 2) { return false }
-    var c = chec[0].charCodeAt(0);
+  if (chec[1].split(".").length < 2) {
+    return false;
+  }
 
-
-    if (c < 48 || (c > 57 && c < 65) || (c > 90 && c < 97) || c > 122) { return false }
-
-
-
-    if (chec[1].split(".").length < 2) { return false }
-
-
-    for (let index = 0; index < chec[0].length; index++) {
-        c = chec[0].charCodeAt(index);
-        if (c < 48 || (c > 57 && c < 65) || (c > 90 && c < 97) || c > 122) {
-            if (!(c == 46 || c == 45 || c == 95)) {
-
-                return false
-            }
-        }
-
+  for (let index = 0; index < chec[0].length; index++) {
+    c = chec[0].charCodeAt(index);
+    if (c < 48 || (c > 57 && c < 65) || (c > 90 && c < 97) || c > 122) {
+      if (!(c == 46 || c == 45 || c == 95)) {
+        return false;
+      }
     }
+  }
 
-    for (let index = 0; index < chec[1].length; index++) {
-        c = chec[1].charCodeAt(index);
-        if (c < 65 || c > 122 || (c > 90 && c < 97)) {
-            if (c != 46) { return false }
-        }
-
+  for (let index = 0; index < chec[1].length; index++) {
+    c = chec[1].charCodeAt(index);
+    if (c < 65 || c > 122 || (c > 90 && c < 97)) {
+      if (c != 46) {
+        return false;
+      }
     }
+  }
 
-    return true
+  return true;
+};
 
+const validateSignup = async (
+  name,
+  email,
+  password,
+  repassword,
+  role,
+  category
+) => {
+  if (password != repassword) {
+    return "Re-entered password wrong";
+  }
+  // password = await bcrypt.hash(password, rounds);
+  var iden = 0;
+  if (!validateEmail(email)) {
+    return "invalid email";
+  }
+  if (!validatePassword(password)) {
+    return "password not strong";
+  }
 
+  for (let index = 0; index < email.length; index++) {
+    var num = email.charCodeAt(index);
 
+    iden += Math.pow(num, 3);
+  }
 
-}
+  var ver = [`email=\'${email}\'`];
+  ver = { table: "EXTRA_DATA", item: "email", arr: ver };
+  ver = JSON.stringify(ver);
+  ver = "getlogin" + ver;
+  try {
+    ver = await fetchData(ver);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  if (ver.length > 0) {
+    return "email already exists";
+  }
 
-const validateSignup = async (name, email, password, repassword, role, category) => {
-    if (password != repassword) {
-        return "Re-entered password wrong"
-    }
-    // password = await bcrypt.hash(password, rounds);
-    var iden = 0;
-    if (!validateEmail(email)) { return "invalid email" }
-    if (!validatePassword(password)) { return "password not strong" }
+  var params = [password, email, iden];
+  params = JSON.stringify(params);
+  params = "insertuser" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-    for (let index = 0; index < email.length; index++) {
-        var num = email.charCodeAt(index);
+  params = [iden, role];
+  params = JSON.stringify(params);
+  params = "insertrole" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-        iden += Math.pow(num, 3);
-    }
+  params = [iden, name, category, "", "", email];
+  params = JSON.stringify(params);
+  params = "insertextradetail" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-    var ver = [`email=\'${email}\'`];
-    ver = { table: 'EXTRA_DATA', item: 'email', arr: ver };
-    ver = JSON.stringify(ver);
-    ver = 'getlogin' + ver;
-    try {
-        ver = await fetchData(ver);
-    } catch (err) { console.log(err); return ""; }
-
-    if (ver.length > 0) { return "email already exists" }
-
-
-    var params = [password, email, iden];
-    params = JSON.stringify(params);
-    params = 'insertuser' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-
-    params = [iden, role];
-    params = JSON.stringify(params);
-    params = 'insertrole' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-    params = [iden, name, category, '', '', email];
-    params = JSON.stringify(params);
-    params = 'insertextradetail' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-    return "Sign Up Successful"
-}
+  return "Sign Up Successful";
+};
 
 export const ClientSignup = ({ navigation }) => {
   const { clientSignIn } = React.useContext(AuthContext);
@@ -163,13 +188,13 @@ export const ClientSignup = ({ navigation }) => {
     setout("");
   } else if (outcome == "password not strong") {
     alert("Please enter a different password.");
-    setout("")
+    setout("");
   } else if (outcome == "Re-entered password wrong") {
     alert("Second entry of password did not match.");
-    setout("")
-  } else if (outcome == 'email already exists'){
-    alert("You already have an account.")
-    setout("")
+    setout("");
+  } else if (outcome == "email already exists") {
+    alert("You already have an account.");
+    setout("");
   }
 
   const { signIn } = React.useContext(AuthContext);
@@ -182,7 +207,7 @@ export const ClientSignup = ({ navigation }) => {
         placeholder={"Name"}
         placeholderTextColor="rgba(0,0,0,0.3)"
         secureTextEntry={false}
-        onChangeText={n => setName(n)}
+        onChangeText={(n) => setName(n)}
         defaultValue={name}
       />
       <TextInput
@@ -191,7 +216,7 @@ export const ClientSignup = ({ navigation }) => {
         placeholder={"Email"}
         placeholderTextColor="rgba(0,0,0,0.3)"
         secureTextEntry={false}
-        onChangeText={e => setEmail(e)}
+        onChangeText={(e) => setEmail(e)}
         defaultValue={email}
       />
       <TextInput
@@ -200,7 +225,7 @@ export const ClientSignup = ({ navigation }) => {
         placeholder={"Password"}
         placeholderTextColor="rgba(0,0,0,0.3)"
         secureTextEntry={true}
-        onChangeText={p => setPassword(p)}
+        onChangeText={(p) => setPassword(p)}
         defaultValue={password}
       />
       <TextInput
@@ -209,27 +234,27 @@ export const ClientSignup = ({ navigation }) => {
         placeholder={"Re-Enter Password"}
         placeholderTextColor="rgba(0,0,0,0.3)"
         secureTextEntry={true}
-        onChangeText={p => setRePassword(p)}
+        onChangeText={(p) => setRePassword(p)}
         defaultValue={rePassword}
       />
       <View>
-      <TouchableOpacity
-        style={styles.button}
-        onPress={() => {
-          if(name == "" || email == "" || password == "" || rePassword == "" ){
-            alert("One or more of the fields are left empty");
-          }
-          else{UserType(
-                      name,
-                      email,
-                      password,
-                      rePassword,
-                      "customer",
-                       ""
-          );}}}
-      >
-        <Text style={styles.buttonText}>Sign Up</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => {
+            if (
+              name == "" ||
+              email == "" ||
+              password == "" ||
+              rePassword == ""
+            ) {
+              alert("One or more of the fields are left empty");
+            } else {
+              UserType(name, email, password, rePassword, "customer", "");
+            }
+          }}
+        >
+          <Text style={styles.buttonText}>Sign Up</Text>
+        </TouchableOpacity>
       </View>
       <View style={styles.signupTextContainer}>
         <Text style={styles.signupText}>Already have an account? </Text>
@@ -283,13 +308,13 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     textAlign: "center",
   },
-   inputBox: {
+  inputBox: {
     marginVertical: 10,
     width: 300,
     height: 50,
     backgroundColor: "rgba(255,255,255,0.3)",
     borderRadius: 25,
     paddingHorizontal: 16,
-    color: "#ffffff"
-  }
+    color: "#ffffff",
+  },
 });

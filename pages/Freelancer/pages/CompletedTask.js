@@ -1,11 +1,23 @@
-import React, { Component } from "react";
-import { StyleSheet, View, Image, Dimensions } from "react-native";
+import React, { Component, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Image,
+  Dimensions,
+  TouchableOpacity,
+} from "react-native";
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
-import Rating from "../../../components/Rating";
+import { RatingView } from "../../../components/RatingView";
 import { AuthContext } from "../../Auth/Navigators/context";
+import Dialog, {
+  DialogFooter,
+  DialogButton,
+  DialogContent,
+  DialogTitle,
+} from "react-native-popup-dialog";
 
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.131.168:3000/" + w);
+  var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -13,10 +25,14 @@ fetchData = async (w) => {
 
 const { width, height } = Dimensions.get("screen");
 
-export const CompletedTask = ({route,  navigation }) => {
+export const CompletedTask = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
-  console.log(route.params.taskDetails)
+  console.log(route.params.taskDetails);
+  let short_status = route.params.taskDetails.status.substring(0, 50);
+  if (route.params.taskDetails.status.length > 50)
+    short_status = short_status + "...";
+  const [isVisible, setIsVisible] = useState(false);
   return (
     <View style={styles.container}>
       <Card
@@ -35,14 +51,34 @@ export const CompletedTask = ({route,  navigation }) => {
         caption={route.params.taskDetails.category}
         avatar="https://img.icons8.com/ios-filled/512/000000/tags.png"
       />
-      <Card
-        flex
-        borderless
-        style={styles.card}
-        title="Description"
-        caption={route.params.taskDetails.status}
-        avatar="https://img.icons8.com/ios-filled/512/000000/info.png"
-      />
+      <TouchableOpacity
+        style={{
+          height: theme.SIZES.BASE * 6.7,
+        }}
+        onPress={() => setIsVisible(true)}
+      >
+        <Card
+          flex
+          borderless
+          style={styles.card}
+          title="Description"
+          caption={short_status}
+          avatar="https://img.icons8.com/ios-filled/512/000000/info.png"
+        />
+      </TouchableOpacity>
+      <Dialog
+        visible={isVisible}
+        dialogTitle={<DialogTitle title="Task Description" />}
+        footer={
+          <DialogFooter>
+            <DialogButton text="OK" onPress={() => setIsVisible(false)} />
+          </DialogFooter>
+        }
+      >
+        <DialogContent>
+          <Text>{route.params.taskDetails.status}</Text>
+        </DialogContent>
+      </Dialog>
       <Card
         flex
         borderless
@@ -68,7 +104,7 @@ export const CompletedTask = ({route,  navigation }) => {
         avatar="https://img.icons8.com/material-sharp/512/000000/user.png"
       />
       <Block flex style={styles.ratingcard}>
-        <Rating number = {route.params.taskDetails.rating}/>
+        <RatingView stars={route.params.taskDetails.rating} size={40} />
       </Block>
     </View>
   );
@@ -79,16 +115,16 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     backgroundColor: "#558b2f",
     paddingHorizontal: 20,
-    // alignItems: "",
+    alignItems: "center",
     // justifyContent: "flex-start",
     paddingVertical: 50,
-    width
+    width,
   },
   pic: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   item: {
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   ratingcard: {
     backgroundColor: "#f8ffd7",
@@ -98,7 +134,7 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
     justifyContent: "center",
-    borderRadius: 70
+    borderRadius: 70,
   },
   card: {
     color: "#ffffff",
@@ -106,6 +142,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
-    marginVertical: theme.SIZES.BASE * 0.875
-  }
+    marginVertical: theme.SIZES.BASE * 0.875,
+  },
 });

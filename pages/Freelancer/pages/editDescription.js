@@ -6,69 +6,76 @@ import {
   View,
   Text,
   Alert,
-  Dimensions
+  Dimensions,
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
 
-
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.131.168:3000/" + w);
+  var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
 };
 
-
-
 const changeUserDetails = async (email, item_to_change, new_item, password) => {
-
-    if (item_to_change == "password") {
-      var params = ["login=\'" + email + "\'"];
-      params = { table: 'U_SERS', item: 'secrets', arr: params };
-      params = JSON.stringify(params);
-      params = 'getlogin' + params;
-      try {
-          params = await fetchData(params);
-      } catch (err) { console.log(err); return ""; };
-      if (params.length == 0) { return "not user" }
-      params = params[0];
-
-      if (password != params.secrets) { return "invalid password" }
-        var tester = /^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{8,}$/;
-        if (!tester.test(new_item)) { return "New password not strong" }
+  if (item_to_change == "password") {
+    var params = ["login='" + email + "'"];
+    params = { table: "U_SERS", item: "secrets", arr: params };
+    params = JSON.stringify(params);
+    params = "getlogin" + params;
+    try {
+      params = await fetchData(params);
+    } catch (err) {
+      console.log(err);
+      return "";
     }
+    if (params.length == 0) {
+      return "not user";
+    }
+    params = params[0];
 
+    if (password != params.secrets) {
+      return "invalid password";
+    }
+    var tester = /^(?=.[A-Za-z])(?=.\d)[A-Za-z\d]{8,}$/;
+    if (!tester.test(new_item)) {
+      return "New password not strong";
+    }
+  }
 
+  var table = "EXTRA_DATA";
+  var iden = "email";
+  if (item_to_change == "password") {
+    item_to_change = "secrets";
+    table = "U_SERS";
+    iden = "login";
+  }
+  item_to_change += " =";
+  var params = [item_to_change + "'" + new_item + "'"];
+  params = { table: table, item: `${iden}= \'${email}\'`, arr: params };
+  params = JSON.stringify(params);
+  params = "updlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-    var table = "EXTRA_DATA";
-    var iden = "email";
-    if (item_to_change == "password") { item_to_change = "secrets"; table = "U_SERS"; iden = "login" }
-    item_to_change += " ="
-    var params = [item_to_change + "\'" + new_item + "\'"];
-    params = { table: table, item: `${iden}= \'${email}\'`, arr: params };
+  if (item_to_change == "email =") {
+    params = ["login =" + "'" + new_item + "'"];
+    params = { table: "U_SERS", item: `login= \'${email}\'`, arr: params };
     params = JSON.stringify(params);
     params = "updlogin" + params;
     try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return "" }
-
-
-
-    if (item_to_change == "email =") {
-
-        params = ["login =" + "\'" + new_item + "\'"];
-        params = { table: "U_SERS", item: `login= \'${email}\'`, arr: params };
-        params = JSON.stringify(params);
-        params = "updlogin" + params;
-        try {
-            params = await fetchData(params);
-        } catch (err) { console.log(err); return ""; }
-
-
+      params = await fetchData(params);
+    } catch (err) {
+      console.log(err);
+      return "";
     }
-    return "Done"
-
   }
+  return "Done";
+};
 
 export default function EditDescription({ navigation }) {
   const [Description, setDescription] = useState("");
@@ -76,12 +83,12 @@ export default function EditDescription({ navigation }) {
   const myEmail = getEmail();
 
   const submitHandler = async () => {
-    console.log('what')
+    console.log("what");
     var outcome = await changeUserDetails(myEmail, "about_me", Description, "");
-    if(outcome == 'Done'){
-      navigation.navigate("FreelancerProfile")
+    if (outcome == "Done") {
+      navigation.navigate("FreelancerProfile");
     }
-  }
+  };
 
   return (
     <View style={styles.container}>
@@ -90,14 +97,10 @@ export default function EditDescription({ navigation }) {
         style={styles.input}
         multiline={true}
         placeholder="Description"
-        onChangeText={val => setDescription(val)}
+        onChangeText={(val) => setDescription(val)}
       />
       <View style={{ padding: 10 }}>
-        <Button
-          title="Submit"
-          color="green"
-          onPress={() => submitHandler()}
-        />
+        <Button title="Submit" color="green" onPress={() => submitHandler()} />
       </View>
     </View>
   );
@@ -105,17 +108,17 @@ export default function EditDescription({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20
+    padding: 20,
   },
   bigText: {
     fontWeight: "bold",
-    fontSize: 20
+    fontSize: 20,
   },
   input: {
     borderWidth: 1,
     borderColor: "#777",
     padding: 8,
     margin: 10,
-    width: Dimensions.get("window").width - 40 - 10
-  }
+    width: Dimensions.get("window").width - 40 - 10,
+  },
 });

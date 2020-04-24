@@ -1,20 +1,28 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
 import {
   StyleSheet,
   View,
   Image,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
+import Dialog, {
+  DialogFooter,
+  DialogButton,
+  DialogContent,
+  DialogTitle,
+} from "react-native-popup-dialog";
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../../Auth/Navigators/context";
 
-
-export const ViewTaskUnassigned = ({route, navigation }) => {
+export const ViewTaskUnassigned = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
-  
+  let short_status = route.params.taskDetails.status.substring(0, 50);
+  if (route.params.taskDetails.status.length > 50)
+    short_status = short_status + "...";
+  const [isVisible, setIsVisible] = useState(false);
   return (
     <View style={styles.container}>
       <Card
@@ -33,20 +41,40 @@ export const ViewTaskUnassigned = ({route, navigation }) => {
         caption={route.params.taskDetails.category}
         avatar="https://img.icons8.com/ios-filled/512/000000/tags.png"
       />
-      <Card
-        flex
-        borderless
-        style={styles.card}
-        title="Description"
-        caption={route.params.taskDetails.status}
-        avatar="https://img.icons8.com/ios-filled/512/000000/info.png"
-      />
+      <TouchableOpacity
+        style={{
+          height: theme.SIZES.BASE * 4.9,
+        }}
+        onPress={() => setIsVisible(true)}
+      >
+        <Card
+          flex
+          borderless
+          style={styles.card}
+          title="Description"
+          caption={short_status}
+          avatar="https://img.icons8.com/ios-filled/512/000000/info.png"
+        />
+      </TouchableOpacity>
+      <Dialog
+        visible={isVisible}
+        dialogTitle={<DialogTitle title="Task Description" />}
+        footer={
+          <DialogFooter>
+            <DialogButton text="OK" onPress={() => setIsVisible(false)} />
+          </DialogFooter>
+        }
+      >
+        <DialogContent>
+          <Text>{route.params.taskDetails.status}</Text>
+        </DialogContent>
+      </Dialog>
       <Card
         flex
         borderless
         style={styles.card}
         title="Deadline"
-        caption={route.params.taskDetails.date.substring(0,10)}
+        caption={route.params.taskDetails.date.substring(0, 10)}
         avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
       />
       <Card
@@ -57,6 +85,7 @@ export const ViewTaskUnassigned = ({route, navigation }) => {
         caption={route.params.taskDetails.attachment}
         avatar="https://img.icons8.com/ios-filled/512/000000/attach.png"
       />
+
       <Card
         flex
         borderless
@@ -64,16 +93,29 @@ export const ViewTaskUnassigned = ({route, navigation }) => {
         title="No Free Lancer Assigned"
         caption=""
         avatar="https://img.icons8.com/material-sharp/512/000000/user.png"
+        onPress={() => {
+          this.setState({ visible: true });
+        }}
       />
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("BrowseFreelancers", {category: route.params.taskDetails.category, id: route.params.taskDetails.id})}
+        onPress={() =>
+          navigation.navigate("BrowseFreelancers", {
+            category: route.params.taskDetails.category,
+            id: route.params.taskDetails.id,
+          })
+        }
       >
         <Text style={styles.buttonText}>Browse Free Lancer</Text>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button}
-        onPress={() => navigation.navigate("ViewRequests", {id: route.params.taskDetails.id, isLoading: true})}
+        onPress={() =>
+          navigation.navigate("ViewRequests", {
+            id: route.params.taskDetails.id,
+            isLoading: true,
+          })
+        }
       >
         <Text style={styles.buttonText}>View Requests</Text>
       </TouchableOpacity>
@@ -89,13 +131,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     // justifyContent: "flex-start",
     paddingVertical: 50,
-    width
+    width,
   },
   pic: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   item: {
-    paddingVertical: 10
+    paddingVertical: 10,
   },
   button: {
     width: 300,
@@ -103,20 +145,20 @@ const styles = StyleSheet.create({
     backgroundColor: "#255d00",
     marginVertical: 10,
     borderRadius: 25,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "500",
     color: "#ffffff",
-    textAlign: "center"
+    textAlign: "center",
   },
   card: {
     color: "#ffffff",
     backgroundColor: "#f8ffd7",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
-    height: theme.SIZES.BASE * 4,
-    marginVertical: theme.SIZES.BASE * 0.875
-  }
+    height: 100,
+    marginVertical: 10,
+  },
 });

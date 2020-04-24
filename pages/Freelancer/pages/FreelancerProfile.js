@@ -7,80 +7,88 @@ import {
   Button,
   Alert,
   Dimensions,
-  TouchableOpacity
+  TouchableOpacity,
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
 
 fetchData = async (w) => {
-  console.log('')
-  var response = await fetch("http://119.153.131.168:3000/" + w);
+  console.log("");
+  var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
   console.log(response);
   return await response;
 };
 
-
 const getMyDetails = async (email) => {
-    var params = ["email=\'" + email + "\'"];
-    params = { table: 'EXTRA_DATA', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return params; }
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
-    var iden = params[0].id
-    var roles = [`id=${iden}`]
+  var iden = params[0].id;
+  var roles = [`id=${iden}`];
 
+  roles = { table: "roles", item: "name", arr: roles };
+  roles = JSON.stringify(roles);
+  roles = "getlogin" + roles;
+  try {
+    roles = await fetchData(roles);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
-    roles = { table: 'roles', item: 'name', arr: roles };
-    roles = JSON.stringify(roles);
-    roles = 'getlogin' + roles;
-    try {
-        roles = await fetchData(roles);
-    } catch (err) { console.log(err); return params; }
+  params = params[0];
 
-    params = params[0]
+  roles = roles[0].name;
 
+  if (roles == "buyer") {
+    roles = "customer";
+  }
 
-    roles = roles[0].name
+  var query = [`id= ${iden}`];
+  query = { table: "ratings", item: "*", arr: query };
+  query = JSON.stringify(query);
+  query = "get" + roles + query;
 
-    if (roles == "buyer") { roles = "customer" }
+  try {
+    query = await fetchData(query);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
+  params.ratings = 0;
+  if (query.length == 0) {
+    return params;
+  }
+  query = query[0].ratings;
 
-    var query = [`id= ${iden}`];
-    query = { table: "ratings", item: "*", arr: query };
-    query = JSON.stringify(query);
-    query = "get" + roles + query;
+  params.ratings = query;
 
-    try {
-        query = await fetchData(query);
-    } catch (err) { console.log(err); return params; }
-    params.ratings = 0
-    if (query.length == 0) { return params }
-    query = query[0].ratings
-
-    params.ratings = query
-
-    return params
-
-
-
-
-
-
-}
+  return params;
+};
 
 export default function FreelancerProfile({ navigation }) {
   const { getEmail } = React.useContext(AuthContext);
   var myEmail = getEmail();
   const [isLoading, setIsLoading] = React.useState(true);
   const [details, setDetails] = React.useState({});
-  const getDetails = async() => 
-    {setDetails(await getMyDetails(myEmail));
-    setIsLoading(false)};
+  const getDetails = async () => {
+    setDetails(await getMyDetails(myEmail));
+    setIsLoading(false);
+  };
 
-  if(isLoading == true){getDetails();}
-  if(isLoading == false){return (
+  if (isLoading == true) {
+    getDetails();
+  }
+  if (isLoading == false) {
+    return (
       <View style={styles.container}>
         <View style={styles.imageContainer}>
           <Image
@@ -117,21 +125,40 @@ export default function FreelancerProfile({ navigation }) {
             <Text>{details.about_me}</Text>
           </View>
         </View>
-        <TouchableOpacity onPress = {() => {getDetails()}}>
-            <View style = {{alignItems: 'center', marginBottom: 40, backgroundColor: 'silver', marginLeft: 150, marginRight: 150, width: 80}}><Text>Refresh</Text></View>
-          </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            getDetails();
+          }}
+        >
+          <View
+            style={{
+              alignItems: "center",
+              marginBottom: 40,
+              backgroundColor: "silver",
+              marginLeft: 150,
+              marginRight: 150,
+              width: 80,
+            }}
+          >
+            <Text>Refresh</Text>
+          </View>
+        </TouchableOpacity>
       </View>
-    );}
-    else{
-      return <View><Text>Loading</Text></View>
-    }
+    );
+  } else {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "white",
     alignItems: "center",
-    justifyContent: "center"
+    justifyContent: "center",
   },
   canvas: {
     height: 200,
@@ -139,28 +166,28 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     bottom: 0,
-    right: 0
+    right: 0,
   },
   imageContainer: {
     backgroundColor: "white",
     width: Dimensions.get("window").width,
-    height: 250
+    height: 250,
   },
   bigText: {
     fontWeight: "bold",
-    fontSize: 20
+    fontSize: 20,
   },
   textContainer: {
     padding: 20,
-    flex: 2
+    flex: 2,
   },
   buttonAndText: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   buttonDiv: {
     justifyContent: "center",
     alignItems: "center",
-    flex: 1
+    flex: 1,
   },
   lowerPortion: {
     backgroundColor: "white",
@@ -171,19 +198,19 @@ const styles = StyleSheet.create({
     width: Dimensions.get("window").width,
     borderTopColor: "green",
     borderColor: "white",
-    borderWidth: 1
+    borderWidth: 1,
   },
   name: {
     padding: 20,
     flexDirection: "row",
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   ex: {
     width: Dimensions.get("window").width,
-    height: Dimensions.get("window").heigth
+    height: Dimensions.get("window").heigth,
   },
   textstyle: {
     width: Dimensions.get("window").width,
-    padding: 20
-  }
+    padding: 20,
+  },
 });

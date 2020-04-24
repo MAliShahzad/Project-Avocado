@@ -7,56 +7,62 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Auth/Navigators/context";
 
 fetchData = async (w) => {
-    try {
-        var response = await fetch("http://119.153.131.168:3000/" + w);
+  try {
+    var response = await fetch("http://39.46.200.250:3000/" + w);
 
-        response = await response.json();
-        console.log(response);
-        return await response;
-    }
-    catch (err) { console.log(err); return };
-}
-
+    response = await response.json();
+    console.log(response);
+    return await response;
+  } catch (err) {
+    console.log(err);
+    return;
+  }
+};
 
 const getFreelancerList = async (task_type) => {
-    var params = [`category=\'${task_type}\'`];
-    params = { table: 'EXTRA_DATA', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return []; };
-    if (params.length == 0) { return []; }
-    let idlist = [];
-    params.forEach((w) => idlist.push(w.id));
-    let query = `id=${idlist[0]}`
-    for (let index = 1; index < idlist.length; index++) {
-        query += ` OR id=${idlist[index]}`;
+  var params = [`category=\'${task_type}\'`];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+  if (params.length == 0) {
+    return [];
+  }
+  let idlist = [];
+  params.forEach((w) => idlist.push(w.id));
+  let query = `id=${idlist[0]}`;
+  for (let index = 1; index < idlist.length; index++) {
+    query += ` OR id=${idlist[index]}`;
+  }
+  query += " ORDER BY ratings DESC";
+
+  query = [query];
+  query = { table: "ratings", item: "*", arr: query };
+  query = JSON.stringify(query);
+  query = "getfreelancer" + query;
+  try {
+    query = await fetchData(query);
+  } catch (err) {
+    console.log(err);
+    return [];
+  }
+
+  params.forEach((w) => (w.rating = 0));
+
+  params.forEach((w) => {
+    for (let index = 0; index < query.length; index++) {
+      if (query[index].id == w.id) {
+        w.rating = query[index].ratings;
+      }
     }
-    query += ' ORDER BY ratings DESC'
-
-    query = [query];
-    query = { table: 'ratings', item: '*', arr: query };
-    query = JSON.stringify(query);
-    query = 'getfreelancer' + query;
-    try {
-        query = await fetchData(query);
-    } catch (err) { console.log(err); return []; }
-
-    params.forEach((w) => w.rating = 0)
-
-    params.forEach((w) => {
-        for (let index = 0; index < query.length; index++) {
-            if (query[index].id == w.id) {
-                w.rating = query[index].ratings;
-            }
-
-        }
-    });
-    return params;
-
-}
-
+  });
+  return params;
+};
 
 const DisplayCard = ({
   navigation,
@@ -65,7 +71,7 @@ const DisplayCard = ({
   email,
   about_me,
   imageLink,
-  task_id
+  task_id,
 }) => (
   <TouchableOpacity
     onPress={() => {
@@ -74,7 +80,7 @@ const DisplayCard = ({
         email,
         about_me,
         imageLink,
-        task_id
+        task_id,
       });
     }}
   >
@@ -94,13 +100,13 @@ const DisplayCard = ({
   </TouchableOpacity>
 );
 
-export const BrowseFreelancers = ({route, navigation }) => {
+export const BrowseFreelancers = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
   const [isLoading, setIsLoading] = React.useState(true);
   const [freelancerList, setfreelancerList] = React.useState([]);
   const getDetails = async () => {
-    setfreelancerList(await getFreelancerList(route.params.category))
+    setfreelancerList(await getFreelancerList(route.params.category));
     // setfreelancerList([
     //   {
     //     user_name : 'Saad Arshad',
@@ -118,30 +124,38 @@ export const BrowseFreelancers = ({route, navigation }) => {
     //   }
     // ])
     setIsLoading(false);
+  };
+  if (isLoading == true) {
+    getDetails();
   }
-  if(isLoading == true){getDetails();}
-  if(isLoading == false){return (
+  if (isLoading == false) {
+    return (
       <ScrollView>
-      <View style={styles.container}>
-        {freelancerList.map((freelancer) =>  {
-          return(<DisplayCard
+        <View style={styles.container}>
+          {freelancerList.map((freelancer) => {
+            return (
+              <DisplayCard
                 name={freelancer.user_name}
                 ratings={freelancer.rating}
                 email={freelancer.email}
                 about_me={freelancer.about_me}
-                imageLink = {freelancer.image}
-                task_id = {route.params.id}
+                imageLink={freelancer.image}
+                task_id={route.params.id}
                 navigation={navigation}
-              ></DisplayCard>);
-        })}
-      </View>
+              ></DisplayCard>
+            );
+          })}
+        </View>
       </ScrollView>
-    );}
-    else{
-      return <View><Text>Loading</Text></View>
-    }
+    );
+  } else {
+    return (
+      <View>
+        <Text>Loading</Text>
+      </View>
+    );
+  }
 };
-
 
 const styles = StyleSheet.create({
   container: {
@@ -152,13 +166,13 @@ const styles = StyleSheet.create({
     paddingVertical: 50,
     paddingBottom: 2000,
     flex: 1,
-    width
+    width,
   },
   pic: {
-    flexDirection: "row"
+    flexDirection: "row",
   },
   item: {
-    paddingVertical: 10
+    paddingVertical: 10,
   },
 
   ratingcard: {
@@ -170,6 +184,6 @@ const styles = StyleSheet.create({
     height: theme.SIZES.BASE * 4,
     alignContent: "center",
     borderRadius: 10,
-    flexDirection: "row"
-  }
+    flexDirection: "row",
+  },
 });

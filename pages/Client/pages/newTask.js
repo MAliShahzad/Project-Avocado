@@ -16,7 +16,7 @@ import { AuthContext } from "../../Auth/Navigators/context";
 const { width, height } = Dimensions.get("screen");
 
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.164.237:3000/" + w);
+  var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -81,6 +81,7 @@ const InsertTask = async (
 
   return "Done";
 };
+
 export const NewTask = ({ navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const [title, settitle] = useState("");
@@ -131,7 +132,6 @@ export const NewTask = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={{ alignItems: "center" }}>
-        {/* <Text style={{ alignItems: "flex-start" }}>Title</Text> */}
         <TextInput
           placeholderTextColor="rgba(0,0,0,0.3)"
           underlineColorAndroid="rgba(0,0,0,0)"
@@ -139,7 +139,6 @@ export const NewTask = ({ navigation }) => {
           placeholder="Add a Title"
           onChangeText={(val) => settitle(val)}
         />
-        {/* <Text>Description</Text> */}
         <TextInput
           placeholderTextColor="rgba(0,0,0,0.3)"
           underlineColorAndroid="rgba(0,0,0,0)"
@@ -147,16 +146,14 @@ export const NewTask = ({ navigation }) => {
           placeholder="Add a Description"
           onChangeText={(val) => setdescription(val)}
         />
-        {/* <Text>Category</Text> */}
         <TouchableOpacity style={styles.boxStyle} disabled={true}>
           <TouchableOpacity
-            style={{ width: width - width / 8 }}
+            style={{ width: width - width / 5 }}
             disabled={true}
           >
             <Picker
               style={{
                 color: "#ffffff",
-                transform: [{ scaleX: 0.9 }, { scaleY: 0.9 }],
                 textAlign: "center",
               }}
               selectedValue={category}
