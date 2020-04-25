@@ -7,30 +7,67 @@ import { ViewTask } from "../pages/ViewTask";
 import { ClientViewsFreelancer } from "../pages/ClientViewsFreelancer";
 import { ViewTaskUnassigned } from "../pages/ViewTaskUnassigned";
 import { ViewRequests } from "../pages/ViewRequests";
-import {ClientViewsRequests} from"../pages/ClientViewsRequests";
+import { ClientViewsRequests } from "../pages/ClientViewsRequests";
 
 const CurrentStack = createStackNavigator();
 
 export const CurrentScreens = () => (
   <CurrentStack.Navigator>
-    <CurrentStack.Screen name="CurrentScreen" component={CurrentScreen} />
-    <CurrentStack.Screen name="ViewTask" component={ViewTask} />
-    <CurrentStack.Screen name="ViewRequests" component={ViewRequests} />
+    <CurrentStack.Screen
+      name="CurrentScreen"
+      component={CurrentScreen}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <CurrentStack.Screen
+      name="ViewTask"
+      component={ViewTask}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <CurrentStack.Screen
+      name="ViewRequests"
+      component={ViewRequests}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
     <CurrentStack.Screen
       name="BrowseFreelancers"
       component={BrowseFreelancers}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
     />
     <CurrentStack.Screen
       name="ClientViewsFreelancer"
       component={ClientViewsFreelancer}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
     />
     <CurrentStack.Screen
       name="ClientViewsRequests"
       component={ClientViewsRequests}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
     />
     <CurrentStack.Screen
       name="ViewTaskUnassigned"
       component={ViewTaskUnassigned}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
     />
   </CurrentStack.Navigator>
 );

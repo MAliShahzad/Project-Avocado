@@ -7,6 +7,13 @@ const NewStack = createStackNavigator();
 
 export const NewScreens = () => (
   <NewStack.Navigator>
-    <NewStack.Screen name="NewTask" component={NewTask} />
+    <NewStack.Screen
+      name="NewTask"
+      component={NewTask}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
   </NewStack.Navigator>
 );

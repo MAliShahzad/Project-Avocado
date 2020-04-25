@@ -7,6 +7,7 @@ import {
   Text,
   Alert,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
 
@@ -77,6 +78,16 @@ const changeUserDetails = async (email, item_to_change, new_item, password) => {
   return "Done";
 };
 
+const CustomButton = (props) => {
+  const { title = "Enter", style = {}, textStyle = {}, onPress, color } = props;
+
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <Text style={[styles.text, textStyle]}>{props.title}</Text>
+    </TouchableOpacity>
+  );
+};
+
 export default function EditDescription({ navigation }) {
   const [Description, setDescription] = useState("");
   const { getEmail } = React.useContext(AuthContext);
@@ -92,16 +103,28 @@ export default function EditDescription({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.bigText}>Edit your Description</Text>
+      <Text style={styles.text1}>Edit your Description</Text>
+      <View style={{ height: 30 }}></View>
       <TextInput
         style={styles.input}
         multiline={true}
         placeholder="Description"
         onChangeText={(val) => setDescription(val)}
+        style={{
+          //height: 50,
+          borderWidth: 1,
+          borderRadius: 15,
+          paddingVertical: 10,
+          paddingHorizontal: 20,
+          borderColor: "grey",
+        }}
       />
-      <View style={{ padding: 10 }}>
-        <Button title="Submit" color="green" onPress={() => submitHandler()} />
-      </View>
+      <View style={{ height: 25 }}></View>
+      <CustomButton
+        title="Submit"
+        style={{ backgroundColor: "#98C739" }}
+        onPress={() => submitHandler()}
+      />
     </View>
   );
 }
@@ -109,6 +132,9 @@ export default function EditDescription({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     padding: 20,
+    height: Dimensions.get("window").height,
+    padding: 20,
+    backgroundColor: "white",
   },
   bigText: {
     fontWeight: "bold",
@@ -120,5 +146,29 @@ const styles = StyleSheet.create({
     padding: 8,
     margin: 10,
     width: Dimensions.get("window").width - 40 - 10,
+  },
+  button: {
+    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowOffset: { height: 5, width: 5 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    //backgroundColor: "#98C739",
+    elevation: 8, // Android
+    height: 40,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: 10,
+    marginHorizontal: 15,
+  },
+  text: {
+    fontSize: 15,
+    textTransform: "uppercase",
+    color: "#FFFFFF",
+  },
+  text1: {
+    fontSize: 20,
+    //fontWeight: "bold",
   },
 });

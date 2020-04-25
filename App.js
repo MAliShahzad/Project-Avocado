@@ -45,19 +45,19 @@ export default function App() {
     };
   }, []);
 
-  React.useEffect(() => {
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
-  }, []);
+  // React.useEffect(() => {
+  //   setTimeout(() => {
+  //     setIsLoading(false);
+  //   }, 1000);
+  // }, []);
 
-  if (isLoading) {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
-  }
+  // if (isLoading) {
+  //   return (
+  //     <View>
+  //       <Text>Loading</Text>
+  //     </View>
+  //   );
+  // }
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>{HomeSelector(userToken)}</NavigationContainer>

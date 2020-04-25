@@ -14,7 +14,12 @@ import {
 import DatePicker from "react-native-datepicker";
 import { AuthContext } from "../../Auth/Navigators/context";
 const { width, height } = Dimensions.get("screen");
+import FilePickerManager from "react-native-file-picker";
 
+// import {
+//   DocumentPicker,
+//   DocumentPickerUtil,
+// } from "react-native-document-picker";
 fetchData = async (w) => {
   var response = await fetch("http://39.46.200.250:3000/" + w);
   response = await response.json();
@@ -81,6 +86,39 @@ const InsertTask = async (
 
   return "Done";
 };
+
+const filePicker = async () => {
+  let file;
+  FilePickerManager.showFilePicker(null, (response) => {
+    console.log("Response = ", response);
+
+    if (response.didCancel) {
+      console.log("User cancelled file picker");
+    } else if (response.error) {
+      console.log("FilePickerManager Error: ", response.error);
+    } else {
+      file = response;
+    }
+  });
+};
+
+// const documentPicker = async () => {
+//   alert("Function Called");
+//   DocumentPicker.show(
+//     {
+//       filetype: [DocumentPickerUtil.images()],
+//     },
+//     (error, res) => {
+//       // Android
+//       console.log(
+//         res.uri,
+//         res.type, // mime type
+//         res.fileName,
+//         res.fileSize
+//       );
+//     }
+//   );
+// };
 
 export const NewTask = ({ navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
@@ -195,7 +233,10 @@ export const NewTask = ({ navigation }) => {
               }}
             />
           </TouchableOpacity>
-          <TouchableOpacity style={styles.dateStyle}>
+          <TouchableOpacity
+            style={styles.dateStyle}
+            onPress={() => filePicker()}
+          >
             <Text style={styles.attachText}>Add an Attachment</Text>
           </TouchableOpacity>
         </View>

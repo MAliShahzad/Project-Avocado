@@ -14,22 +14,22 @@ export const HomeScreens = ({ navigation }) => {
           backgroundColor: "white",
           elevation: 0,
           shadowOpacity: 0,
-          borderBottomWidth: 0
+          borderBottomWidth: 0,
         },
         headerTitleStyle: {
           color: "green",
           alignSelf: "center",
-          flex: 1
+          flex: 1,
         },
         headerLeft: () => (
           <Icon
-            raised
+            containerStyle={[{ paddingHorizontal: 15 }]}
             name="menu"
             type="menu-outline"
             color="grey"
             onPress={() => navigation.openDrawer()}
           />
-        )
+        ),
       }}
     >
       <HomeStack.Screen name="Project Avocado" component={TabScreens} />

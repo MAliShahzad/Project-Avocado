@@ -6,7 +6,9 @@ import { CompletedScreens } from "../Navigators/CompletedScreens";
 import { CurrentScreens } from "../Navigators/CurrentScreens";
 import { NewScreens } from "../Navigators/NewScreens";
 
-const Tabs = createBottomTabNavigator();
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+const Tabs = createMaterialTopTabNavigator();
 
 export const TabScreens = () => (
   <Tabs.Navigator
@@ -23,15 +25,27 @@ export const TabScreens = () => (
           iconName = focused ? "ios-add-circle" : "ios-add-circle-outline";
         }
         return <Ionicons name={iconName} size={size} color={color} />;
-      }
+      },
     })}
     tabBarOptions={{
       activeTintColor: "green",
-      inactiveTintColor: "gray"
+      inactiveTintColor: "gray",
     }}
   >
-    <Tabs.Screen name="CurrentScreen" component={CurrentScreens} />
-    <Tabs.Screen name="CompletedScreen" component={CompletedScreens} />
-    <Tabs.Screen name="NewTask" component={NewScreens} />
+    <Tabs.Screen
+      name="CurrentScreen"
+      component={CurrentScreens}
+      options={{ title: "Current" }}
+    />
+    <Tabs.Screen
+      name="CompletedScreen"
+      component={CompletedScreens}
+      options={{ title: "Completed" }}
+    />
+    <Tabs.Screen
+      name="NewTask"
+      component={NewScreens}
+      options={{ title: "New" }}
+    />
   </Tabs.Navigator>
 );

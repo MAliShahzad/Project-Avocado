@@ -84,7 +84,7 @@ export const Login = ({ navigation }) => {
     }
   };
   return (
-    <ScrollView>
+    <View>
       <View style={styles.container}>
         <Logo />
         <TextInput
@@ -124,7 +124,7 @@ export const Login = ({ navigation }) => {
           </TouchableOpacity>
         </View>
       </View>
-    </ScrollView>
+    </View>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   Alert,
   ScrollView,
   Dimensions,
+  TouchableOpacity,
 } from "react-native";
 
 import { AuthContext } from "../../Auth/Navigators/context";
@@ -149,6 +150,16 @@ const changeUserDetails = async (email, item_to_change, new_item, password) => {
   return "Done";
 };
 
+const CustomButton = (props) => {
+  const { title = "Enter", style = {}, textStyle = {}, onPress, color } = props;
+
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <Text style={[styles.text, textStyle]}>{props.title}</Text>
+    </TouchableOpacity>
+  );
+};
+
 export default function EditProfile({ navigation }) {
   const [email, setEmail] = useState("");
   const [newPassword, setNewPassword] = useState("");
@@ -178,31 +189,62 @@ export default function EditProfile({ navigation }) {
   return (
     <ScrollView>
       <View style={styles.container}>
-        <Text>Change Password?</Text>
+        <View style={{ height: 20 }}></View>
+        <Text style={styles.text1}>Enter New Password</Text>
+        <View style={{ height: 20 }}></View>
         <TextInput
           secureTextEntry={true}
           style={styles.input}
           placeholder="********"
           onChangeText={(val) => setNewPassword(val)}
+          style={{
+            height: 50,
+            borderWidth: 1,
+            borderRadius: 15,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderColor: "grey",
+          }}
         />
-        <Text>Re-Enter Password?</Text>
+        <View style={{ height: 20 }}></View>
+        <Text style={styles.text1}>Re-Enter Password</Text>
+        <View style={{ height: 20 }}></View>
         <TextInput
           secureTextEntry={true}
           style={styles.input}
           placeholder="********"
           onChangeText={(val) => setConfirmPassword(val)}
+          style={{
+            height: 50,
+            borderWidth: 1,
+            borderRadius: 15,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderColor: "grey",
+          }}
         />
-        <Text>Enter Old Password</Text>
+        <View style={{ height: 20 }}></View>
+        <Text style={styles.text1}>Enter Old Password</Text>
+        <View style={{ height: 20 }}></View>
         <TextInput
           secureTextEntry={true}
           style={styles.input}
           placeholder="********"
           onChangeText={(val) => setOldPassowrd(val)}
+          style={{
+            height: 50,
+            borderWidth: 1,
+            borderRadius: 15,
+            paddingVertical: 10,
+            paddingHorizontal: 20,
+            borderColor: "grey",
+          }}
         />
+        <View style={{ height: 20 }}></View>
         <View style={{ padding: 10 }}>
-          <Button
+          <CustomButton
             title="Submit"
-            color="green"
+            style={{ backgroundColor: "#98C739" }}
             onPress={() => {
               if (newPassword != confirmPassword) {
                 alert("Re-entry of password did not match. Please retry");
@@ -219,13 +261,47 @@ export default function EditProfile({ navigation }) {
 
 const styles = StyleSheet.create({
   container: {
+    height: Dimensions.get("window").height,
     padding: 20,
+    backgroundColor: "white",
+    //alignItems: "center",
+    //ustifyContent: "center",
   },
   input: {
-    borderWidth: 1,
+    //borderWidth: 1,
     borderColor: "#777",
     padding: 8,
     margin: 10,
     width: Dimensions.get("window").width - 60,
+    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowOffset: { height: 1, width: 1 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 3, //IOS
+    //backgroundColor: "#98C739",
+    elevation: 1, // Android
+    height: 40,
+  },
+  button: {
+    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowOffset: { height: 5, width: 5 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    //backgroundColor: "#98C739",
+    elevation: 8, // Android
+    height: 40,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: 10,
+  },
+  text: {
+    fontSize: 15,
+    textTransform: "uppercase",
+    color: "#FFFFFF",
+  },
+  text1: {
+    fontSize: 17,
+    //fontWeight: "bold",
   },
 });

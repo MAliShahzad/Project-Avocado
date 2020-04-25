@@ -8,7 +8,21 @@ const CompletedStack = createStackNavigator();
 
 export const CompletedScreens = ({ navigation }) => (
   <CompletedStack.Navigator>
-    <CompletedStack.Screen name="CompletedScreen" component={CompletedScreen} />
-    <CompletedStack.Screen name="CompletedTask" component={CompletedTask} />
+    <CompletedStack.Screen
+      name="CompletedScreen"
+      component={CompletedScreen}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <CompletedStack.Screen
+      name="CompletedTask"
+      component={CompletedTask}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
   </CompletedStack.Navigator>
 );

@@ -10,11 +10,50 @@ import { ClientSignup } from "../pages/ClientSignup";
 const AuthStack = createStackNavigator();
 
 export const AuthScreens = () => (
-  <AuthStack.Navigator>
-    <AuthStack.Screen name="Login" component={Login} />
-    <AuthStack.Screen name="Signup" component={Signup} />
-    <AuthStack.Screen name="ClientSignup" component={ClientSignup} />
-    <AuthStack.Screen name="FreelancerSignup" component={FreelancerSignup} />
-    <AuthStack.Screen name="ForgotPassword" component={ChangePassword} />
+  <AuthStack.Navigator
+    screenOptions={{
+      headerTintColor: "white",
+    }}
+  >
+    <AuthStack.Screen
+      name="Login"
+      component={Login}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <AuthStack.Screen
+      name="Signup"
+      component={Signup}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <AuthStack.Screen
+      name="ClientSignup"
+      component={ClientSignup}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <AuthStack.Screen
+      name="FreelancerSignup"
+      component={FreelancerSignup}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <AuthStack.Screen
+      name="ForgotPassword"
+      component={ChangePassword}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
   </AuthStack.Navigator>
 );
