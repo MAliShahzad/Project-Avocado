@@ -234,33 +234,23 @@ export const CurrentScreen = ({ navigation }) => {
                         alignItems: "center",
                       }}
                     >
-                      <TouchableOpacity
-                        disabled={true}
+                      <View
                         style={{
-                          backgroundColor: "#255d00",
-                          // width: 100,
-                          borderRadius: 100,
-                          // alignSelf: "center",
-                          flexDirection: "row",
-                          height: 25,
-                          justifyContent: "center",
-                          alignItems: "center",
-                          alignContent: "center",
+                          paddingHorizontal: 10,
+                          paddingVertical: 2,
+                          backgroundColor: "green",
+                          borderRadius: 10,
                         }}
                       >
-                        <Text> </Text>
-                        <Text> </Text>
                         <Text
                           style={{
                             textAlign: "center",
-                            color: "white",
+                            color: "",
                           }}
                         >
                           category
                         </Text>
-                        <Text> </Text>
-                        <Text> </Text>
-                      </TouchableOpacity>
+                      </View>
                     </View>
                     <Text style={{ marginVertical: 10, color: "black" }}>
                       {task.status}
@@ -293,7 +283,7 @@ export const CurrentScreen = ({ navigation }) => {
                     >
                       <Button
                         onPress={() => submitHandler(task.id)}
-                        icon={<Icon name="trash" size={20} color="red" />}
+                        icon={<Icon name="trash" size={20} color="grey" />}
                         title=""
                         type="clear"
                       />
