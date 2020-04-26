@@ -21,7 +21,7 @@ import FilePickerManager from "react-native-file-picker";
 //   DocumentPickerUtil,
 // } from "react-native-document-picker";
 fetchData = async (w) => {
-  var response = await fetch("http://39.46.200.250:3000/" + w);
+  var response = await fetch("http://119.153.149.207:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;

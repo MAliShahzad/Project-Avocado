@@ -19,7 +19,7 @@ import { RatingView } from "../../../components/RatingView";
 import { AuthContext } from "../../Auth/Navigators/context";
 
 fetchData = async (w) => {
-  var response = await fetch("http://39.46.200.250:3000/" + w);
+  var response = await fetch("http://119.153.149.207:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
