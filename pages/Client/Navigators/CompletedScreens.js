@@ -14,6 +14,9 @@ export const CompletedScreens = ({ navigation }) => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
     <CompletedStack.Screen
@@ -22,6 +25,9 @@ export const CompletedScreens = ({ navigation }) => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
   </CompletedStack.Navigator>

@@ -71,12 +71,7 @@ function CustomDrawerContent(props, { navigation }) {
           backgroundColor: "#8B7136",
         }}
       ></View>
-      {/* <View
-        style={{
-          height: 20,
-          backgroundColor: "white",
-        }}
-      ></View> */}
+
       <DrawerItemList {...props} />
       <DrawerItem
         label="Logout"
@@ -84,14 +79,6 @@ function CustomDrawerContent(props, { navigation }) {
         icon={({ focused }) => (
           <MaterialCommunityIcons name="logout" size={40} color="#98C739" />
         )}
-        // drawerContentOptions={{
-        //   activeTintColor: "#98C739",
-        //   itemStyle: { marginVertical: 8 },
-        //   labelStyle: { fontSize: 20, fontWeight: "bold" },
-        // }}
-        // style={{
-        //   labelStyle: { fontSize: 20, fontWeight: "bold" },
-        // }}
       />
     </DrawerContentScrollView>
   );
@@ -151,8 +138,8 @@ export const DrawerScreens = ({ email, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    flexDirection: "column",
+    //flex: 1,
+    //flexDirection: "column",
   },
   image: {
     flex: 1,

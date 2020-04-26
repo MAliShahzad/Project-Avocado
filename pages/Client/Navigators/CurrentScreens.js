@@ -12,7 +12,11 @@ import { ClientViewsRequests } from "../pages/ClientViewsRequests";
 const CurrentStack = createStackNavigator();
 
 export const CurrentScreens = () => (
-  <CurrentStack.Navigator>
+  <CurrentStack.Navigator
+    screenOptions={{
+      headerTintColor: "white",
+    }}
+  >
     <CurrentStack.Screen
       name="CurrentScreen"
       component={CurrentScreen}
@@ -27,6 +31,9 @@ export const CurrentScreens = () => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
     <CurrentStack.Screen
@@ -35,6 +42,9 @@ export const CurrentScreens = () => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
     <CurrentStack.Screen
@@ -43,6 +53,9 @@ export const CurrentScreens = () => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
     <CurrentStack.Screen
@@ -51,6 +64,9 @@ export const CurrentScreens = () => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
     <CurrentStack.Screen
@@ -59,6 +75,9 @@ export const CurrentScreens = () => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
     <CurrentStack.Screen
@@ -67,6 +86,9 @@ export const CurrentScreens = () => (
       options={{
         headerTransparent: true,
         title: "",
+        headerStyle: {
+          height: 40,
+        },
       }}
     />
   </CurrentStack.Navigator>

@@ -29,6 +29,10 @@ export const TabScreens = () => (
     tabBarOptions={{
       activeTintColor: "green",
       inactiveTintColor: "gray",
+      indicatorStyle: {
+        borderBottomColor: "green",
+        borderBottomWidth: 2,
+      },
     }}
   >
     <Tabs.Screen

@@ -12,24 +12,28 @@ const Tabs = createMaterialTopTabNavigator();
 
 export const TabScreens = () => (
   <Tabs.Navigator
-    screenOptions={({ route }) => ({
-      tabBarIcon: ({ focused, color, size }) => {
-        let iconName;
-        if (route.name === "New") {
-          iconName = focused
-            ? "ios-information-circle"
-            : "ios-information-circle-outline";
-        } else if (route.name === "Current") {
-          iconName = focused ? "ios-list-box" : "ios-list";
-        } else if (route.name === "Completed") {
-          iconName = focused ? "ios-add-circle" : "ios-add-circle-outline";
-        }
-        return <Ionicons name={iconName} size={size} color={color} />;
-      },
-    })}
+    // screenOptions={({ route }) => ({
+    //   tabBarIcon: ({ focused, color, size }) => {
+    //     let iconName;
+    //     if (route.name === "New") {
+    //       iconName = focused
+    //         ? "ios-information-circle"
+    //         : "ios-information-circle-outline";
+    //     } else if (route.name === "Current") {
+    //       iconName = focused ? "ios-list-box" : "ios-list";
+    //     } else if (route.name === "Completed") {
+    //       iconName = focused ? "ios-add-circle" : "ios-add-circle-outline";
+    //     }
+    //     return <Ionicons name={iconName} size={size} color={color} />;
+    //   },
+    // })}
     tabBarOptions={{
       activeTintColor: "green",
       inactiveTintColor: "gray",
+      indicatorStyle: {
+        borderBottomColor: "green",
+        borderBottomWidth: 2,
+      },
     }}
   >
     <Tabs.Screen
