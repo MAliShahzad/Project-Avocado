@@ -8,12 +8,17 @@ import {
   Alert,
   Dimensions,
   TouchableOpacity,
+  SafeAreaView,
+  ScrollView,
+  RefreshControl,
+  StatusBar,
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
+import Constants from "expo-constants";
 
 fetchData = async (w) => {
   console.log("");
-  var response = await fetch("http://39.46.200.250:3000/" + w);
+  var response = await fetch("http://119.153.164.237:3000/" + w);
   response = await response.json();
   console.log(response);
   return await response;
@@ -74,7 +79,33 @@ const getMyDetails = async (email) => {
   return params;
 };
 
-export default function FreelancerProfile({ navigation }) {
+function wait(timeout) {
+  return new Promise((resolve) => {
+    setTimeout(resolve, timeout);
+  });
+}
+
+const CustomButton = (props) => {
+  const { title = "Enter", style = {}, textStyle = {}, onPress, color } = props;
+
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <Text style={[styles.text, textStyle]}>{props.title}</Text>
+    </TouchableOpacity>
+  );
+};
+
+export default function ClientProfile({ navigation }) {
+  ////////////////////// Mustafa's Edit /////////////
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(3000).then(() => setRefreshing(false));
+  }, [refreshing]);
+  ///////////////////////////////////////////////////
+
   const { getEmail } = React.useContext(AuthContext);
   var myEmail = getEmail();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -89,65 +120,99 @@ export default function FreelancerProfile({ navigation }) {
   }
   if (isLoading == false) {
     return (
-      <View style={styles.container}>
-        <View style={styles.imageContainer}>
-          <Image
-            // resizeMode="contain"
-            // style={styles.canvas}
-            style={{ flex: 1, width: undefined, height: undefined }}
-            source={require("../../../images/profile.png")}
-          />
-        </View>
-        <View style={styles.buttonAndText}>
-          <View style={styles.textContainer}>
-            <Text style={styles.bigText}>{details.user_name}</Text>
-            <Text>{myEmail}</Text>
-          </View>
-          <View style={styles.buttonDiv}>
-            <Button
-              title="Edit"
-              color="green"
-              onPress={() => navigation.navigate("EditProfile", myEmail)}
-            />
-          </View>
-        </View>
-        <View style={styles.lowerPortion}>
-          <View style={styles.name}>
-            <Text style={styles.bigText}>Freelancer</Text>
-            <Button
-              title="Edit"
-              color="brown"
-              onPress={() => navigation.navigate("EditDescription", myEmail)}
-            />
-          </View>
-          <View style={{ padding: 20 }}>
-            <Text>Who am I?</Text>
-            <Text>{details.about_me}</Text>
-          </View>
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            getDetails();
-          }}
+      <SafeAreaView style={styles.container1}>
+        <ScrollView
+          contentContainerStyle={styles.scrollView}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+          }
         >
-          <View
-            style={{
-              alignItems: "center",
-              marginBottom: 40,
-              backgroundColor: "silver",
-              marginLeft: 150,
-              marginRight: 150,
-              width: 80,
-            }}
-          >
-            <Text>Refresh</Text>
+          <StatusBar
+            barStyle="dark-content"
+            // dark-content, light-content and default
+            hidden={false}
+            //To hide statusBar
+            backgroundColor="white"
+            //Background color of statusBar
+            translucent={false}
+            //allowing light, but not detailed shapes
+            networkActivityIndicatorVisible={true}
+          />
+          <View style={styles.container}>
+            <View style={styles.imageContainer}>
+              <Image
+                // resizeMode="contain"
+                // style={styles.canvas}
+                style={{ flex: 1, width: undefined, height: undefined }}
+                source={require("../../../images/mustafaAsif.jpeg")}
+              />
+            </View>
+            <View style={styles.buttonAndText}>
+              <View style={styles.textContainer}>
+                <Text style={styles.bigText}>{details.user_name}</Text>
+                <Text style={styles.bigText2}>Freelancer</Text>
+                <Text>{myEmail}</Text>
+              </View>
+              <View style={styles.buttonDiv}>
+                <CustomButton
+                  title="Change  Password"
+                  style={{ backgroundColor: "#98C739" }}
+                  onPress={() => navigation.navigate("EditProfile", myEmail)}
+                />
+              </View>
+            </View>
+            <View style={styles.lowerPortion}>
+              <View style={styles.lowerPortion1}>
+                <View style={{ paddingBottom: 20 }}>
+                  <View
+                    style={{
+                      justifyContent: "center",
+                      alignItems: "center",
+                      padding: 20,
+                    }}
+                  >
+                    <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                      Who am I?
+                    </Text>
+                  </View>
+
+                  <Text>{details.about_me}</Text>
+                </View>
+                <CustomButton
+                  title="Change description"
+                  style={{ backgroundColor: "#8B7136", margin: 20 }}
+                  onPress={() =>
+                    navigation.navigate("EditDescription", myEmail)
+                  }
+                />
+                <View style={{ height: 20 }}></View>
+              </View>
+            </View>
+            {/* <TouchableOpacity
+              onPress={() => {
+                getDetails();
+              }}
+            >
+              <View
+                style={{
+                  alignItems: "center",
+                  marginBottom: 40,
+                  backgroundColor: "silver",
+                  marginLeft: 150,
+                  marginRight: 150,
+                  width: 80,
+                }}
+              >
+                <Text>Refresh</Text>
+              </View>
+            </TouchableOpacity> */}
           </View>
-        </TouchableOpacity>
-      </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   } else {
     return (
-      <View>
+      <View styles={styles.container}>
         <Text>Loading</Text>
       </View>
     );
@@ -175,7 +240,11 @@ const styles = StyleSheet.create({
   },
   bigText: {
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 25,
+  },
+  bigText2: {
+    fontWeight: "bold",
+    fontSize: 15,
   },
   textContainer: {
     padding: 20,
@@ -183,6 +252,7 @@ const styles = StyleSheet.create({
   },
   buttonAndText: {
     flexDirection: "row",
+    paddingHorizontal: 20,
   },
   buttonDiv: {
     justifyContent: "center",
@@ -190,18 +260,31 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   lowerPortion: {
+    paddingHorizontal: 20,
     backgroundColor: "white",
     // flex: 1,
     height: 400,
     // alignItems: "center",
     // justifyContent: "center",
     width: Dimensions.get("window").width,
-    borderTopColor: "green",
     borderColor: "white",
     borderWidth: 1,
   },
+  lowerPortion1: {
+    padding: 10,
+    backgroundColor: "white",
+    // flex: 1,
+    //height: 400,
+    // alignItems: "center",
+    // justifyContent: "center",
+    borderColor: "white",
+    borderWidth: 1,
+    elevation: 2, // Android
+    borderRadius: 20,
+  },
+
   name: {
-    padding: 20,
+    padding: 5,
     flexDirection: "row",
     justifyContent: "space-between",
   },
@@ -212,5 +295,34 @@ const styles = StyleSheet.create({
   textstyle: {
     width: Dimensions.get("window").width,
     padding: 20,
+  },
+  button: {
+    shadowColor: "rgba(0,0,0, .4)", // IOS
+    shadowOffset: { height: 5, width: 5 }, // IOS
+    shadowOpacity: 1, // IOS
+    shadowRadius: 1, //IOS
+    //backgroundColor: "#98C739",
+    elevation: 8, // Android
+    height: 40,
+    paddingHorizontal: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
+    borderRadius: 10,
+  },
+  text: {
+    fontSize: 10,
+    textTransform: "uppercase",
+    color: "#FFFFFF",
+  },
+  container1: {
+    flex: 1,
+    // marginTop: Constants.statusBarHeight,
+  },
+  scrollView: {
+    // flex: 1,
+    // backgroundColor: "pink",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
 });

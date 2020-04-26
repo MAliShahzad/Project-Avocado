@@ -5,8 +5,9 @@ import { Ionicons } from "@expo/vector-icons";
 import { AvailableScreens } from "../Navigators/AvailableScreens";
 import { CurrentScreens } from "../Navigators/CurrentScreens";
 import { RequestScreens } from "../Navigators/RequestScreens";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-const Tabs = createBottomTabNavigator();
+const Tabs = createMaterialTopTabNavigator();
 
 export const TabScreens = () => (
   <Tabs.Navigator
@@ -23,15 +24,27 @@ export const TabScreens = () => (
           iconName = focused ? "ios-add-circle" : "ios-add-circle-outline";
         }
         return <Ionicons name={iconName} size={size} color={color} />;
-      }
+      },
     })}
     tabBarOptions={{
       activeTintColor: "green",
-      inactiveTintColor: "gray"
+      inactiveTintColor: "gray",
     }}
   >
-    <Tabs.Screen name="CurrentScreen" component={CurrentScreens} />
-    <Tabs.Screen name="RequestScreen" component={RequestScreens} />
-    <Tabs.Screen name="AvailableScreen" component={AvailableScreens} />
+    <Tabs.Screen
+      name="CurrentScreen"
+      component={CurrentScreens}
+      options={{ title: "Current" }}
+    />
+    <Tabs.Screen
+      name="RequestScreen"
+      component={RequestScreens}
+      options={{ title: "Request" }}
+    />
+    <Tabs.Screen
+      name="AvailableScreen"
+      component={AvailableScreens}
+      options={{ title: "Available" }}
+    />
   </Tabs.Navigator>
 );

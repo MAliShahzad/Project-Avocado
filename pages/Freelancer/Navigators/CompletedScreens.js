@@ -15,22 +15,22 @@ export const CompletedScreens = ({ navigation }) => (
         backgroundColor: "white",
         elevation: 0,
         shadowOpacity: 0,
-        borderBottomWidth: 0
+        borderBottomWidth: 0,
       },
       headerTitleStyle: {
         color: "green",
         alignSelf: "center",
-        flex: 1
+        flex: 1,
       },
       headerLeft: () => (
         <Icon
-          raised
+          containerStyle={[{ paddingHorizontal: 15 }]}
           name="menu"
           type="menu-outline"
           color="grey"
           onPress={() => navigation.openDrawer()}
         />
-      )
+      ),
     }}
     initialRouteName="Project Avocado"
     screenOptions={{
@@ -38,12 +38,12 @@ export const CompletedScreens = ({ navigation }) => (
         backgroundColor: "white",
         elevation: 0,
         shadowOpacity: 0,
-        borderBottomWidth: 0
+        borderBottomWidth: 0,
       },
       headerTitleStyle: {
         color: "green",
         alignSelf: "center",
-        flex: 1
+        flex: 1,
       },
       headerLeft: () => (
         <Icon
@@ -53,7 +53,7 @@ export const CompletedScreens = ({ navigation }) => (
           color="grey"
           onPress={() => navigation.openDrawer()}
         />
-      )
+      ),
     }}
   >
     <CompletedStack.Screen name="CompletedScreen" component={CompletedScreen} />

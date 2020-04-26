@@ -17,30 +17,39 @@ export const ProfileScreens = ({ navigation }) => {
           backgroundColor: "white",
           elevation: 0,
           shadowOpacity: 0,
-          borderBottomWidth: 0
+          borderBottomWidth: 0,
         },
         headerTitleStyle: {
           color: "green",
           alignSelf: "center",
-          flex: 1
+          flex: 1,
         },
         headerLeft: () => (
           <Icon
-            raised
+            containerStyle={[{ paddingHorizontal: 15 }]}
             name="menu"
             type="menu-outline"
             color="grey"
             onPress={() => navigation.openDrawer()}
           />
-        )
+        ),
       }}
     >
       <ProfileStack.Screen
         name="FreelancerProfile"
         component={FreelancerProfile}
+        options={{ title: "Freelancer Profile" }}
       />
-      <ProfileStack.Screen name="EditProfile" component={EditProfile} />
-      <ProfileStack.Screen name="EditDescription" component={EditDescription} />
+      <ProfileStack.Screen
+        name="EditProfile"
+        component={EditProfile}
+        options={{ title: "Edit Profile" }}
+      />
+      <ProfileStack.Screen
+        name="EditDescription"
+        component={EditDescription}
+        options={{ title: "Edit Description" }}
+      />
     </ProfileStack.Navigator>
   );
 };
