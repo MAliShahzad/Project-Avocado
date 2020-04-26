@@ -43,7 +43,7 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
       />
       <TouchableOpacity
         style={{
-          height: theme.SIZES.BASE * 4.9,
+          height: theme.SIZES.BASE * 5.7,
         }}
         onPress={() => setIsVisible(true)}
       >

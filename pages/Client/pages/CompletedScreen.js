@@ -125,14 +125,30 @@ export const CompletedScreen = ({ navigation }) => {
       <ScrollView>
         <View>
           {taskList.map((task) => {
+            let short_status = task.status.substring(0, 60);
+            if (task.status.length > 60) short_status = short_status + "...";
             return (
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("CompletedTask", { taskDetails: task });
                 }}
               >
-                <Card title={task.name}>
-                  <Text style={{ marginBottom: 10 }}>{task.status}</Text>
+                <Card
+                  title={task.name}
+                  titleStyle={{
+                    fontSize: 20,
+                    // color: "white",
+                  }}
+                  containerStyle={{
+                    borderRadius: 15,
+                    backgroundColor: "#c5e1a5",
+                    borderWidth: 0,
+                  }}
+                  wrapperStyle={{
+                    backgroundColor: "#c5e1a5",
+                  }}
+                >
+                  <Text style={{ marginBottom: 10 }}>{short_status}</Text>
                 </Card>
               </TouchableOpacity>
             );

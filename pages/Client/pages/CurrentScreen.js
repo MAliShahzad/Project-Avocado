@@ -204,6 +204,8 @@ export const CurrentScreen = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <View>
           {taskList.map((task) => {
+            let short_status = task.status.substring(0, 60);
+            if (task.status.length > 60) short_status = short_status + "...";
             if (task.pending != "Complete") {
               return (
                 <TouchableOpacity
@@ -225,8 +227,14 @@ export const CurrentScreen = ({ navigation }) => {
                     }}
                     containerStyle={{
                       borderRadius: 15,
-                      backgroundColor: "rgba(255,255,255,0.9)",
+                      backgroundColor: "#c5e1a5",
                       borderWidth: 0,
+                    }}
+                    dividerStyle={{
+                      backgroundColor: "black",
+                    }}
+                    wrapperStyle={{
+                      backgroundColor: "#c5e1a5",
                     }}
                   >
                     <View
@@ -245,7 +253,7 @@ export const CurrentScreen = ({ navigation }) => {
                         <Text
                           style={{
                             textAlign: "center",
-                            color: "",
+                            color: "white",
                           }}
                         >
                           category
@@ -253,7 +261,7 @@ export const CurrentScreen = ({ navigation }) => {
                       </View>
                     </View>
                     <Text style={{ marginVertical: 10, color: "black" }}>
-                      {task.status}
+                      {short_status}
                     </Text>
                     <Text style={{ fontWeight: "bold" }}>
                       DEADLINE: {task.date.substring(0, 10)}
@@ -304,8 +312,25 @@ export const CurrentScreen = ({ navigation }) => {
                     }
                   }}
                 >
-                  <Card title={task.name}>
-                    <Text style={{ marginBottom: 10 }}>{task.status}</Text>
+                  <Card
+                    title={task.name}
+                    titleStyle={{
+                      fontSize: 20,
+                      // color: "white",
+                    }}
+                    containerStyle={{
+                      borderRadius: 15,
+                      backgroundColor: "#c5e1a5",
+                      borderWidth: 0,
+                    }}
+                    dividerStyle={{
+                      backgroundColor: "black",
+                    }}
+                    wrapperStyle={{
+                      backgroundColor: "#c5e1a5",
+                    }}
+                  >
+                    <Text style={{ marginBottom: 10 }}>{short_status}</Text>
                     <Text
                       style={{
                         fontWeight: "bold",
@@ -352,7 +377,7 @@ export const CurrentScreen = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     // alignItems: "center",
     // justifyContent: "center",
     // paddingVertical: 100,

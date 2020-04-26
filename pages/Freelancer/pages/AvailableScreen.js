@@ -79,14 +79,33 @@ export const AvailableScreen = ({ navigation }) => {
       <ScrollView>
         <View>
           {taskList.map((task) => {
+            let short_status = task.status.substring(0, 65);
+            if (task.status.length > 65) short_status = short_status + "...";
             return (
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("ViewAvailable", { taskDetails: task });
                 }}
               >
-                <Card title={task.name}>
-                  <Text style={{ marginBottom: 10 }}>{task.status}</Text>
+                <Card
+                  title={task.name}
+                  titleStyle={{
+                    fontSize: 20,
+                    // color: "white",
+                  }}
+                  containerStyle={{
+                    borderRadius: 15,
+                    backgroundColor: "#c5e1a5",
+                    borderWidth: 0,
+                  }}
+                  dividerStyle={{
+                    backgroundColor: "black",
+                  }}
+                  wrapperStyle={{
+                    backgroundColor: "#c5e1a5",
+                  }}
+                >
+                  <Text style={{ marginBottom: 10 }}>{short_status}</Text>
                   <Text style={{ fontWeight: "bold" }}>
                     Deadline: {task.date.substring(0, 10)}
                   </Text>

@@ -16,6 +16,7 @@ import {
 import { AuthContext } from "../../Auth/Navigators/context";
 import { ProfileScreens } from "./ProfileScreens";
 import { HomeScreens } from "./HomeScreens";
+import { NotificationScreens } from "./NotificationScreens";
 import {
   MaterialIcons,
   AntDesign,
@@ -131,6 +132,16 @@ export const DrawerScreens = ({ email, navigation }) => {
         options={{
           drawerIcon: ({ focused }) => (
             <AntDesign name="profile" size={40} color="#98C739" />
+          ),
+        }}
+      />
+      <Drawer.Screen
+        name="Notifications"
+        component={NotificationScreens}
+        params={{ email: email }}
+        options={{
+          drawerIcon: ({ focused }) => (
+            <MaterialIcons name="home" size={40} color="#98C739" />
           ),
         }}
       />

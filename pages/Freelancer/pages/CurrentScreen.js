@@ -6,7 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
 } from "react-native";
-import { Card } from "react-native-elements";
+import { Card, Button } from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
 
@@ -145,52 +146,66 @@ export const CurrentScreen = ({ navigation }) => {
       <ScrollView>
         <View>
           {taskList.map((task) => {
+            let short_status = task.status.substring(0, 60);
+            if (task.status.length > 60) short_status = short_status + "...";
             return (
               <TouchableOpacity
                 onPress={() => {
                   navigation.navigate("ViewTask", { taskDetails: task });
                 }}
               >
-                <Card title={task.name}>
-                  <Text style={{ marginBottom: 10 }}>{task.status}</Text>
+                <Card
+                  title={task.name}
+                  titleStyle={{
+                    fontSize: 20,
+                    // color: "white",
+                  }}
+                  containerStyle={{
+                    borderRadius: 15,
+                    backgroundColor: "#c5e1a5",
+                    borderWidth: 0,
+                  }}
+                  dividerStyle={{
+                    backgroundColor: "black",
+                  }}
+                  wrapperStyle={{
+                    backgroundColor: "#c5e1a5",
+                  }}
+                >
+                  <Text style={{ marginBottom: 10 }}>{short_status}</Text>
                   <Text style={{ fontWeight: "bold" }}>
                     Deadline: {task.date.substring(0, 10)}
                   </Text>
-                  <ProgressBar
-                    color="red"
-                    borderColor="black"
-                    borderRadius={20}
-                    progress={
-                      difference(task.today, task.created_date) /
-                      difference(task.date, task.created_date)
-                    }
-                    width={Dimensions.get("window").width - 40 - 10}
-                    height={15}
-                  />
-                  <TouchableOpacity
-                    onPress={() => {
-                      submitHandler(task.id);
+                  <View
+                    style={{
+                      alignItems: "center",
+                      marginVertical: 10,
                     }}
                   >
-                    <View
-                      style={{
-                        backgroundColor: "red",
-                        borderWidth: 1,
-                        marginTop: 10,
-                        alignItems: "center",
-                      }}
-                    >
-                      <Text
-                        style={{
-                          textAlign: "center",
-                          marginTop: 0,
-                          color: "white",
-                        }}
-                      >
-                        DELETE
-                      </Text>
-                    </View>
-                  </TouchableOpacity>
+                    <ProgressBar
+                      color="#524c00"
+                      borderRadius={20}
+                      progress={
+                        difference(task.today, task.created_date) /
+                        difference(task.date, task.created_date)
+                      }
+                      width={Dimensions.get("window").width - 40 - 10}
+                      height={15}
+                    />
+                  </View>
+                  <View
+                    style={{
+                      justifyContent: "flex-end",
+                      alignItems: "flex-end",
+                    }}
+                  >
+                    <Button
+                      onPress={() => submitHandler(task.id)}
+                      icon={<Icon name="trash" size={20} color="grey" />}
+                      title=""
+                      type="clear"
+                    />
+                  </View>
                 </Card>
               </TouchableOpacity>
             );

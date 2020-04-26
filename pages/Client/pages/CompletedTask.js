@@ -54,7 +54,7 @@ export const CompletedTask = ({ route, navigation }) => {
       />
       <TouchableOpacity
         style={{
-          height: theme.SIZES.BASE * 5.4,
+          height: theme.SIZES.BASE * 6.2,
         }}
         onPress={() => setIsVisible(true)}
       >

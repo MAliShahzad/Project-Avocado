@@ -8,8 +8,7 @@ export const ChangePassword = ({ navigation }) => {
     <View style={styles.container}>
       <Logo />
       <View style={{ justifyContent: "flex-start" }}>
-        <Text style={{ color: "white" }}>Enter User name</Text>
-        {TextBar("User Name", true)}
+        {TextBar("Enter User Name", true)}
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
@@ -35,7 +34,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#558b2f",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 190
+    paddingVertical: 300,
   },
   inputBox: {
     marginVertical: 10,
@@ -44,7 +43,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(255,255,255,0.3)",
     borderRadius: 25,
     paddingHorizontal: 16,
-    color: "#ffffff"
+    color: "#ffffff",
   },
   button: {
     width: 300,
@@ -52,12 +51,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#255d00",
     marginVertical: 10,
     borderRadius: 25,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "500",
     color: "#ffffff",
-    textAlign: "center"
-  }
+    textAlign: "center",
+  },
 });
