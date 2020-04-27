@@ -9,7 +9,7 @@ const AvailableStack = createStackNavigator();
 export const AvailableScreens = () => (
   <AvailableStack.Navigator
     screenOptions={{
-      headerTintColor: "white",
+      headerTintColor: "green",
     }}
   >
     <AvailableStack.Screen

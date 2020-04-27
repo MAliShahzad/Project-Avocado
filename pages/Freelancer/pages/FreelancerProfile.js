@@ -119,6 +119,31 @@ export default function ClientProfile({ navigation }) {
     getDetails();
   }
   if (isLoading == false) {
+    var rating_array = [];
+    for (let i = 0; i < details.ratings; i++) {
+      rating_array.push(
+        <Image
+          style={{
+            width: 20,
+            height: 20,
+            marginHorizontal: 1,
+          }}
+          source={require("../../../images/avo-colored.png")}
+        />
+      );
+    }
+    for (let i = 0; i < 5 - details.ratings; i++) {
+      rating_array.push(
+        <Image
+          style={{
+            width: 20,
+            height: 20,
+            marginHorizontal: 1,
+          }}
+          source={require("../../../images/avo-empty2.png")}
+        />
+      );
+    }
     return (
       <SafeAreaView style={styles.container1}>
         <ScrollView
@@ -144,7 +169,7 @@ export default function ClientProfile({ navigation }) {
                 // resizeMode="contain"
                 // style={styles.canvas}
                 style={{ flex: 1, width: undefined, height: undefined }}
-                source={require("../../../images/mustafaAsif.jpeg")}
+                source={require("../../../images/profile.jpg")}
               />
             </View>
             <View style={styles.buttonAndText}>
@@ -152,6 +177,7 @@ export default function ClientProfile({ navigation }) {
                 <Text style={styles.bigText}>{details.user_name}</Text>
                 <Text style={styles.bigText2}>Freelancer</Text>
                 <Text>{myEmail}</Text>
+                <View style={{ flexDirection: "row" }}>{rating_array}</View>
               </View>
               <View style={styles.buttonDiv}>
                 <CustomButton

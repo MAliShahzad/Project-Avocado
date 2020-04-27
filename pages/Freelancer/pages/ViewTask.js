@@ -53,53 +53,59 @@ const getClientDetails = async (task_id) => {
 };
 
 const freelancerTaskComplete = async (task_id) => {
-    var params = ["pending = \'Complete\'"];
-    params = { table: "details", item: `id= ${task_id}`, arr: params };
-    params = JSON.stringify(params);
-    params = "updtask" + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
+  var params = ["pending = 'Complete'"];
+  params = { table: "details", item: `id= ${task_id}`, arr: params };
+  params = JSON.stringify(params);
+  params = "updtask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  params = [`id = ${task_id}`];
+  params = { table: "buyer", item: "user_id", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let customer_iden = params[0].user_id;
 
-    params = [`id = ${task_id}`]
-    params = { table: 'buyer', item: 'user_id', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let customer_iden = params[0].user_id;
+  params = [`id= ${task_id} `];
+  params = { table: "details", item: "name", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let task_name = params[0].name;
 
+  params = [
+    customer_iden,
+    "Task Complete",
+    `${task_name} has been completed`,
+    "Unread",
+  ];
+  params = JSON.stringify(params);
+  params = "insertnotification" + params;
 
-    params = [`id= ${task_id} `];
-    params = { table: 'details', item: 'name', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let task_name = params[0].name;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-
-
-    params = [customer_iden, "Task Complete", `${task_name} has been completed`, "Unread"];
-    params = JSON.stringify(params);
-    params = 'insertnotification' + params;
-
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-
-
-
-
-
-    return "Done"
-
-
-}
+  return "Done";
+};
 export const ViewTask = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
@@ -124,6 +130,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Title"
           caption={route.params.taskDetails.name}
@@ -132,6 +139,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Category"
           caption={route.params.taskDetails.category}
@@ -139,13 +147,14 @@ export const ViewTask = ({ route, navigation }) => {
         />
         <TouchableOpacity
           style={{
-            height: theme.SIZES.BASE * 5.8,
+            height: theme.SIZES.BASE * 7.8,
           }}
           onPress={() => setIsVisible(true)}
         >
           <Card
             flex
             borderless
+            captionColor="rgba(0,0,0,0.4)"
             style={styles.card}
             title="Description"
             caption={short_status}
@@ -168,6 +177,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Deadline"
           caption={route.params.taskDetails.date.substring(0, 10)}
@@ -176,20 +186,26 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Attachment"
           caption={route.params.taskDetails.attachment}
           avatar="https://img.icons8.com/ios-filled/512/000000/attach.png"
         />
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => submitHandlerB()}
-        >
-          <Text style={styles.buttonText}>View Client Details</Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.button} onPress={() => submitHandler()}>
-          <Text style={styles.buttonText}>Complete Task</Text>
-        </TouchableOpacity>
+        <View style={{ flexDirection: "row" }}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => submitHandlerB()}
+          >
+            <Text style={styles.buttonText}>View Client Details</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => submitHandler()}
+          >
+            <Text style={styles.buttonText}>Complete Task</Text>
+          </TouchableOpacity>
+        </View>
       </View>
     );
   } else {
@@ -198,6 +214,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Title"
           caption={route.params.taskDetails.name}
@@ -206,6 +223,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Category"
           caption={route.params.taskDetails.category}
@@ -214,6 +232,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Description"
           caption={route.params.taskDetails.status}
@@ -222,6 +241,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Deadline"
           caption={route.params.taskDetails.date.substring(0, 10)}
@@ -230,6 +250,7 @@ export const ViewTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Attachment"
           caption={route.params.taskDetails.attachment}
@@ -246,7 +267,7 @@ export const ViewTask = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     alignItems: "center",
     // justifyContent: "flex-start",
@@ -262,14 +283,14 @@ const styles = StyleSheet.create({
 
   card: {
     color: "#ffffff",
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
     marginVertical: theme.SIZES.BASE * 0.875,
   },
   ratingcard: {
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     marginVertical: theme.SIZES.BASE * 0.875,
     justifyContent: "flex-start",
@@ -280,9 +301,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    width: 300,
+    width: 190,
+    marginHorizontal: 10,
     height: 50,
-    backgroundColor: "#255d00",
+    backgroundColor: "#6b9b37",
     marginVertical: 10,
     borderRadius: 25,
     justifyContent: "center",

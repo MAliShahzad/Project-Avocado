@@ -92,7 +92,24 @@ export const RequestScreen = ({ navigation }) => {
                   navigation.navigate("ViewRequest", { taskDetails: task });
                 }}
               >
-                <Card title={task.name}>
+                <Card
+                  title={task.name}
+                  titleStyle={{
+                    fontSize: 20,
+                    // color: "white",
+                  }}
+                  containerStyle={{
+                    borderRadius: 15,
+                    backgroundColor: "#c5e1a5",
+                    borderWidth: 0,
+                  }}
+                  dividerStyle={{
+                    backgroundColor: "black",
+                  }}
+                  wrapperStyle={{
+                    backgroundColor: "#c5e1a5",
+                  }}
+                >
                   <Text style={{ marginBottom: 10 }}>{task.status}</Text>
                   <Text style={{ fontWeight: "bold" }}>
                     Deadline: {task.date.substring(0, 10)}

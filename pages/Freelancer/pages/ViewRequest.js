@@ -95,6 +95,7 @@ export const ViewRequest = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Title"
         caption={route.params.taskDetails.name}
@@ -103,6 +104,7 @@ export const ViewRequest = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Category"
         caption={route.params.taskDetails.category}
@@ -110,13 +112,14 @@ export const ViewRequest = ({ route, navigation }) => {
       />
       <TouchableOpacity
         style={{
-          height: theme.SIZES.BASE * 4.9,
+          height: theme.SIZES.BASE * 6.4,
         }}
         onPress={() => setIsVisible(true)}
       >
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Description"
           caption={short_status}
@@ -139,6 +142,7 @@ export const ViewRequest = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Deadline"
         caption={route.params.taskDetails.date.substring(0, 10)}
@@ -147,6 +151,7 @@ export const ViewRequest = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Attachment"
         caption={route.params.taskDetails.attachment}
@@ -155,16 +160,22 @@ export const ViewRequest = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="No Freelancer Assigned"
         avatar="https://img.icons8.com/material-sharp/512/000000/user.png"
       />
-      <TouchableOpacity style={styles.button} onPress={() => submitHandler()}>
-        <Text style={styles.buttonText}>Accept Task</Text>
-      </TouchableOpacity>
-      <TouchableOpacity style={styles.button} onPress={() => submitHandlerB()}>
-        <Text style={styles.buttonText}>Reject Task</Text>
-      </TouchableOpacity>
+      <View style={{ flexDirection: "row" }}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={() => submitHandlerB()}
+        >
+          <Text style={styles.buttonText}>Reject Task</Text>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.button} onPress={() => submitHandler()}>
+          <Text style={styles.buttonText}>Accept Task</Text>
+        </TouchableOpacity>
+      </View>
     </View>
   );
 };
@@ -172,7 +183,7 @@ export const ViewRequest = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "#ffffff",
     paddingHorizontal: 20,
     alignItems: "center",
     // justifyContent: "flex-start",
@@ -189,7 +200,7 @@ const styles = StyleSheet.create({
 
   card: {
     color: "#ffffff",
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
@@ -207,10 +218,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    width: 300,
+    width: 190,
     height: 50,
-    backgroundColor: "#255d00",
+    backgroundColor: "#6b9b37",
     marginVertical: 10,
+    marginHorizontal: 10,
     borderRadius: 25,
     justifyContent: "center",
   },

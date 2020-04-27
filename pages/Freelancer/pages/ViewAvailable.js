@@ -26,63 +26,71 @@ fetchData = async (w) => {
 };
 
 const freelancerRequestJob = async (task_id, freelancer_email) => {
-    var params = ["email=\'" + freelancer_email + "\'"];
-    params = { table: 'EXTRA_DATA', item: 'id, user_name', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let freelancer_iden = params[0].id;
-    let freelancer_name = params[0].user_name;
+  var params = ["email='" + freelancer_email + "'"];
+  params = { table: "EXTRA_DATA", item: "id, user_name", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let freelancer_iden = params[0].id;
+  let freelancer_name = params[0].user_name;
 
-    params = [task_id, freelancer_iden];
-    params = JSON.stringify(params);
-    params = 'insertrequest' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
+  params = [task_id, freelancer_iden];
+  params = JSON.stringify(params);
+  params = "insertrequest" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  params = [`id = ${task_id}`];
+  params = { table: "buyer", item: "user_id", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let customer_iden = params[0].user_id;
 
+  params = [`id= ${task_id} `];
+  params = { table: "details", item: "name", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let task_name = params[0].name;
 
+  params = [
+    customer_iden,
+    "Task Request",
+    `${freelancer_name} has requested to work on ${task_name}`,
+    "Unread",
+  ];
+  params = JSON.stringify(params);
+  params = "insertnotification" + params;
 
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-    params = [`id = ${task_id}`]
-    params = { table: 'buyer', item: 'user_id', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let customer_iden = params[0].user_id;
-
-
-    params = [`id= ${task_id} `];
-    params = { table: 'details', item: 'name', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let task_name = params[0].name;
-
-
-    params = [customer_iden, "Task Request", `${freelancer_name} has requested to work on ${task_name}`, "Unread"];
-    params = JSON.stringify(params);
-    params = 'insertnotification' + params;
-
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-
-
-
-
-
-    return "Done"
-
-}
+  return "Done";
+};
 
 export const ViewAvailable = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
@@ -107,6 +115,7 @@ export const ViewAvailable = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Title"
         caption={route.params.taskDetails.name}
@@ -115,6 +124,7 @@ export const ViewAvailable = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Category"
         caption={route.params.taskDetails.category}
@@ -122,13 +132,14 @@ export const ViewAvailable = ({ route, navigation }) => {
       />
       <TouchableOpacity
         style={{
-          height: theme.SIZES.BASE * 4.9,
+          height: theme.SIZES.BASE * 6.4,
         }}
         onPress={() => setIsVisible(true)}
       >
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Description"
           caption={short_status}
@@ -151,14 +162,16 @@ export const ViewAvailable = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Deadline"
-        caption={route.params.taskDetails.date.substring(0,10)}
+        caption={route.params.taskDetails.date.substring(0, 10)}
         avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
       />
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Attachment"
         caption={route.params.taskDetails.attachment}
@@ -167,6 +180,7 @@ export const ViewAvailable = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="No Freelancer Assigned"
         avatar="https://img.icons8.com/material-sharp/512/000000/user.png"
@@ -182,7 +196,7 @@ export const ViewAvailable = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     alignItems: "center",
     // justifyContent: "flex-start",
@@ -199,14 +213,14 @@ const styles = StyleSheet.create({
 
   card: {
     color: "#ffffff",
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
     marginVertical: theme.SIZES.BASE * 0.875,
   },
   ratingcard: {
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     marginVertical: theme.SIZES.BASE * 0.875,
     justifyContent: "flex-start",
@@ -217,9 +231,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    width: 300,
+    width: 190,
     height: 50,
-    backgroundColor: "#255d00",
+    backgroundColor: "#5a9216",
     marginVertical: 10,
     borderRadius: 25,
     justifyContent: "center",

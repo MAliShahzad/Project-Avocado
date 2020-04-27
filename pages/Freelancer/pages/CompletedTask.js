@@ -38,6 +38,7 @@ export const CompletedTask = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Title"
         caption={route.params.taskDetails.name}
@@ -46,6 +47,7 @@ export const CompletedTask = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Category"
         caption={route.params.taskDetails.category}
@@ -60,6 +62,7 @@ export const CompletedTask = ({ route, navigation }) => {
         <Card
           flex
           borderless
+          captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
           title="Description"
           caption={short_status}
@@ -82,6 +85,7 @@ export const CompletedTask = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Deadline"
         caption={route.params.taskDetails.date}
@@ -90,6 +94,7 @@ export const CompletedTask = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Attachment"
         caption={route.params.taskDetails.attachment}
@@ -98,6 +103,7 @@ export const CompletedTask = ({ route, navigation }) => {
       <Card
         flex
         borderless
+        captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
         title="Free Lancer Assigned"
         caption={route.params.taskDetails.freelancer_name}
@@ -113,7 +119,7 @@ export const CompletedTask = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     alignItems: "center",
     // justifyContent: "flex-start",
@@ -127,7 +133,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   ratingcard: {
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     marginVertical: theme.SIZES.BASE * 0.875,
     justifyContent: "flex-start",
@@ -138,7 +144,7 @@ const styles = StyleSheet.create({
   },
   card: {
     color: "#ffffff",
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,

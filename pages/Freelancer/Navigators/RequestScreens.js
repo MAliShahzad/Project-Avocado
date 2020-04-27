@@ -9,7 +9,7 @@ const RequestStack = createStackNavigator();
 export const RequestScreens = () => (
   <RequestStack.Navigator
     screenOptions={{
-      headerTintColor: "white",
+      headerTintColor: "green",
     }}
   >
     <RequestStack.Screen
