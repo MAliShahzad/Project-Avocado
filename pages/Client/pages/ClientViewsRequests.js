@@ -8,6 +8,7 @@ import {
   Alert,
   Dimensions,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
 
@@ -138,37 +139,42 @@ export const ClientViewsRequests = ({ route, navigation }) => {
     }
   };
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={{ flex: 1, width: undefined, height: undefined }}
-          source={require("../../../images/profile.jpg")}
-        />
-      </View>
-      <View style={styles.buttonAndText}>
-        <View style={styles.textContainer}>
-          <Text style={styles.bigText}>{route.params.name}</Text>
-          <Text>{route.params.email}</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            style={{ flex: 1, width: undefined, height: undefined }}
+            source={require("../../../images/profile.jpg")}
+          />
+        </View>
+        <View style={styles.buttonAndText}>
+          <View style={styles.textContainer}>
+            <Text style={styles.bigText}>{route.params.name}</Text>
+            <Text>{route.params.email}</Text>
+          </View>
+        </View>
+        <View style={styles.lowerPortion}>
+          <View style={{ padding: 20 }}>
+            <Text>Who am I?</Text>
+            <Text>{route.params.about_me}</Text>
+          </View>
+        </View>
+        <View style={{ marginBottom: 200 }}>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => submitHandler()}
+          >
+            <Text style={styles.buttonText}>Accept</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.button}
+            onPress={() => submitHandlerB()}
+          >
+            <Text style={styles.buttonText}>Reject</Text>
+          </TouchableOpacity>
         </View>
       </View>
-      <View style={styles.lowerPortion}>
-        <View style={{ padding: 20 }}>
-          <Text>Who am I?</Text>
-          <Text>{route.params.about_me}</Text>
-        </View>
-      </View>
-      <View style={{ marginBottom: 200 }}>
-        <TouchableOpacity style={styles.button} onPress={() => submitHandler()}>
-          <Text style={styles.buttonText}>Accept</Text>
-        </TouchableOpacity>
-        <TouchableOpacity
-          style={styles.button}
-          onPress={() => submitHandlerB()}
-        >
-          <Text style={styles.buttonText}>Reject</Text>
-        </TouchableOpacity>
-      </View>
-    </View>
+    </ScrollView>
   );
 };
 
