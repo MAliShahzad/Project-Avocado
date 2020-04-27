@@ -19,62 +19,86 @@ fetchData = async (w) => {
 };
 
 const updateFreelancer = async (customer_email, task_id, freelancer_email) => {
-  var params = ["login='" + customer_email + "'"];
-  params = { table: "U_SERS", item: "id", arr: params };
-  params = JSON.stringify(params);
-  params = "getlogin" + params;
-  try {
-    params = await fetchData(params);
-  } catch (err) {
-    console.log(err);
-    return "";
-  }
-  let user_iden = params[0].id;
+    var params = ["email=\'" + customer_email + "\'"];
+    params = { table: 'EXTRA_DATA', item: 'id,user_name', arr: params };
+    params = JSON.stringify(params);
+    params = 'getlogin' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let user_iden = params[0].id;
+    let user_name = params[0].user_name;
 
-  params = [`email =\'${freelancer_email}\'`];
-  params = { table: "EXTRA_DATA", item: "id,user_name", arr: params };
-  params = JSON.stringify(params);
-  params = "getlogin" + params;
-  try {
-    params = await fetchData(params);
-  } catch (err) {
-    console.log(err);
-    return "";
-  }
-  let freelancer_iden = params[0].id;
-  let freelancer_name = params[0].user_name;
 
-  var item = `id = \'${task_id}\' `;
-  params = {
-    table: "details",
-    item: item,
-    arr: [
-      `freelancer_name = \'${freelancer_name}\', freelancer_email=\'${freelancer_email}\'`,
-    ],
-  };
-  params = JSON.stringify(params);
-  params = "updTask" + params;
-  try {
-    params = await fetchData(params);
-  } catch {
-    console.log(err);
-    return "";
-  }
+    params = [`email =\'${freelancer_email}\'`];
+    params = { table: 'EXTRA_DATA', item: 'id,user_name', arr: params };
+    params = JSON.stringify(params);
+    params = 'getlogin' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let freelancer_iden = params[0].id;
+    let freelancer_name = params[0].user_name
 
-  params = [task_id, freelancer_iden];
-  params = JSON.stringify(params);
-  params = "insertfreelancer" + params;
-  try {
-    params = await fetchData(params);
-  } catch {
-    console.log(err);
-    return "";
-  }
 
-  return "Done";
-};
+
+    var item = `id = \'${task_id}\' `;
+    params = { table: 'details', item: item, arr: [`freelancer_name = \'${freelancer_name}\', freelancer_email=\'${freelancer_email}\'`] };
+    params = JSON.stringify(params);
+    params = 'updTask' + params;
+    try {
+        params = await fetchData(params);
+    } catch{ console.log(err); return ""; }
+
+
+    params = [`id= ${task_id} `];
+    params = { table: 'details', item: 'name', arr: params };
+    params = JSON.stringify(params);
+    params = 'gettask' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let task_name = params[0].name;
+
+
+    params = [freelancer_iden, "Task Request", `${user_name} has requested for you to work on ${task_name}`, "Unread"];
+    params = JSON.stringify(params);
+    params = 'insertnotification' + params;
+
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+
+
+
+    params = [task_id, freelancer_iden];
+    params = JSON.stringify(params);
+    params = 'insertfreelancer' + params;
+    try {
+        params = await fetchData(params);
+    } catch{ console.log(err); return ""; }
+
+
+
+
+
+
+    return "Done"
+
+}
+
 
 //import { Card } from "react-native-elements";
+
+const CustomButton = (props) => {
+  const { title = "Enter", style = {}, textStyle = {}, onPress, color } = props;
+
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <Text style={[styles.text, textStyle]}>{props.title}</Text>
+    </TouchableOpacity>
+  );
+};
 
 export const ClientViewsFreelancer = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
@@ -121,7 +145,7 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
           // resizeMode="contain"
           // style={styles.canvas}
           style={{ flex: 1, width: undefined, height: undefined }}
-          source={require("../../../images/aliShahzad.jpeg")}
+          source={require("../../../images/profile.jpg")}
         />
       </View>
       <View style={styles.buttonAndText}>
@@ -151,7 +175,14 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
 
           <View style={{ height: 20 }}></View>
         </View>
+
+        <CustomButton
+          title="Request"
+          style={{ backgroundColor: "#8B7136", margin: 20 }}
+          onPress={() => submitHandler()}
+        />
       </View>
+
       {/* <TouchableOpacity
   onPress={() => {
     getDetails();

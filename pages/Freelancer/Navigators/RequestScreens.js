@@ -7,8 +7,29 @@ import { ViewRequest } from "../pages/ViewRequest";
 const RequestStack = createStackNavigator();
 
 export const RequestScreens = () => (
-  <RequestStack.Navigator>
-    <RequestStack.Screen name="RequestScreen" component={RequestScreen} />
-    <RequestStack.Screen name="ViewRequest" component={ViewRequest} />
+  <RequestStack.Navigator
+    screenOptions={{
+      headerTintColor: "white",
+    }}
+  >
+    <RequestStack.Screen
+      name="RequestScreen"
+      component={RequestScreen}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <RequestStack.Screen
+      name="ViewRequest"
+      component={ViewRequest}
+      options={{
+        headerTransparent: true,
+        title: "",
+        headerStyle: {
+          height: 40,
+        },
+      }}
+    />
   </RequestStack.Navigator>
 );

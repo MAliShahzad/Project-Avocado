@@ -87,7 +87,7 @@ const DisplayCard = ({
     <Block style={styles.ratingcard}>
       <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
         <Image
-          source={require("../../../images/profile.png")}
+          source={require("../../../images/profile.jpg")}
           style={{ height: 40, width: 40, borderRadius: 60 }}
           onError={() => require("../../../images/avocado-logo.png")}
         />

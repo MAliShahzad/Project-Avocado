@@ -148,7 +148,7 @@ export const NewTask = ({ navigation }) => {
         category,
         deadline.substring(0, 4) +
           deadline.substring(5, 7) +
-          deadline.substring(8, 10)
+          deadline.substring(8, 10) + "060000"
       )
     );
     if (msg == "Done") {

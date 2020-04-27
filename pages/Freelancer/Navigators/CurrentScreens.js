@@ -5,15 +5,42 @@ import { CurrentScreen } from "../pages/CurrentScreen";
 import { ViewTask } from "../pages/ViewTask";
 import { FreelancerViewsClient } from "../pages/FreelancerViewsClient";
 
-
 const CurrentStack = createStackNavigator();
 export const CurrentScreens = () => (
-  <CurrentStack.Navigator>
-    <CurrentStack.Screen name="CurrentScreen" component={CurrentScreen} />
-    <CurrentStack.Screen name="ViewTask" component={ViewTask} />
+  <CurrentStack.Navigator
+    screenOptions={{
+      headerTintColor: "white",
+    }}
+  >
+    <CurrentStack.Screen
+      name="CurrentScreen"
+      component={CurrentScreen}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <CurrentStack.Screen
+      name="ViewTask"
+      component={ViewTask}
+      options={{
+        headerTransparent: true,
+        title: "",
+        headerStyle: {
+          height: 40,
+        },
+      }}
+    />
     <CurrentStack.Screen
       name="FreelancerViewsClient"
       component={FreelancerViewsClient}
+      options={{
+        headerTransparent: true,
+        title: "",
+        headerStyle: {
+          height: 40,
+        },
+      }}
     />
   </CurrentStack.Navigator>
 );
