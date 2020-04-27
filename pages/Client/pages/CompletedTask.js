@@ -33,7 +33,31 @@ export const CompletedTask = ({ route, navigation }) => {
   if (route.params.taskDetails.status.length > 50)
     short_status = short_status + "...";
   const [isVisible, setIsVisible] = useState(false);
-
+  var rating_array = [];
+  for (let i = 0; i < route.params.taskDetails.rating; i++) {
+    rating_array.push(
+      <Image
+        style={{
+          width: 40,
+          height: 40,
+          marginHorizontal: 5,
+        }}
+        source={require("../../../images/avo-colored.png")}
+      />
+    );
+  }
+  for (let i = 0; i < 5 - route.params.taskDetails.rating; i++) {
+    rating_array.push(
+      <Image
+        style={{
+          width: 40,
+          height: 40,
+          marginHorizontal: 5,
+        }}
+        source={require("../../../images/avo-empty.png")}
+      />
+    );
+  }
   return (
     <View style={styles.container}>
       <Card
@@ -105,7 +129,15 @@ export const CompletedTask = ({ route, navigation }) => {
         avatar="https://img.icons8.com/material-sharp/512/000000/user.png"
       />
       <Block flex style={styles.ratingcard}>
-        <RatingView stars={route.params.taskDetails.rating} size={40} />
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          {rating_array}
+        </View>
       </Block>
     </View>
   );
@@ -114,7 +146,7 @@ export const CompletedTask = ({ route, navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     // alignItems: "",
     // justifyContent: "flex-start",
@@ -128,7 +160,7 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   ratingcard: {
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     marginVertical: theme.SIZES.BASE * 0.875,
     justifyContent: "flex-start",
@@ -139,7 +171,7 @@ const styles = StyleSheet.create({
   },
   card: {
     color: "#ffffff",
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,

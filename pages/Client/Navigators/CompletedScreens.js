@@ -7,7 +7,11 @@ import { CompletedScreen } from "../pages/CompletedScreen";
 const CompletedStack = createStackNavigator();
 
 export const CompletedScreens = ({ navigation }) => (
-  <CompletedStack.Navigator>
+  <CompletedStack.Navigator
+    screenOptions={{
+      headerTintColor: "green",
+    }}
+  >
     <CompletedStack.Screen
       name="CompletedScreen"
       component={CompletedScreen}

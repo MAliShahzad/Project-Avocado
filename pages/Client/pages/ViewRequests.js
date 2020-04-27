@@ -88,33 +88,68 @@ const DisplayCard = ({
   about_me,
   imageLink,
   task_id,
-}) => (
-  <TouchableOpacity
-    onPress={() => {
-      navigation.navigate("ClientViewsRequests", {
-        name,
-        email,
-        about_me,
-        imageLink,
-        task_id,
-      });
-    }}
-  >
-    <Block style={styles.ratingcard}>
-      <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-        <Image
-          source={require("../../../images/profile.jpg")}
-          style={{ height: 40, width: 40, borderRadius: 60 }}
-          onError={() => require("../../../images/avocado-logo.png")}
-        />
-      </View>
-      <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
-        <Text style={{ marginHorizontal: 10 }}>{name}</Text>
-        <RatingView style={{ alignItems: "flex-start" }} stars={ratings} />
-      </View>
-    </Block>
-  </TouchableOpacity>
-);
+}) => {
+  var rating_array = [];
+  for (let i = 0; i < ratings; i++) {
+    rating_array.push(
+      <Image
+        style={{
+          width: 20,
+          height: 20,
+          marginHorizontal: 1,
+        }}
+        source={require("../../../images/avo-colored.png")}
+      />
+    );
+  }
+  for (let i = 0; i < 5 - ratings; i++) {
+    rating_array.push(
+      <Image
+        style={{
+          width: 20,
+          height: 20,
+          marginHorizontal: 1,
+        }}
+        source={require("../../../images/avo-empty2.png")}
+      />
+    );
+  }
+  return (
+    <TouchableOpacity
+      onPress={() => {
+        navigation.navigate("ClientViewsRequests", {
+          name,
+          email,
+          about_me,
+          imageLink,
+          task_id,
+        });
+      }}
+    >
+      <Block style={styles.ratingcard}>
+        <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+          <Image
+            source={require("../../../images/profile.jpg")}
+            style={{ height: 40, width: 40, borderRadius: 60 }}
+            onError={() => require("../../../images/avocado-logo.png")}
+          />
+        </View>
+        <View style={{ marginHorizontal: 10, marginVertical: 10 }}>
+          <Text style={{ marginHorizontal: 10 }}>{name}</Text>
+          <View
+            style={{
+              marginHorizontal: 10,
+              flexDirection: "row",
+              alignItems: "center",
+            }}
+          >
+            {rating_array}
+          </View>
+        </View>
+      </Block>
+    </TouchableOpacity>
+  );
+};
 
 export const ViewRequests = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
@@ -175,7 +210,7 @@ export const ViewRequests = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     alignItems: "flex-start",
     // justifyContent: "flex-start",
@@ -192,7 +227,7 @@ const styles = StyleSheet.create({
   },
 
   ratingcard: {
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     marginVertical: theme.SIZES.BASE * 0.875,
     justifyContent: "flex-start",

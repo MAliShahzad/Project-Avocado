@@ -198,7 +198,7 @@ export const BrowseFreelancers = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     alignItems: "flex-start",
     // justifyContent: "flex-start",
@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   },
 
   ratingcard: {
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     marginVertical: theme.SIZES.BASE * 0.875,
     justifyContent: "flex-start",
