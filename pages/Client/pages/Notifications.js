@@ -10,32 +10,35 @@ import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../../Auth/Navigators/context";
 
-
 const getNotifications = async (email) => {
-    var params = ["email=\'" + email + "\'"];
-    params = { table: 'EXTRA_DATA', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return params; }
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
-    var iden = params[0].id
+  var iden = params[0].id;
 
-    var params = [`id= ${iden} ORDER BY created_date DESC`];
-    params = { table: 'notifications', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return params; }
+  var params = [`id= ${iden} ORDER BY created_date DESC`];
+  params = { table: "notifications", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
+  return params;
+};
 
-    return params
-
-}
-
-const NotificationCard = ({navigation, types, details}) => {
+const NotificationCard = ({ navigation, types, details }) => {
   return (
     <View>
       <TouchableOpacity
@@ -54,9 +57,7 @@ const NotificationCard = ({navigation, types, details}) => {
       </TouchableOpacity>
     </View>
   );
-}
-
-
+};
 
 export const Notifications = ({ navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
@@ -66,35 +67,43 @@ export const Notifications = ({ navigation }) => {
   const getDetails = async () => {
     console.log(myEmail);
     setTaskList(await getNotifications(myEmail));
-    console.log(taskList)
+    console.log(taskList);
     setIsLoading(false);
   };
-  if(isLoading == true){getDetails();}
-  if(isLoading == false) {return (
-          <ScrollView style={styles.container}>
-            <View style={{ alignItems: "center" }}>
-              {taskList.map((task) => (<NotificationCard types = {task.types} details = {task.details}/>))}
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <TouchableOpacity
-                style={styles.button} 
-              >
-                <Text style={styles.buttonText}>Clear Notifications</Text>
-              </TouchableOpacity>
-                
-            </View>
-          </ScrollView>
-        );}
-    else {
-      return ( <View>
+  if (isLoading == true) {
+    getDetails();
+  }
+  if (isLoading == false) {
+    return (
+      <ScrollView style={styles.container}>
+        <View style={{ alignItems: "center" }}>
+          {taskList.map((task) => (
+            <NotificationCard types={task.types} details={task.details} />
+          ))}
+        </View>
+        <View style={{ alignItems: "center" }}>
+          <TouchableOpacity style={styles.button}>
+            <Text style={styles.buttonText}>Clear Notifications</Text>
+          </TouchableOpacity>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+          <Text></Text>
+        </View>
+      </ScrollView>
+    );
+  } else {
+    return (
+      <View>
         <Text>Loading</Text>
-      </View>);
-    }
+      </View>
+    );
+  }
 };
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     // justifyContent: "flex-start",
     paddingVertical: 50,
@@ -103,17 +112,17 @@ const styles = StyleSheet.create({
 
   card: {
     color: "#ffffff",
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: 100,
     marginVertical: 10,
-    borderRadius: 0
+    borderRadius: 0,
   },
   button: {
     width: 300,
     height: 50,
-    backgroundColor: "#255d00",
+    backgroundColor: "#6b9b37",
     marginVertical: 10,
     borderRadius: 25,
     justifyContent: "center",
