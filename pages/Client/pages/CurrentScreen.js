@@ -21,119 +21,116 @@ fetchData = async (w) => {
 };
 
 const customerDeleteTask = async (task_id) => {
+  var params = [`id = ${task_id}`];
+  params = { table: "buyer", item: "user_id", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let customer_iden = params[0].user_id;
 
+  params = [`id = ${customer_iden}`];
+  params = { table: "EXTRA_DATA", item: "user_name", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let customer_name = params[0].user_name;
 
+  params = [`id = ${task_id}`];
+  params = { table: "freelancer", item: "user_id", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let freelancer_iden = params[0].user_id;
 
-    var params = [`id = ${task_id}`]
-    params = { table: 'buyer', item: 'user_id', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let customer_iden = params[0].user_id;
+  params = [`id= ${task_id} `];
+  params = { table: "details", item: "name", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let task_name = params[0].name;
 
+  params = [
+    freelancer_iden,
+    "Task Deleted",
+    `${task_name} has been deleted and discontinued by ${customer_name}`,
+    "Unread",
+  ];
+  params = JSON.stringify(params);
+  params = "insertnotification" + params;
 
-    params = [`id = ${customer_iden}`]
-    params = { table: 'EXTRA_DATA', item: 'user_name', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let customer_name = params[0].user_name;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  params = [`id= ${task_id}`];
+  params = { table: "freelancer", arr: params };
+  params = JSON.stringify(params);
+  params = "deltask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  params = [`id= ${task_id}`];
+  params = { table: "buyer", arr: params };
+  params = JSON.stringify(params);
+  params = "deltask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  params = [`id= ${task_id}`];
+  params = { table: "details", arr: params };
+  params = JSON.stringify(params);
+  params = "deltask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  params = [`id= ${task_id}`];
+  params = { table: "request", arr: params };
+  params = JSON.stringify(params);
+  params = "deltask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-    params = [`id = ${task_id}`]
-    params = { table: 'freelancer', item: 'user_id', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let freelancer_iden = params[0].user_id;
-
-
-    params = [`id= ${task_id} `];
-    params = { table: 'details', item: 'name', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let task_name = params[0].name;
-
-
-    params = [freelancer_iden, "Task Deleted", `${task_name} has been deleted and discontinued by ${customer_name}`, "Unread"];
-    params = JSON.stringify(params);
-    params = 'insertnotification' + params;
-
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-
-
-
-
-
-
-
-
-    params = [`id= ${task_id}`];
-    params = { table: "freelancer", arr: params };
-    params = JSON.stringify(params);
-    params = "deltask" + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-    params = [`id= ${task_id}`];
-    params = { table: "buyer", arr: params };
-    params = JSON.stringify(params);
-    params = "deltask" + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-    params = [`id= ${task_id}`];
-    params = { table: "details", arr: params };
-    params = JSON.stringify(params);
-    params = "deltask" + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-    params = [`id= ${task_id}`];
-    params = { table: "request", arr: params };
-    params = JSON.stringify(params);
-    params = "deltask" + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    return "Done"
-
-
-
-
-}
+  return "Done";
+};
 
 const getProgress = async (task_iden) => {
   var params = task_iden;
@@ -260,7 +257,7 @@ export const CurrentScreen = ({ navigation }) => {
     //   {name: 'Research', status: 'Animal photography', id: 12, category: 'Photo Editing', date: '2020-10-12', freelancer_name: 'Shayan', pending: 'No'},
     //   {name: 'Writing', id: 12, status: 'Descriptive Writing', category: 'Photo Editing', date: '2020-10-12', freelancer_name: 'None', pending: 'No'}
     // ])
-    console.log(taskList)
+    console.log(taskList);
     setIsLoading(false);
   };
   if (isLoading == true) {
@@ -272,8 +269,13 @@ export const CurrentScreen = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <View>
           {taskList.map((task) => {
-            if(difference(task.date, task.created_date) == 0){var progressVal = 1;}
-            else {var progressVal = (difference(task.today, task.created_date)/difference(task.date, task.created_date));}
+            if (difference(task.date, task.created_date) == 0) {
+              var progressVal = 1;
+            } else {
+              var progressVal =
+                difference(task.today, task.created_date) /
+                difference(task.date, task.created_date);
+            }
             let short_status = task.status.substring(0, 60);
             if (task.status.length > 60) short_status = short_status + "...";
             if (task.pending != "Complete") {

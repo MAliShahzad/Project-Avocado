@@ -19,11 +19,11 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 
-import {
-  MaterialIcons,
-  AntDesign,
-  MaterialCommunityIcons,
-} from "@expo/vector-icons";
+// import {
+//   MaterialIcons,
+//   AntDesign,
+//   MaterialCommunityIcons,
+// } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
 
