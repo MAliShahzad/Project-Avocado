@@ -239,7 +239,7 @@ export const DrawerScreens = ({ navigation }) => {
         }}
       />
       <Drawer.Screen
-        name="Notification Tasks"
+        name="Notifications"
         component={NotificationScreens}
         options={{
           drawerIcon: ({ focused }) => (
