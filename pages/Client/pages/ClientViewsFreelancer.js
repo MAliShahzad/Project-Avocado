@@ -76,6 +76,16 @@ const updateFreelancer = async (customer_email, task_id, freelancer_email) => {
 
 //import { Card } from "react-native-elements";
 
+const CustomButton = (props) => {
+  const { title = "Enter", style = {}, textStyle = {}, onPress, color } = props;
+
+  return (
+    <TouchableOpacity onPress={onPress} style={[styles.button, style]}>
+      <Text style={[styles.text, textStyle]}>{props.title}</Text>
+    </TouchableOpacity>
+  );
+};
+
 export const ClientViewsFreelancer = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
@@ -121,7 +131,7 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
           // resizeMode="contain"
           // style={styles.canvas}
           style={{ flex: 1, width: undefined, height: undefined }}
-          source={require("../../../images/aliShahzad.jpeg")}
+          source={require("../../../images/profile.jpg")}
         />
       </View>
       <View style={styles.buttonAndText}>
@@ -151,7 +161,14 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
 
           <View style={{ height: 20 }}></View>
         </View>
+
+        <CustomButton
+          title="Request"
+          style={{ backgroundColor: "#8B7136", margin: 20 }}
+          onPress={() => submitHandler()}
+        />
       </View>
+
       {/* <TouchableOpacity
   onPress={() => {
     getDetails();

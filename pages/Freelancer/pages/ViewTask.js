@@ -53,19 +53,53 @@ const getClientDetails = async (task_id) => {
 };
 
 const freelancerTaskComplete = async (task_id) => {
-  var params = ["pending = 'Complete'"];
-  params = { table: "details", item: `id= ${task_id}`, arr: params };
-  params = JSON.stringify(params);
-  params = "updtask" + params;
-  try {
-    params = await fetchData(params);
-  } catch (err) {
-    console.log(err);
-    return "";
-  }
-  return "Done";
-};
+    var params = ["pending = \'Complete\'"];
+    params = { table: "details", item: `id= ${task_id}`, arr: params };
+    params = JSON.stringify(params);
+    params = "updtask" + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
 
+
+    params = [`id = ${task_id}`]
+    params = { table: 'buyer', item: 'user_id', arr: params };
+    params = JSON.stringify(params);
+    params = 'gettask' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let customer_iden = params[0].user_id;
+
+
+    params = [`id= ${task_id} `];
+    params = { table: 'details', item: 'name', arr: params };
+    params = JSON.stringify(params);
+    params = 'gettask' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let task_name = params[0].name;
+
+
+
+    params = [customer_iden, "Task Complete", `${task_name} has been completed`, "Unread"];
+    params = JSON.stringify(params);
+    params = 'insertnotification' + params;
+
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+
+
+
+
+
+
+    return "Done"
+
+
+}
 export const ViewTask = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();

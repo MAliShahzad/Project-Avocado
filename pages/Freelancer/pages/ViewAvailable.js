@@ -26,30 +26,63 @@ fetchData = async (w) => {
 };
 
 const freelancerRequestJob = async (task_id, freelancer_email) => {
-  var params = ["login='" + freelancer_email + "'"];
-  params = { table: "U_SERS", item: "id", arr: params };
-  params = JSON.stringify(params);
-  params = "getlogin" + params;
-  try {
-    params = await fetchData(params);
-  } catch (err) {
-    console.log(err);
-    return "";
-  }
-  let freelancer_iden = params[0].id;
+    var params = ["email=\'" + freelancer_email + "\'"];
+    params = { table: 'EXTRA_DATA', item: 'id, user_name', arr: params };
+    params = JSON.stringify(params);
+    params = 'getlogin' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let freelancer_iden = params[0].id;
+    let freelancer_name = params[0].user_name;
 
-  params = [task_id, freelancer_iden];
-  params = JSON.stringify(params);
-  params = "insertrequest" + params;
-  try {
-    params = await fetchData(params);
-  } catch (err) {
-    console.log(err);
-    return "";
-  }
+    params = [task_id, freelancer_iden];
+    params = JSON.stringify(params);
+    params = 'insertrequest' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
 
-  return "Done";
-};
+
+
+
+
+    params = [`id = ${task_id}`]
+    params = { table: 'buyer', item: 'user_id', arr: params };
+    params = JSON.stringify(params);
+    params = 'gettask' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let customer_iden = params[0].user_id;
+
+
+    params = [`id= ${task_id} `];
+    params = { table: 'details', item: 'name', arr: params };
+    params = JSON.stringify(params);
+    params = 'gettask' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+    let task_name = params[0].name;
+
+
+    params = [customer_iden, "Task Request", `${freelancer_name} has requested to work on ${task_name}`, "Unread"];
+    params = JSON.stringify(params);
+    params = 'insertnotification' + params;
+
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return ""; }
+
+
+
+
+
+
+    return "Done"
+
+}
 
 export const ViewAvailable = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
@@ -120,7 +153,7 @@ export const ViewAvailable = ({ route, navigation }) => {
         borderless
         style={styles.card}
         title="Deadline"
-        caption={route.params.taskDetails.date}
+        caption={route.params.taskDetails.date.substring(0,10)}
         avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
       />
       <Card

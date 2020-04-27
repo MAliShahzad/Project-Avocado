@@ -142,7 +142,7 @@ export const ClientViewsRequests = ({ route, navigation }) => {
       <View style={styles.imageContainer}>
         <Image
           style={{ flex: 1, width: undefined, height: undefined }}
-          source={require("../../../images/profile.png")}
+          source={require("../../../images/profile.jpg")}
         />
       </View>
       <View style={styles.buttonAndText}>

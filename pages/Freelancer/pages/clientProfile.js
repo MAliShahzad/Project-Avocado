@@ -97,7 +97,7 @@ export default function ClientProfile({ navigation }) {
             // resizeMode="contain"
             // style={styles.canvas}
             style={{ flex: 1, width: undefined, height: undefined }}
-            source={require("../../../images/profile.png")}
+            source={require("../../../images/profile.jpg")}
           />
         </View>
         <View style={styles.buttonAndText}>

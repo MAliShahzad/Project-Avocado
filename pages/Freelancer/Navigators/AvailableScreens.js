@@ -7,8 +7,29 @@ import { ViewAvailable } from "../pages/ViewAvailable";
 const AvailableStack = createStackNavigator();
 
 export const AvailableScreens = () => (
-  <AvailableStack.Navigator>
-    <AvailableStack.Screen name="AvailableScreen" component={AvailableScreen} />
-    <AvailableStack.Screen name="ViewAvailable" component={ViewAvailable} />
+  <AvailableStack.Navigator
+    screenOptions={{
+      headerTintColor: "white",
+    }}
+  >
+    <AvailableStack.Screen
+      name="AvailableScreen"
+      component={AvailableScreen}
+      options={{
+        headerTransparent: true,
+        title: "",
+      }}
+    />
+    <AvailableStack.Screen
+      name="ViewAvailable"
+      component={ViewAvailable}
+      options={{
+        headerTransparent: true,
+        title: "",
+        headerStyle: {
+          height: 40,
+        },
+      }}
+    />
   </AvailableStack.Navigator>
 );

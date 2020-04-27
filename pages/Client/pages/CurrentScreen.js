@@ -256,7 +256,7 @@ export const CurrentScreen = ({ navigation }) => {
                             color: "white",
                           }}
                         >
-                          category
+                          {task.category}
                         </Text>
                       </View>
                     </View>

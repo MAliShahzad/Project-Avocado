@@ -8,8 +8,34 @@ import {
 } from "react-native";
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
+import { AuthContext } from "../../Auth/Navigators/context";
 
-const TaskAvailable = ({ navigation }) => {
+
+const getNotifications = async (email) => {
+    var params = ["email=\'" + email + "\'"];
+    params = { table: 'EXTRA_DATA', item: '*', arr: params };
+    params = JSON.stringify(params);
+    params = 'getlogin' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return params; }
+
+    var iden = params[0].id
+
+    var params = [`id= ${iden} ORDER BY created_date DESC`];
+    params = { table: 'notifications', item: '*', arr: params };
+    params = JSON.stringify(params);
+    params = 'getlogin' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return params; }
+
+
+    return params
+
+}
+
+const NotificationCard = ({navigation, types, details}) => {
   return (
     <View>
       <TouchableOpacity
@@ -21,107 +47,49 @@ const TaskAvailable = ({ navigation }) => {
           flex
           borderless
           style={styles.card}
-          title="New Tasks Availabe"
-          caption="2 New Tasks"
-          avatar="https://img.icons8.com/metro/96/000000/new.png"
+          title={types}
+          caption={details}
+          avatar="https://img.icons8.com/material-sharp/24/000000/bell.png"
         />
       </TouchableOpacity>
     </View>
   );
-};
+}
 
-const TaskRequested = ({ navigation }) => {
-  return (
-    <View>
-      <TouchableOpacity
-        style={{
-          height: theme.SIZES.BASE * 4.9,
-        }}
-      >
-        <Card
-          flex
-          borderless
-          style={styles.card}
-          title="New Task Request"
-          caption="Socio Essay"
-          avatar="https://img.icons8.com/ios-filled/96/000000/avocado.png"
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
 
-const TaskDeleted = ({ navigation }) => {
-  return (
-    <View>
-      <TouchableOpacity
-        style={{
-          height: theme.SIZES.BASE * 4.9,
-        }}
-      >
-        <Card
-          flex
-          borderless
-          style={styles.card}
-          title="Task Deleted"
-          caption="Socio Essay"
-          avatar="https://img.icons8.com/windows/96/000000/trash.png"
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
-
-const TaskRated = ({ navigation }) => {
-  return (
-    <View>
-      <TouchableOpacity
-        style={{
-          height: theme.SIZES.BASE * 4.9,
-        }}
-      >
-        <Card
-          flex
-          borderless
-          style={styles.card}
-          title="Task Rated"
-          caption="Anthro Essay"
-          avatar="https://img.icons8.com/ios-filled/96/000000/star.png"
-        />
-      </TouchableOpacity>
-    </View>
-  );
-};
 
 export const Notifications = ({ navigation }) => {
-  return (
-    <ScrollView style={styles.container}>
-      <View style={{ alignItems: "center" }}>
-        <TaskAvailable />
-        <TaskDeleted />
-        <TaskRated />
-        <TaskRated />
-        <TaskRated />
-        <TaskRated />
-        <TaskRequested />
-        <TaskRequested />
-        <TaskRequested />
-        <TaskRequested />
-        <TouchableOpacity
-          style={styles.button}
-          // onPress={() => {Clear Notifications}  }
-        >
-          <Text style={styles.buttonText}>Clear Notifications</Text>
-        </TouchableOpacity>
-      </View>
-      <View>
-        <Text> </Text>
-        <Text> </Text>
-        <Text> </Text>
-        <Text> </Text>
-      </View>
-    </ScrollView>
-  );
+  const { getEmail } = React.useContext(AuthContext);
+  const myEmail = getEmail();
+  const [isLoading, setIsLoading] = React.useState(true);
+  const [taskList, setTaskList] = React.useState([]);
+  const getDetails = async () => {
+    console.log(myEmail);
+    setTaskList(await getNotifications(myEmail));
+    console.log(taskList)
+    setIsLoading(false);
+  };
+  if(isLoading == true){getDetails();}
+  if(isLoading == false) {return (
+          <ScrollView style={styles.container}>
+            <View style={{ alignItems: "center" }}>
+              {taskList.map((task) => (<NotificationCard types = {task.types} details = {task.details}/>))}
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <TouchableOpacity
+                style={styles.button} 
+              >
+                <Text style={styles.buttonText}>Clear Notifications</Text>
+              </TouchableOpacity>
+                
+            </View>
+          </ScrollView>
+        );}
+    else {
+      return ( <View>
+        <Text>Loading</Text>
+      </View>);
+    }
 };
 const styles = StyleSheet.create({
   container: {
@@ -140,6 +108,7 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE * 2,
     height: 100,
     marginVertical: 10,
+    borderRadius: 0
   },
   button: {
     width: 300,
