@@ -176,7 +176,7 @@ import {
   MaterialIcons,
   AntDesign,
   MaterialCommunityIcons,
-  Ionicons
+  Ionicons,
 } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
@@ -239,7 +239,7 @@ export const DrawerScreens = ({ navigation }) => {
         }}
       />
       <Drawer.Screen
-        name="Notifications"
+        name="Notification Tasks"
         component={NotificationScreens}
         options={{
           drawerIcon: ({ focused }) => (

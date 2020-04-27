@@ -12,12 +12,17 @@ import { HomeScreens } from "./HomeScreens";
 import { CompletedScreens } from "../Navigators/CompletedScreens";
 import { NotificationScreens } from "../Navigators/NotificationScreens";
 
+import {
+  MaterialIcons,
+  AntDesign,
+  MaterialCommunityIcons,
+  Ionicons,
+} from "@expo/vector-icons";
 
 import {
   MaterialIcons,
   AntDesign,
   MaterialCommunityIcons,
-  Ionicons
 } from "@expo/vector-icons";
 
 const Drawer = createDrawerNavigator();
