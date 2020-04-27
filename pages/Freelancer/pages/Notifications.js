@@ -35,6 +35,30 @@ const getNotifications = async (email) => {
 
 }
 
+const clearNotifications = async (email) => {
+    var params = ["email=\'" + email + "\'"];
+    params = { table: 'EXTRA_DATA', item: '*', arr: params };
+    params = JSON.stringify(params);
+    params = 'getlogin' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return params; }
+
+    var iden = params[0].id
+
+    var params = [`id= ${iden}`];
+    params = { table: 'notifications', arr: params };
+    params = JSON.stringify(params);
+    params = 'dellogin' + params;
+    try {
+        params = await fetchData(params);
+    } catch (err) { console.log(err); return params; }
+
+    return "Done"
+}
+
+
+
 const NotificationCard = ({navigation, types, details}) => {
   return (
     <View>
@@ -69,6 +93,12 @@ export const Notifications = ({ navigation }) => {
     console.log(taskList)
     setIsLoading(false);
   };
+  const submitHandler = async () => {
+    var outcome = await clearNotifications(myEmail);
+    if(outcome == 'Done'){
+      getDetails();
+    }
+  }
   if(isLoading == true){getDetails();}
   if(isLoading == false) {return (
           <ScrollView style={styles.container}>
@@ -78,8 +108,15 @@ export const Notifications = ({ navigation }) => {
             <View style={{ alignItems: "center" }}>
               <TouchableOpacity
                 style={styles.button} 
+                onPress = {() => submitHandler()}
               >
                 <Text style={styles.buttonText}>Clear Notifications</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.button} 
+                onPress = {() => getDetails()}
+              >
+                <Text style={styles.buttonText}>Refresh Notifications</Text>
               </TouchableOpacity>
                 
             </View>
@@ -94,7 +131,7 @@ export const Notifications = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flexGrow: 1,
-    backgroundColor: "#558b2f",
+    backgroundColor: "white",
     paddingHorizontal: 20,
     // justifyContent: "flex-start",
     paddingVertical: 50,
@@ -103,17 +140,17 @@ const styles = StyleSheet.create({
 
   card: {
     color: "#ffffff",
-    backgroundColor: "#f8ffd7",
+    backgroundColor: "#c5e1a5",
     borderWidth: 0,
-    width: width - theme.SIZES.BASE * 2,
-    height: 100,
-    marginVertical: 10,
-    borderRadius: 0
+    width: width - theme.SIZES.BASE * 3,
+    height: theme.SIZES.BASE * 4,
+    marginVertical: theme.SIZES.BASE * 0.6,
+    borderRadius:10
   },
   button: {
     width: 300,
     height: 50,
-    backgroundColor: "#255d00",
+    backgroundColor: "#6b9b37",
     marginVertical: 10,
     borderRadius: 25,
     justifyContent: "center",
