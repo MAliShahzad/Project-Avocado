@@ -27,6 +27,7 @@ export const TabScreens = () => (
     //     return <Ionicons name={iconName} size={size} color={color} />;
     //   },
     // })}
+    initialRouteName="CurrentScreen"
     tabBarOptions={{
       activeTintColor: "green",
       inactiveTintColor: "gray",
