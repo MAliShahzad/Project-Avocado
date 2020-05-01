@@ -5,6 +5,9 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  SafeAreaView,
+  RefreshControl,
+  StyleSheet,
 } from "react-native";
 import { Card } from "react-native-elements";
 import ProgressBar from "react-native-progress/Bar";
@@ -105,6 +108,15 @@ const getUserHistoryTasks = async (email) => {
 };
 
 export const CompletedScreen = ({ navigation }) => {
+  ///////////////////////////
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(3000).then(() => setRefreshing(false));
+  }, [refreshing]);
+  ///////////////////////////
+
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
   const [taskList, setTaskList] = React.useState([]);
@@ -122,39 +134,44 @@ export const CompletedScreen = ({ navigation }) => {
 
   if (isLoading == false) {
     return (
-      <ScrollView>
-        <View>
-          {taskList.map((task) => {
-            let short_status = task.status.substring(0, 60);
-            if (task.status.length > 60) short_status = short_status + "...";
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("CompletedTask", { taskDetails: task });
-                }}
-              >
-                <Card
-                  title={task.name}
-                  titleStyle={{
-                    fontSize: 20,
-                    // color: "white",
-                  }}
-                  containerStyle={{
-                    borderRadius: 15,
-                    backgroundColor: "#c5e1a5",
-                    borderWidth: 0,
-                  }}
-                  wrapperStyle={{
-                    backgroundColor: "#c5e1a5",
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+          }
+        >
+          <View style={{ paddingBottom: 20 }}>
+            {taskList.map((task) => {
+              let short_status = task.status.substring(0, 60);
+              if (task.status.length > 60) short_status = short_status + "...";
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("CompletedTask", { taskDetails: task });
                   }}
                 >
-                  <Text style={{ marginBottom: 10 }}>{short_status}</Text>
-                </Card>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <TouchableOpacity
+                  <Card
+                    title={task.name}
+                    titleStyle={{
+                      fontSize: 20,
+
+                      // color: "white",
+                    }}
+                    containerStyle={{
+                      borderRadius: 15,
+                      backgroundColor: "#c5e1a5",
+                    }}
+                    wrapperStyle={{
+                      backgroundColor: "#c5e1a5",
+                    }}
+                  >
+                    <Text style={{ marginBottom: 10 }}>{short_status}</Text>
+                  </Card>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          {/* <TouchableOpacity
           onPress={() => {
             getDetails();
           }}
@@ -170,14 +187,26 @@ export const CompletedScreen = ({ navigation }) => {
           >
             <Text>Refresh</Text>
           </View>
-        </TouchableOpacity>
-      </ScrollView>
+        </TouchableOpacity> */}
+        </ScrollView>
+      </SafeAreaView>
     );
   } else {
     return (
-      <View>
+      <View style={styles.container}>
         <Text>Loading</Text>
       </View>
     );
   }
 };
+
+const styles = StyleSheet.create({
+  container: {
+    flexGrow: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 100,
+    paddingBottom: 300,
+  },
+});

@@ -6,6 +6,8 @@ import {
   Dimensions,
   TouchableOpacity,
   StyleSheet,
+  RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import { Card, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -220,6 +222,17 @@ const getUserCurrentTasks = async (email) => {
 };
 
 export const CurrentScreen = ({ navigation }) => {
+  //////////////////////////////////
+
+  const [refreshing, setRefreshing] = React.useState(false);
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(3000).then(() => setRefreshing(false));
+  }, [refreshing]);
+
+  ///////////////////////////////////
+
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
   const [taskList, setTaskList] = React.useState([]);
@@ -266,156 +279,162 @@ export const CurrentScreen = ({ navigation }) => {
 
   if (isLoading == false) {
     return (
-      <ScrollView style={styles.container}>
-        <View>
-          {taskList.map((task) => {
-            if (difference(task.date, task.created_date) == 0) {
-              var progressVal = 1;
-            } else {
-              var progressVal =
-                difference(task.today, task.created_date) /
-                difference(task.date, task.created_date);
-            }
-            let short_status = task.status.substring(0, 60);
-            if (task.status.length > 60) short_status = short_status + "...";
-            if (task.pending != "Complete") {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (task.freelancer_name == "None") {
-                      navigation.navigate("ViewTaskUnassigned", {
-                        taskDetails: task,
-                      });
-                    } else {
-                      navigation.navigate("ViewTask", { taskDetails: task });
-                    }
-                  }}
-                >
-                  <Card
-                    title={task.name}
-                    titleStyle={{
-                      fontSize: 20,
-                      // color: "white",
-                    }}
-                    containerStyle={{
-                      borderRadius: 15,
-                      backgroundColor: "#c5e1a5",
-                      borderWidth: 0,
-                    }}
-                    dividerStyle={{
-                      backgroundColor: "black",
-                    }}
-                    wrapperStyle={{
-                      backgroundColor: "#c5e1a5",
+      <SafeAreaView style={styles.container1}>
+        <ScrollView
+          style={styles.container}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+          }
+        >
+          <View style={{ paddingBottom: 20 }}>
+            {taskList.map((task) => {
+              if (difference(task.date, task.created_date) == 0) {
+                var progressVal = 1;
+              } else {
+                var progressVal =
+                  difference(task.today, task.created_date) /
+                  difference(task.date, task.created_date);
+              }
+              let short_status = task.status.substring(0, 60);
+              if (task.status.length > 60) short_status = short_status + "...";
+              if (task.pending != "Complete") {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (task.freelancer_name == "None") {
+                        navigation.navigate("ViewTaskUnassigned", {
+                          taskDetails: task,
+                        });
+                      } else {
+                        navigation.navigate("ViewTask", { taskDetails: task });
+                      }
                     }}
                   >
-                    <View
-                      style={{
-                        alignItems: "center",
+                    <Card
+                      title={task.name}
+                      titleStyle={{
+                        fontSize: 20,
+                        // color: "white",
+                      }}
+                      containerStyle={{
+                        borderRadius: 15,
+                        backgroundColor: "#c5e1a5",
+                        borderWidth: 0,
+                      }}
+                      dividerStyle={{
+                        backgroundColor: "black",
+                      }}
+                      wrapperStyle={{
+                        backgroundColor: "#c5e1a5",
                       }}
                     >
                       <View
                         style={{
-                          paddingHorizontal: 10,
-                          paddingVertical: 2,
-                          backgroundColor: "green",
-                          borderRadius: 10,
+                          alignItems: "center",
                         }}
                       >
-                        <Text
+                        <View
                           style={{
-                            textAlign: "center",
-                            color: "white",
+                            paddingHorizontal: 10,
+                            paddingVertical: 2,
+                            backgroundColor: "green",
+                            borderRadius: 10,
                           }}
                         >
-                          {task.category}
-                        </Text>
+                          <Text
+                            style={{
+                              textAlign: "center",
+                              color: "white",
+                            }}
+                          >
+                            {task.category}
+                          </Text>
+                        </View>
                       </View>
-                    </View>
-                    <Text style={{ marginVertical: 10, color: "black" }}>
-                      {short_status}
-                    </Text>
-                    <Text style={{ fontWeight: "bold" }}>
-                      DEADLINE: {task.date.substring(0, 10)}
-                    </Text>
-                    <View
-                      style={{
-                        alignItems: "center",
-                        marginVertical: 10,
-                      }}
-                    >
-                      <ProgressBar
-                        color="#524c00"
-                        borderRadius={20}
-                        progress={progressVal}
-                        width={Dimensions.get("window").width - 40 - 10}
-                        height={15}
-                      />
-                    </View>
-                    <View
-                      style={{
-                        justifyContent: "flex-end",
-                        alignItems: "flex-end",
-                      }}
-                    >
-                      <Button
-                        onPress={() => submitHandler(task.id)}
-                        icon={<Icon name="trash" size={20} color="grey" />}
-                        title=""
-                        type="clear"
-                      />
-                    </View>
-                  </Card>
-                </TouchableOpacity>
-              );
-            } else {
-              return (
-                <TouchableOpacity
-                  onPress={() => {
-                    if (task.freelancer_name == "None") {
-                      navigation.navigate("ViewTaskUnassigned", {
-                        taskDetails: task,
-                      });
-                    } else {
-                      navigation.navigate("ViewTask", { taskDetails: task });
-                    }
-                  }}
-                >
-                  <Card
-                    title={task.name}
-                    titleStyle={{
-                      fontSize: 20,
-                      // color: "white",
-                    }}
-                    containerStyle={{
-                      borderRadius: 15,
-                      backgroundColor: "#c5e1a5",
-                      borderWidth: 0,
-                    }}
-                    dividerStyle={{
-                      backgroundColor: "black",
-                    }}
-                    wrapperStyle={{
-                      backgroundColor: "#c5e1a5",
+                      <Text style={{ marginVertical: 10, color: "black" }}>
+                        {short_status}
+                      </Text>
+                      <Text style={{ fontWeight: "bold" }}>
+                        DEADLINE: {task.date.substring(0, 10)}
+                      </Text>
+                      <View
+                        style={{
+                          alignItems: "center",
+                          marginVertical: 10,
+                        }}
+                      >
+                        <ProgressBar
+                          color="#524c00"
+                          borderRadius={20}
+                          progress={progressVal}
+                          width={Dimensions.get("window").width - 40 - 10}
+                          height={15}
+                        />
+                      </View>
+                      <View
+                        style={{
+                          justifyContent: "flex-end",
+                          alignItems: "flex-end",
+                        }}
+                      >
+                        <Button
+                          onPress={() => submitHandler(task.id)}
+                          icon={<Icon name="trash" size={20} color="grey" />}
+                          title=""
+                          type="clear"
+                        />
+                      </View>
+                    </Card>
+                  </TouchableOpacity>
+                );
+              } else {
+                return (
+                  <TouchableOpacity
+                    onPress={() => {
+                      if (task.freelancer_name == "None") {
+                        navigation.navigate("ViewTaskUnassigned", {
+                          taskDetails: task,
+                        });
+                      } else {
+                        navigation.navigate("ViewTask", { taskDetails: task });
+                      }
                     }}
                   >
-                    <Text style={{ marginBottom: 10 }}>{short_status}</Text>
-                    <Text
-                      style={{
-                        fontWeight: "bold",
-                        textAlign: "center",
-                        color: "green",
+                    <Card
+                      title={task.name}
+                      titleStyle={{
+                        fontSize: 20,
+                        // color: "white",
+                      }}
+                      containerStyle={{
+                        borderRadius: 15,
+                        backgroundColor: "#c5e1a5",
+                        borderWidth: 0,
+                      }}
+                      dividerStyle={{
+                        backgroundColor: "black",
+                      }}
+                      wrapperStyle={{
+                        backgroundColor: "#c5e1a5",
                       }}
                     >
-                      Task Completed. Click to rate freelancer.
-                    </Text>
-                  </Card>
-                </TouchableOpacity>
-              );
-            }
-          })}
-        </View>
-        <TouchableOpacity
+                      <Text style={{ marginBottom: 10 }}>{short_status}</Text>
+                      <Text
+                        style={{
+                          fontWeight: "bold",
+                          textAlign: "center",
+                          color: "green",
+                        }}
+                      >
+                        Task Completed. Click to rate freelancer.
+                      </Text>
+                    </Card>
+                  </TouchableOpacity>
+                );
+              }
+            })}
+          </View>
+          {/* <TouchableOpacity
           onPress={() => {
             getDetails();
           }}
@@ -429,14 +448,15 @@ export const CurrentScreen = ({ navigation }) => {
               marginRight: 150,
             }}
           >
-            <Text>Refresh</Text>
+            <Text>Raefresh</Text>
           </View>
-        </TouchableOpacity>
-      </ScrollView>
+        </TouchableOpacity> */}
+        </ScrollView>
+      </SafeAreaView>
     );
   } else {
     return (
-      <View>
+      <View style={styles.container2}>
         <Text>Loading</Text>
       </View>
     );
@@ -451,5 +471,17 @@ const styles = StyleSheet.create({
     // justifyContent: "center",
     // paddingVertical: 100,
     // paddingBottom: 300,
+  },
+  container1: {
+    flex: 1,
+    // marginTop: Constants.statusBarHeight,
+  },
+  container2: {
+    flexGrow: 1,
+    backgroundColor: "white",
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 100,
+    paddingBottom: 300,
   },
 });
