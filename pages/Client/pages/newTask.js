@@ -148,7 +148,8 @@ export const NewTask = ({ navigation }) => {
         category,
         deadline.substring(0, 4) +
           deadline.substring(5, 7) +
-          deadline.substring(8, 10) + "060000"
+          deadline.substring(8, 10) +
+          "060000"
       )
     );
     if (msg == "Done") {
@@ -170,20 +171,23 @@ export const NewTask = ({ navigation }) => {
   return (
     <ScrollView style={styles.container}>
       <View style={{ alignItems: "center" }}>
+        <Text style={styles.labels}>Add Task Title</Text>
         <TextInput
-          placeholderTextColor="rgba(0,0,0,0.3)"
+          placeholderTextColor="rgba(0,0,0,0.6)"
           underlineColorAndroid="rgba(0,0,0,0)"
           style={styles.inputBox}
-          placeholder="Add a Title"
+          placeholder="Title"
           onChangeText={(val) => settitle(val)}
         />
+        <Text style={styles.labels}>Add Task Description</Text>
         <TextInput
-          placeholderTextColor="rgba(0,0,0,0.3)"
+          placeholderTextColor="rgba(0,0,0,0.6)"
           underlineColorAndroid="rgba(0,0,0,0)"
           style={styles.inputBox}
-          placeholder="Add a Description"
+          placeholder="Description"
           onChangeText={(val) => setdescription(val)}
         />
+        <Text style={styles.labels}>Select Task Category</Text>
         <TouchableOpacity style={styles.boxStyle} disabled={true}>
           <TouchableOpacity
             style={{ width: width - width / 5 }}
@@ -191,7 +195,7 @@ export const NewTask = ({ navigation }) => {
           >
             <Picker
               style={{
-                color: "#ffffff",
+                color: "rgba(0,0,0,0.6)",
                 textAlign: "center",
               }}
               selectedValue={category}
@@ -199,7 +203,7 @@ export const NewTask = ({ navigation }) => {
             >
               <Picker.Item
                 style={{ color: "#fffff" }}
-                label="Select a Category"
+                label="Category"
                 value=""
               />
               <Picker.Item label="Content Writing" value="Content Writing" />
@@ -214,31 +218,39 @@ export const NewTask = ({ navigation }) => {
           </TouchableOpacity>
         </TouchableOpacity>
         <View style={{ flexDirection: "row" }}>
-          <TouchableOpacity style={styles.dateStyle} disabled={true}>
-            <DatePicker
-              style={{ width: width - width / 1.7 - 20 }}
-              date={deadline}
-              mode="date"
-              placeholder="Pick a Deadline"
-              showIcon={false}
-              onDateChange={(date) => {
-                setDeadline(date);
-              }}
-              customStyles={{
-                dateInput: { borderWidth: 0 },
-                placeholderText: {
-                  fontSize: 15,
-                  color: "white",
-                },
-              }}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.dateStyle}
-            onPress={() => filePicker()}
-          >
-            <Text style={styles.attachText}>Add an Attachment</Text>
-          </TouchableOpacity>
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.labels}>Pick Task Deadline</Text>
+
+            <TouchableOpacity style={styles.dateStyle} disabled={true}>
+              <DatePicker
+                style={{ width: width - width / 1.7 - 20 }}
+                date={deadline}
+                mode="date"
+                placeholder="Deadline"
+                showIcon={false}
+                onDateChange={(date) => {
+                  setDeadline(date);
+                }}
+                customStyles={{
+                  dateInput: { borderWidth: 0 },
+                  placeholderText: {
+                    fontSize: 15,
+                    color: "rgba(0,0,0,0.6)",
+                  },
+                }}
+              />
+            </TouchableOpacity>
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <Text style={styles.labels}>Add Attachment</Text>
+
+            <TouchableOpacity
+              style={styles.dateStyle}
+              onPress={() => filePicker()}
+            >
+              <Text style={styles.attachText}>Attachment</Text>
+            </TouchableOpacity>
+          </View>
         </View>
         {/*<Text>{deadline.substring(0,4) + deadline.substring(5,7) + deadline.substring(8,10)}</Text>*/}
         <View style={{ padding: 10, marginBottom: 10 }}>
@@ -268,14 +280,14 @@ export const NewTask = ({ navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "#689f38",
+    backgroundColor: "white",
     padding: 20,
   },
   boxStyle: {
     width: width - width / 8,
     height: 55,
-    backgroundColor: "rgba(255,255,255,0.3)",
-    marginVertical: 10,
+    backgroundColor: "#dcedc8",
+    marginVertical: height / 60,
     borderRadius: 50,
     paddingHorizontal: 1,
     justifyContent: "center",
@@ -286,43 +298,51 @@ const styles = StyleSheet.create({
     width: width - width / 1.7,
     marginHorizontal: 10,
     height: 55,
-    backgroundColor: "rgba(255,255,255,0.3)",
-    marginVertical: 10,
+    backgroundColor: "#dcedc8",
+    marginVertical: height / 60,
     borderRadius: 50,
     paddingHorizontal: 10,
     justifyContent: "center",
     // color: "#ffffff",
   },
   inputBox: {
-    marginVertical: 10,
+    marginVertical: height / 60,
     width: width - width / 8,
     height: 55,
-    backgroundColor: "rgba(255,255,255,0.3)",
+    backgroundColor: "#dcedc8",
     borderRadius: 50,
     paddingHorizontal: 28,
-    color: "#ffffff",
+    color: "rgba(0,0,0,0.6)",
     justifyContent: "center",
     // textAlign: "center",
-    fontSize: 14,
+    fontSize: width / 30,
   },
   button: {
-    width: 300,
+    width: width / 1.7,
     height: 55,
-    backgroundColor: "#387002",
+    backgroundColor: "#7da453",
     marginVertical: 10,
     borderRadius: 50,
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: width / 30,
     fontWeight: "500",
     color: "#ffffff",
     textAlign: "center",
   },
   attachText: {
-    fontSize: 14,
+    fontSize: width / 30,
     fontWeight: "100",
-    color: "white",
+    color: "rgba(0,0,0,0.6)",
     textAlign: "center",
+  },
+  labels: {
+    // marginVertical: height / 60,
+    // marginTop: height / 60,
+    color: "rgba(0,0,0,0.4)",
+    fontSize: width / 35,
+    fontFamily: "Roboto",
+    // fontWeight: "bold",
   },
 });

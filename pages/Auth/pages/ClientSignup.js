@@ -262,7 +262,7 @@ export const ClientSignup = ({ navigation }) => {
           style={styles.signupButton}
           onPress={() => navigation.pop(2)}
         >
-          <Text style={styles.signupButton}>LogIn!</Text>
+          <Text style={styles.signupButton}>Log In</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -291,6 +291,7 @@ const styles = StyleSheet.create({
   signupButton: {
     color: "#ffffff",
     fontSize: 16,
+    fontFamily: "Roboto",
     fontWeight: "bold",
     includeFontPadding: true,
   },

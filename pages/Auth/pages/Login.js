@@ -174,6 +174,7 @@ const styles = StyleSheet.create({
   signupButton: {
     color: "#ffffff",
     fontSize: 16,
+    fontFamily: "Roboto",
     fontWeight: "bold",
     includeFontPadding: true,
   },

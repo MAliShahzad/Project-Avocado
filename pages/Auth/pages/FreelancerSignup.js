@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   TextInput,
   Picker,
+  Dimensions,
 } from "react-native";
 import Logo from "../../../components/Logo";
 import { TextBar } from "../../../components/TextBar";
 import { AuthContext } from "../Navigators/context";
+const { width, height } = Dimensions.get("screen");
 // import { validateSignup } from "../../../temp_fetch";
 
 fetchData = async (w) => {
@@ -241,25 +243,33 @@ export const FreelancerSignup = ({ navigation }) => {
         defaultValue={rePassword}
       />
       <View style={styles.inputBox}>
-        <Picker
-          style={{
-            marginLeft: 78,
-            marginRight: 78,
-            transform: [{ scaleX: 0.85 }, { scaleY: 0.85 }],
-          }}
-          selectedValue={category}
-          onValueChange={(itemValue, itemIndex) => setcategory(itemValue)}
-        >
-          <Picker.Item label="Select" value="" />
-          <Picker.Item label="Content Writing" value="Content Writing" />
-          <Picker.Item
-            label="Program Development"
-            value="Program Development"
-          />
-          <Picker.Item label="Photography" value="Photography" />
-          <Picker.Item label="Photo Editing" value="Photo Editing" />
-          <Picker.Item label="Video Editing" value="Video Editing" />
-        </Picker>
+        <TouchableOpacity style={styles.boxStyle} disabled={true}>
+          <TouchableOpacity
+            style={{ width: width - width / 2.7, marginHorizontal: -5 }}
+            disabled={true}
+          >
+            <Picker
+              style={{
+                color: "white",
+                textAlign: "center",
+                fontSize: 14,
+              }}
+              // mode="dropdown"
+              selectedValue={category}
+              onValueChange={(itemValue, itemIndex) => setcategory(itemValue)}
+            >
+              <Picker.Item label="Select" value="" />
+              <Picker.Item label="Content Writing" value="Content Writing" />
+              <Picker.Item
+                label="Program Development"
+                value="Program Development"
+              />
+              <Picker.Item label="Photography" value="Photography" />
+              <Picker.Item label="Photo Editing" value="Photo Editing" />
+              <Picker.Item label="Video Editing" value="Video Editing" />
+            </Picker>
+          </TouchableOpacity>
+        </TouchableOpacity>
       </View>
       <TouchableOpacity
         style={styles.button}
@@ -285,7 +295,7 @@ export const FreelancerSignup = ({ navigation }) => {
           style={styles.signupButton}
           onPress={() => navigation.pop(2)}
         >
-          <Text style={styles.signupButton}>LogIn!</Text>
+          <Text style={styles.signupButton}>Log In</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -314,6 +324,7 @@ const styles = StyleSheet.create({
   signupButton: {
     color: "#ffffff",
     fontSize: 16,
+    fontFamily: "Roboto",
     fontWeight: "bold",
     includeFontPadding: true,
   },
