@@ -61,7 +61,6 @@ export const CompletedTask = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Card
-        flex
         borderless
         style={styles.card}
         title="Title"
@@ -69,21 +68,14 @@ export const CompletedTask = ({ route, navigation }) => {
         avatar="https://img.icons8.com/ios-filled/100/000000/title.png"
       />
       <Card
-        flex
         borderless
         style={styles.card}
         title="Category"
         caption={route.params.taskDetails.category}
         avatar="https://img.icons8.com/ios-filled/512/000000/tags.png"
       />
-      <TouchableOpacity
-        style={{
-          height: theme.SIZES.BASE * 6.2,
-        }}
-        onPress={() => setIsVisible(true)}
-      >
+      <TouchableOpacity onPress={() => setIsVisible(true)}>
         <Card
-          flex
           borderless
           style={styles.card}
           title="Description"
@@ -105,7 +97,6 @@ export const CompletedTask = ({ route, navigation }) => {
         </DialogContent>
       </Dialog>
       <Card
-        flex
         borderless
         style={styles.card}
         title="Deadline"
@@ -113,7 +104,6 @@ export const CompletedTask = ({ route, navigation }) => {
         avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
       />
       <Card
-        flex
         borderless
         style={styles.card}
         title="Attachment"
@@ -121,14 +111,13 @@ export const CompletedTask = ({ route, navigation }) => {
         avatar="https://img.icons8.com/ios-filled/512/000000/attach.png"
       />
       <Card
-        flex
         borderless
         style={styles.card}
         title="Free Lancer Assigned"
         caption={route.params.taskDetails.freelancer_name}
         avatar="https://img.icons8.com/material-sharp/512/000000/user.png"
       />
-      <Block flex style={styles.ratingcard}>
+      <Block style={styles.ratingcard}>
         <View
           style={{
             flexDirection: "row",
@@ -162,7 +151,7 @@ const styles = StyleSheet.create({
   ratingcard: {
     backgroundColor: "#c5e1a5",
     borderWidth: 0,
-    marginVertical: theme.SIZES.BASE * 0.875,
+    marginVertical: theme.SIZES.BASE * 0.75,
     justifyContent: "flex-start",
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
@@ -175,6 +164,6 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
-    marginVertical: theme.SIZES.BASE * 0.875,
+    marginVertical: theme.SIZES.BASE * 0.75,
   },
 });

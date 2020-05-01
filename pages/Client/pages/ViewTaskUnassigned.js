@@ -26,7 +26,6 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
   return (
     <View style={styles.container}>
       <Card
-        flex
         borderless
         captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
@@ -35,7 +34,6 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
         avatar="https://img.icons8.com/ios-filled/100/000000/title.png"
       />
       <Card
-        flex
         borderless
         captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
@@ -43,14 +41,8 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
         caption={route.params.taskDetails.category}
         avatar="https://img.icons8.com/ios-filled/512/000000/tags.png"
       />
-      <TouchableOpacity
-        style={{
-          height: theme.SIZES.BASE * 6.4,
-        }}
-        onPress={() => setIsVisible(true)}
-      >
+      <TouchableOpacity onPress={() => setIsVisible(true)}>
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -73,7 +65,6 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
         </DialogContent>
       </Dialog>
       <Card
-        flex
         borderless
         captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
@@ -82,7 +73,6 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
         avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
       />
       <Card
-        flex
         borderless
         captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
@@ -92,7 +82,6 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
       />
 
       <Card
-        flex
         borderless
         captionColor="rgba(0,0,0,0.4)"
         style={styles.card}
@@ -157,7 +146,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   buttonText: {
-    fontSize: 16,
+    fontSize: width / 30,
     fontWeight: "500",
     color: "#ffffff",
     textAlign: "center",
@@ -167,7 +156,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
-    height: 100,
-    marginVertical: 10,
+    height: theme.SIZES.BASE * 4,
+    marginVertical: theme.SIZES.BASE * 0.75,
   },
 });

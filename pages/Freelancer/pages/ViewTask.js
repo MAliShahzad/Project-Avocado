@@ -128,7 +128,6 @@ export const ViewTask = ({ route, navigation }) => {
     return (
       <View style={styles.container}>
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -137,7 +136,6 @@ export const ViewTask = ({ route, navigation }) => {
           avatar="https://img.icons8.com/ios-filled/100/000000/title.png"
         />
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -145,14 +143,8 @@ export const ViewTask = ({ route, navigation }) => {
           caption={route.params.taskDetails.category}
           avatar="https://img.icons8.com/ios-filled/512/000000/tags.png"
         />
-        <TouchableOpacity
-          style={{
-            height: theme.SIZES.BASE * 7.8,
-          }}
-          onPress={() => setIsVisible(true)}
-        >
+        <TouchableOpacity onPress={() => setIsVisible(true)}>
           <Card
-            flex
             borderless
             captionColor="rgba(0,0,0,0.4)"
             style={styles.card}
@@ -175,7 +167,6 @@ export const ViewTask = ({ route, navigation }) => {
           </DialogContent>
         </Dialog>
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -184,7 +175,6 @@ export const ViewTask = ({ route, navigation }) => {
           avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
         />
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -212,7 +202,6 @@ export const ViewTask = ({ route, navigation }) => {
     return (
       <View style={styles.container}>
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -221,7 +210,6 @@ export const ViewTask = ({ route, navigation }) => {
           avatar="https://img.icons8.com/ios-filled/100/000000/title.png"
         />
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -230,7 +218,6 @@ export const ViewTask = ({ route, navigation }) => {
           avatar="https://img.icons8.com/ios-filled/512/000000/tags.png"
         />
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -239,7 +226,6 @@ export const ViewTask = ({ route, navigation }) => {
           avatar="https://img.icons8.com/ios-filled/512/000000/info.png"
         />
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -248,7 +234,6 @@ export const ViewTask = ({ route, navigation }) => {
           avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
         />
         <Card
-          flex
           borderless
           captionColor="rgba(0,0,0,0.4)"
           style={styles.card}
@@ -287,12 +272,12 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
-    marginVertical: theme.SIZES.BASE * 0.875,
+    marginVertical: theme.SIZES.BASE * 0.75,
   },
   ratingcard: {
     backgroundColor: "#c5e1a5",
     borderWidth: 0,
-    marginVertical: theme.SIZES.BASE * 0.875,
+    marginVertical: theme.SIZES.BASE * 0.75,
     justifyContent: "flex-start",
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
@@ -301,7 +286,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    width: 190,
+    width: width / 2.5,
     marginHorizontal: 10,
     height: 50,
     backgroundColor: "#6b9b37",
@@ -311,7 +296,7 @@ const styles = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 16,
+    fontSize: width / 30,
     fontWeight: "500",
     color: "#ffffff",
     textAlign: "center",
