@@ -14,7 +14,7 @@ import RNSimpleCrypto from "react-native-simple-crypto";
 // import { validateSignup } from "../../../temp_fetch";
 
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.149.207:3000/" + w);
+  var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
   return await response;
 };

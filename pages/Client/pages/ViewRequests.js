@@ -7,7 +7,7 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Auth/Navigators/context";
 
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.149.207:3000/" + w);
+  var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;

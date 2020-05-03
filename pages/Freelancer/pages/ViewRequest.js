@@ -18,7 +18,7 @@ import Dialog, {
   DialogTitle,
 } from "react-native-popup-dialog";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.149.207:3000/" + w);
+  var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -40,91 +40,105 @@ const freelancerSelects = async (task_iden) => {
 };
 
 const freelancerRejects = async (task_iden) => {
-  var params = ["pending = \'Yes\', freelancer_name= \'None\' "];
-    params = { table: "details", item: `id= ${task_iden}`, arr: params };
-    params = JSON.stringify(params);
-    params = "updtask" + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
+  var params = ["pending = 'Yes', freelancer_name= 'None' "];
+  params = { table: "details", item: `id= ${task_iden}`, arr: params };
+  params = JSON.stringify(params);
+  params = "updtask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  var params = [`id = ${task_iden}`];
+  params = { table: "buyer", item: "user_id", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let customer_iden = params[0].user_id;
 
+  params = [`id = ${customer_iden}`];
+  params = { table: "EXTRA_DATA", item: "user_name", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let customer_name = params[0].user_name;
 
-    var params = [`id = ${task_iden}`]
-    params = { table: 'buyer', item: 'user_id', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let customer_iden = params[0].user_id;
+  params = [`id = ${task_iden}`];
+  params = { table: "freelancer", item: "user_id", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let freelancer_iden = params[0].user_id;
 
+  params = [`id = ${freelancer_iden}`];
+  params = { table: "EXTRA_DATA", item: "user_name", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let freelancer_name = params[0].user_name;
 
-    params = [`id = ${customer_iden}`]
-    params = { table: 'EXTRA_DATA', item: 'user_name', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let customer_name = params[0].user_name;
+  params = [`id= ${task_iden} `];
+  params = { table: "details", item: "name", arr: params };
+  params = JSON.stringify(params);
+  params = "gettask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
+  let task_name = params[0].name;
 
+  params = [
+    customer_iden,
+    "Task Deleted",
+    `${task_name} has been rejected by ${freelancer_name}`,
+    "Unread",
+  ];
+  params = JSON.stringify(params);
+  params = "insertnotification" + params;
 
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
+  params = [`id= ${task_iden}`];
+  params = { table: "freelancer", arr: params };
+  params = JSON.stringify(params);
+  params = "deltask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return "";
+  }
 
-
-    params = [`id = ${task_iden}`]
-    params = { table: 'freelancer', item: 'user_id', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let freelancer_iden = params[0].user_id;
-
-
-
-    params = [`id = ${freelancer_iden}`]
-    params = { table: 'EXTRA_DATA', item: 'user_name', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let freelancer_name = params[0].user_name;
-
-
-
-
-
-
-    params = [`id= ${task_iden} `];
-    params = { table: 'details', item: 'name', arr: params };
-    params = JSON.stringify(params);
-    params = 'gettask' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-    let task_name = params[0].name;
-
-
-    params = [customer_iden, "Task Deleted", `${task_name} has been rejected by ${freelancer_name}`, "Unread"];
-    params = JSON.stringify(params);
-    params = 'insertnotification' + params;
-
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-    params = [`id= ${task_iden}`];
-    params = { table: "freelancer", arr: params };
-    params = JSON.stringify(params);
-    params = "deltask" + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return ""; }
-
-    return "Done"
+  return "Done";
 };
 
 export const ViewRequest = ({ route, navigation }) => {
@@ -280,7 +294,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    width: width/2.5,
+    width: width / 2.5,
     height: 50,
     backgroundColor: "#6b9b37",
     marginVertical: 10,

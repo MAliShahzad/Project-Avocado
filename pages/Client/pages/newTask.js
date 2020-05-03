@@ -7,6 +7,7 @@ import {
   Text,
   Alert,
   Dimensions,
+  Image,
   ScrollView,
   Picker,
   TouchableOpacity,
@@ -14,14 +15,14 @@ import {
 import DatePicker from "react-native-datepicker";
 import { AuthContext } from "../../Auth/Navigators/context";
 const { width, height } = Dimensions.get("screen");
-import FilePickerManager from "react-native-file-picker";
+import * as DocumentPicker from "expo-document-picker";
 
 // import {
 //   DocumentPicker,
 //   DocumentPickerUtil,
 // } from "react-native-document-picker";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.149.207:3000/" + w);
+  var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -32,6 +33,7 @@ const InsertTask = async (
   task_name,
   task_info,
   task_category,
+  file,
   due_date
 ) => {
   var iden = 0;
@@ -51,8 +53,10 @@ const InsertTask = async (
     "Yes",
     "None",
     "",
+    file,
     due_date,
   ];
+  console.log(params);
   params = JSON.stringify(params);
   params = "insertdetail" + params;
   try {
@@ -87,39 +91,6 @@ const InsertTask = async (
   return "Done";
 };
 
-const filePicker = async () => {
-  let file;
-  FilePickerManager.showFilePicker(null, (response) => {
-    console.log("Response = ", response);
-
-    if (response.didCancel) {
-      console.log("User cancelled file picker");
-    } else if (response.error) {
-      console.log("FilePickerManager Error: ", response.error);
-    } else {
-      file = response;
-    }
-  });
-};
-
-// const documentPicker = async () => {
-//   alert("Function Called");
-//   DocumentPicker.show(
-//     {
-//       filetype: [DocumentPickerUtil.images()],
-//     },
-//     (error, res) => {
-//       // Android
-//       console.log(
-//         res.uri,
-//         res.type, // mime type
-//         res.fileName,
-//         res.fileSize
-//       );
-//     }
-//   );
-// };
-
 export const NewTask = ({ navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const [title, settitle] = useState("");
@@ -129,6 +100,16 @@ export const NewTask = ({ navigation }) => {
   const [deadline, setDeadline] = useState("");
   const [msg, setmsg] = useState("Done");
   const myEmail = getEmail();
+  const [img, setimg] = useState("");
+
+  const _pickDocument = async () => {
+    let result = await DocumentPicker.getDocumentAsync({});
+
+    setimg(result.uri);
+    alert(result.uri);
+    console.log(result);
+  };
+
   const submitHandler = async () => {
     console.log(
       myEmail,
@@ -146,6 +127,7 @@ export const NewTask = ({ navigation }) => {
         title,
         description,
         category,
+        img.split("/")[img.split("/").length - 1].split(".")[0],
         deadline.substring(0, 4) +
           deadline.substring(5, 7) +
           deadline.substring(8, 10) +
@@ -246,12 +228,13 @@ export const NewTask = ({ navigation }) => {
 
             <TouchableOpacity
               style={styles.dateStyle}
-              onPress={() => filePicker()}
+              onPress={() => _pickDocument()}
             >
               <Text style={styles.attachText}>Attachment</Text>
             </TouchableOpacity>
           </View>
         </View>
+        <Image source={{ uri: img }} style={{ width: 200, height: 200 }} />
         {/*<Text>{deadline.substring(0,4) + deadline.substring(5,7) + deadline.substring(8,10)}</Text>*/}
         <View style={{ padding: 10, marginBottom: 10 }}>
           <TouchableOpacity
