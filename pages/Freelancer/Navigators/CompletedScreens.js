@@ -47,7 +47,7 @@ export const CompletedScreens = ({ navigation }) => (
       },
       headerLeft: () => (
         <Icon
-          raised
+          containerStyle={[{ paddingHorizontal: 15 }]}
           name="menu"
           type="menu-outline"
           color="grey"
@@ -56,7 +56,15 @@ export const CompletedScreens = ({ navigation }) => (
       ),
     }}
   >
-    <CompletedStack.Screen name="CompletedScreen" component={CompletedScreen} />
-    <CompletedStack.Screen name="CompletedTask" component={CompletedTask} />
+    <CompletedStack.Screen
+      name="CompletedScreen"
+      component={CompletedScreen}
+      options={{ title: "Completed Screen" }}
+    />
+    <CompletedStack.Screen
+      name="CompletedTask"
+      component={CompletedTask}
+      options={{ title: "Completed Tasks" }}
+    />
   </CompletedStack.Navigator>
 );

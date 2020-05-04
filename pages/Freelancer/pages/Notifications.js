@@ -5,71 +5,80 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../../Auth/Navigators/context";
 
-
 const getNotifications = async (email) => {
-    var params = ["email=\'" + email + "\'"];
-    params = { table: 'EXTRA_DATA', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return params; }
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
-    var iden = params[0].id
+  var iden = params[0].id;
 
-    var params = [`id= ${iden} ORDER BY created_date DESC`];
-    params = { table: 'notifications', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return params; }
+  var params = [`id= ${iden} ORDER BY created_date DESC`];
+  params = { table: "notifications", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
-
-    return params
-
-}
+  return params;
+};
 
 const clearNotifications = async (email) => {
-    var params = ["email=\'" + email + "\'"];
-    params = { table: 'EXTRA_DATA', item: '*', arr: params };
-    params = JSON.stringify(params);
-    params = 'getlogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return params; }
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
-    var iden = params[0].id
+  var iden = params[0].id;
 
-    var params = [`id= ${iden}`];
-    params = { table: 'notifications', arr: params };
-    params = JSON.stringify(params);
-    params = 'dellogin' + params;
-    try {
-        params = await fetchData(params);
-    } catch (err) { console.log(err); return params; }
+  var params = [`id= ${iden}`];
+  params = { table: "notifications", arr: params };
+  params = JSON.stringify(params);
+  params = "dellogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
 
-    return "Done"
-}
+  return "Done";
+};
 
-
-
-const NotificationCard = ({navigation, types, details}) => {
+const NotificationCard = ({ navigation, types, details }) => {
   return (
     <View>
       <TouchableOpacity
-        style={{
-          height: theme.SIZES.BASE * 4.9,
-        }}
+      // style={{
+      //   height: theme.SIZES.BASE * 4.9,
+      // }}
       >
         <Card
-          flex
-          borderless
+          // flex
+          // borderless
           style={styles.card}
           title={types}
           caption={details}
@@ -78,11 +87,19 @@ const NotificationCard = ({navigation, types, details}) => {
       </TouchableOpacity>
     </View>
   );
-}
-
-
+};
 
 export const Notifications = ({ navigation }) => {
+  ////////////////////// Mustafa's Edit /////////////
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(3000).then(() => setRefreshing(false));
+  }, [refreshing]);
+  ///////////////////////////////////////////////////
+
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -90,43 +107,56 @@ export const Notifications = ({ navigation }) => {
   const getDetails = async () => {
     console.log(myEmail);
     setTaskList(await getNotifications(myEmail));
-    console.log(taskList)
+    console.log(taskList);
     setIsLoading(false);
   };
   const submitHandler = async () => {
     var outcome = await clearNotifications(myEmail);
-    if(outcome == 'Done'){
+    if (outcome == "Done") {
       getDetails();
     }
+  };
+  if (isLoading == true) {
+    getDetails();
   }
-  if(isLoading == true){getDetails();}
-  if(isLoading == false) {return (
-          <ScrollView style={styles.container}>
-            <View style={{ alignItems: "center" }}>
-              {taskList.map((task) => (<NotificationCard types = {task.types} details = {task.details}/>))}
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <TouchableOpacity
-                style={styles.button} 
-                onPress = {() => submitHandler()}
-              >
-                <Text style={styles.buttonText}>Clear Notifications</Text>
-              </TouchableOpacity>
-              <TouchableOpacity
-                style={styles.button} 
-                onPress = {() => getDetails()}
-              >
-                <Text style={styles.buttonText}>Refresh Notifications</Text>
-              </TouchableOpacity>
-                
-            </View>
-          </ScrollView>
-        );}
-    else {
-      return ( <View>
+  if (isLoading == false) {
+    return (
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
+          style={styles.container}
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+          }
+        >
+          <View style={{ alignItems: "center" }}>
+            {taskList.map((task) => (
+              <NotificationCard types={task.types} details={task.details} />
+            ))}
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => submitHandler()}
+            >
+              <Text style={styles.buttonText}>Clear Notifications</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={styles.button}
+              onPress={() => getDetails()}
+            >
+              <Text style={styles.buttonText}>Refresh Notifications</Text>
+            </TouchableOpacity> */}
+          </View>
+        </ScrollView>
+      </SafeAreaView>
+    );
+  } else {
+    return (
+      <View>
         <Text>Loading</Text>
-      </View>);
-    }
+      </View>
+    );
+  }
 };
 const styles = StyleSheet.create({
   container: {
@@ -134,7 +164,7 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     paddingHorizontal: 20,
     // justifyContent: "flex-start",
-    paddingVertical: 50,
+    paddingVertical: 30,
     width,
   },
 
@@ -145,7 +175,7 @@ const styles = StyleSheet.create({
     width: width - theme.SIZES.BASE * 3,
     height: theme.SIZES.BASE * 4,
     marginVertical: theme.SIZES.BASE * 0.6,
-    borderRadius:10
+    borderRadius: 10,
   },
   button: {
     width: 300,

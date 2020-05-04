@@ -5,6 +5,8 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
+  RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
@@ -60,6 +62,16 @@ const NotificationCard = ({ navigation, types, details }) => {
 };
 
 export const Notifications = ({ navigation }) => {
+  ////////////////////// Mustafa's Edit /////////////
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(3000).then(() => setRefreshing(false));
+  }, [refreshing]);
+  ///////////////////////////////////////////////////
+
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
   const [isLoading, setIsLoading] = React.useState(true);
@@ -75,22 +87,26 @@ export const Notifications = ({ navigation }) => {
   }
   if (isLoading == false) {
     return (
-      <ScrollView style={styles.container}>
-        <View style={{ alignItems: "center" }}>
-          {taskList.map((task) => (
-            <NotificationCard types={task.types} details={task.details} />
-          ))}
-        </View>
-        <View style={{ alignItems: "center" }}>
-          <TouchableOpacity style={styles.button}>
-            <Text style={styles.buttonText}>Clear Notifications</Text>
-          </TouchableOpacity>
-          <Text></Text>
-          <Text></Text>
-          <Text></Text>
-          <Text></Text>
-        </View>
-      </ScrollView>
+      <SafeAreaView style={{ flex: 1 }}>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+          }
+        >
+          <View style={styles.container}>
+            <View style={{ alignItems: "center" }}>
+              {taskList.map((task) => (
+                <NotificationCard types={task.types} details={task.details} />
+              ))}
+            </View>
+            <View style={{ alignItems: "center" }}>
+              <TouchableOpacity style={styles.button}>
+                <Text style={styles.buttonText}>Clear Notifications</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </ScrollView>
+      </SafeAreaView>
     );
   } else {
     return (
@@ -102,11 +118,11 @@ export const Notifications = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    //flexGrow: 1,
     backgroundColor: "white",
     paddingHorizontal: 20,
     // justifyContent: "flex-start",
-    paddingVertical: 50,
+    paddingVertical: 30,
     width,
   },
 

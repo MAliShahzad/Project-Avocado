@@ -23,7 +23,7 @@ export const NotificationScreens = ({ navigation }) => {
         },
         headerLeft: () => (
           <Icon
-            raised
+            containerStyle={[{ paddingHorizontal: 15 }]}
             name="menu"
             type="menu-outline"
             color="grey"
@@ -35,6 +35,7 @@ export const NotificationScreens = ({ navigation }) => {
       <NotificationStack.Screen
         name="Project Avocado"
         component={Notifications}
+        options={{ title: "Notifications" }}
       />
     </NotificationStack.Navigator>
   );
