@@ -5,6 +5,8 @@ import {
   ScrollView,
   Dimensions,
   TouchableOpacity,
+  SafeAreaView,
+  RefreshControl,
 } from "react-native";
 import { Card } from "react-native-elements";
 import ProgressBar from "react-native-progress/Bar";
@@ -98,6 +100,16 @@ const getUserHistoryTasks = async (email) => {
 };
 
 export const CompletedScreen = ({ navigation }) => {
+  ////////////////////// Mustafa's Edit /////////////
+  const [refreshing, setRefreshing] = React.useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+
+    wait(3000).then(() => setRefreshing(false));
+  }, [refreshing]);
+  ///////////////////////////////////////////////////
+
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
   const [taskList, setTaskList] = React.useState([]);
@@ -114,59 +126,65 @@ export const CompletedScreen = ({ navigation }) => {
 
   if (isLoading == false) {
     return (
-      <ScrollView>
-        <View>
-          {taskList.map((task) => {
-            let short_status = task.status.substring(0, 60);
-            if (task.status.length > 60) short_status = short_status + "...";
-            return (
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("CompletedTask", { taskDetails: task });
-                }}
-              >
-                <Card
-                  title={task.name}
-                  titleStyle={{
-                    fontSize: 20,
-                    // color: "white",
-                  }}
-                  containerStyle={{
-                    borderRadius: 15,
-                    backgroundColor: "#c5e1a5",
-                    borderWidth: 0,
-                  }}
-                  dividerStyle={{
-                    backgroundColor: "black",
-                  }}
-                  wrapperStyle={{
-                    backgroundColor: "#c5e1a5",
+      <SafeAreaView>
+        <ScrollView
+          refreshControl={
+            <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+          }
+        >
+          <View>
+            {taskList.map((task) => {
+              let short_status = task.status.substring(0, 60);
+              if (task.status.length > 60) short_status = short_status + "...";
+              return (
+                <TouchableOpacity
+                  onPress={() => {
+                    navigation.navigate("CompletedTask", { taskDetails: task });
                   }}
                 >
-                  <Text style={{ marginBottom: 10 }}>{short_status}</Text>
-                </Card>
-              </TouchableOpacity>
-            );
-          })}
-        </View>
-        <TouchableOpacity
-          onPress={() => {
-            getDetails();
-          }}
-        >
-          <View
-            style={{
-              alignItems: "center",
-              marginTop: 30,
-              backgroundColor: "silver",
-              marginLeft: 150,
-              marginRight: 150,
+                  <Card
+                    title={task.name}
+                    titleStyle={{
+                      fontSize: 20,
+                      // color: "white",
+                    }}
+                    containerStyle={{
+                      borderRadius: 15,
+                      backgroundColor: "#c5e1a5",
+                      borderWidth: 0,
+                    }}
+                    dividerStyle={{
+                      backgroundColor: "black",
+                    }}
+                    wrapperStyle={{
+                      backgroundColor: "#c5e1a5",
+                    }}
+                  >
+                    <Text style={{ marginBottom: 10 }}>{short_status}</Text>
+                  </Card>
+                </TouchableOpacity>
+              );
+            })}
+          </View>
+          {/* <TouchableOpacity
+            onPress={() => {
+              getDetails();
             }}
           >
-            <Text>Refresh</Text>
-          </View>
-        </TouchableOpacity>
-      </ScrollView>
+            <View
+              style={{
+                alignItems: "center",
+                marginTop: 30,
+                backgroundColor: "silver",
+                marginLeft: 150,
+                marginRight: 150,
+              }}
+            >
+              <Text>Refresh</Text>
+            </View>
+          </TouchableOpacity> */}
+        </ScrollView>
+      </SafeAreaView>
     );
   } else {
     return (

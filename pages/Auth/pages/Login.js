@@ -21,6 +21,8 @@ fetchData = async (w) => {
 
 const validatelogin = async (email, password) => {
   // password = await bcrypt.hash(password, rounds);
+  email = email.split(" ")[0];
+  email = email.toLowerCase();
 
   var params = ["login='" + email + "'"];
   params = { table: "U_SERS", item: "*", arr: params };

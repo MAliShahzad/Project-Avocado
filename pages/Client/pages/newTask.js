@@ -37,14 +37,19 @@ const InsertTask = async (
   due_date
 ) => {
   var iden = 0;
+  var pem = "";
   if (task_info.length < task_name.length) {
-    return "no description";
+    pem = task_info;
+  } else {
+    pem = task_name;
   }
-  for (let index = 0; index < task_name.length; index++) {
+  for (let index = 0; index < pem.length; index++) {
     var num = task_name.charCodeAt(index);
     iden += task_info.charCodeAt(index);
     iden += Math.pow(num, 2);
   }
+  iden = iden % (Math.random() * (2, 147, 483, 640 - 500000) + 500000);
+  iden = parseInt(iden);
   var params = [
     iden,
     task_name,
@@ -53,7 +58,7 @@ const InsertTask = async (
     "Yes",
     "None",
     "",
-    file,
+    "",
     due_date,
   ];
   console.log(params);
@@ -127,7 +132,7 @@ export const NewTask = ({ navigation }) => {
         title,
         description,
         category,
-        img.split("/")[img.split("/").length - 1].split(".")[0],
+        img,
         deadline.substring(0, 4) +
           deadline.substring(5, 7) +
           deadline.substring(8, 10) +

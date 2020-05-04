@@ -47,6 +47,7 @@ const customerDeleteTask = async (task_id) => {
   }
   let customer_name = params[0].user_name;
 
+  let freelancer_iden = 0;
   params = [`id = ${task_id}`];
   params = { table: "freelancer", item: "user_id", arr: params };
   params = JSON.stringify(params);
@@ -57,7 +58,11 @@ const customerDeleteTask = async (task_id) => {
     console.log(err);
     return "";
   }
-  let freelancer_iden = params[0].user_id;
+  try {
+    let freelancer_iden = params[0].user_id;
+  } catch {
+    let freelancer_iden = 0;
+  }
 
   params = [`id= ${task_id} `];
   params = { table: "details", item: "name", arr: params };
@@ -71,20 +76,22 @@ const customerDeleteTask = async (task_id) => {
   }
   let task_name = params[0].name;
 
-  params = [
-    freelancer_iden,
-    "Task Deleted",
-    `${task_name} has been deleted and discontinued by ${customer_name}`,
-    "Unread",
-  ];
-  params = JSON.stringify(params);
-  params = "insertnotification" + params;
+  if (freelancer_iden != 0) {
+    params = [
+      freelancer_iden,
+      "Task Deleted",
+      `${task_name} has been deleted and discontinued by ${customer_name}`,
+      "Unread",
+    ];
+    params = JSON.stringify(params);
+    params = "insertnotification" + params;
 
-  try {
-    params = await fetchData(params);
-  } catch (err) {
-    console.log(err);
-    return "";
+    try {
+      params = await fetchData(params);
+    } catch (err) {
+      console.log(err);
+      return "";
+    }
   }
 
   params = [`id= ${task_id}`];
@@ -95,7 +102,6 @@ const customerDeleteTask = async (task_id) => {
     params = await fetchData(params);
   } catch (err) {
     console.log(err);
-    return "";
   }
 
   params = [`id= ${task_id}`];

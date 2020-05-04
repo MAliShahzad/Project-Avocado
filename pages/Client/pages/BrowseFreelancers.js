@@ -51,16 +51,27 @@ const getFreelancerList = async (task_type) => {
     return [];
   }
 
-  params.forEach((w) => (w.rating = 0));
+  params.forEach((w) => (w.ratings = 0));
 
   params.forEach((w) => {
     for (let index = 0; index < query.length; index++) {
+      var bools = false;
       if (query[index].id == w.id) {
-        w.rating = query[index].ratings;
+        query[index].user_name = w.user_name;
+        query[index].category = w.category;
+        query[index].about_me = w.about_me;
+        query[index].phone_number = w.phone_number;
+
+        query[index].email = w.email;
+
+        bools = true;
       }
     }
+    if (!bools) {
+      query.push(w);
+    }
   });
-  return params;
+  return query;
 };
 
 const DisplayCard = ({
@@ -175,7 +186,7 @@ export const BrowseFreelancers = ({ route, navigation }) => {
             return (
               <DisplayCard
                 name={freelancer.user_name}
-                ratings={freelancer.rating}
+                ratings={freelancer.ratings}
                 email={freelancer.email}
                 about_me={freelancer.about_me}
                 imageLink={freelancer.image}
