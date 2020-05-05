@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 
 fetchData = async (w) => {
   var response = await fetch("http://119.153.155.35:3000/" + w);
@@ -114,10 +115,31 @@ const CustomButton = (props) => {
     </TouchableOpacity>
   );
 };
+const getImg = async (email) => {
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
+
+  var iden = params[0].id;
+  var imger = await fetch(
+    "http://119.153.155.35:3000/getimage" + JSON.stringify({ id: iden })
+  );
+  imger = await imger.json();
+  return imger;
+};
 
 export const ClientViewsFreelancer = ({ route, navigation }) => {
   const { getEmail } = React.useContext(AuthContext);
   const myEmail = getEmail();
+  const [isloading, setloading] = React.useState(true);
+  const [imger, setimger] = React.useState("");
   const submitHandler = async () => {
     var outcome = await updateFreelancer(
       myEmail,
@@ -129,6 +151,14 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
       navigation.pop();
     }
   };
+  const getter = async () => {
+    setimger(await getImg(route.params.email));
+    setloading(false);
+  };
+  if (isloading == true) {
+    getter(route.params.email);
+    return <LoadingScreen></LoadingScreen>;
+  }
   return (
     // <View style={styles.container}>
     //   <View style={styles.imageContainer}>
@@ -160,7 +190,7 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
           // resizeMode="contain"
           // style={styles.canvas}
           style={{ flex: 1, width: undefined, height: undefined }}
-          source={require("../../../images/profile.jpg")}
+          source={{ uri: "data:image/png;base64," + imger }}
         />
       </View>
       <View style={styles.buttonAndText}>

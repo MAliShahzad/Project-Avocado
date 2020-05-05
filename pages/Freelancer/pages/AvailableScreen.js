@@ -12,7 +12,7 @@ import { Card } from "react-native-elements";
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
 import { LoadingScreen } from "../../../components/LoadingScreen";
-
+import { EmptyScreen } from "../../../components/EmptyScreen";
 fetchData = async (w) => {
   var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
@@ -29,6 +29,9 @@ const getJobsList = async (email) => {
     params = await fetchData(params);
   } catch (err) {
     console.log(err);
+    return [];
+  }
+  if (params.length == 0) {
     return [];
   }
   var request_id = params[0].id;
@@ -86,7 +89,9 @@ export const AvailableScreen = ({ navigation }) => {
   if (isLoading == true) {
     getDetails();
   }
-
+  if (taskList.length == 0 && isLoading == false) {
+    return <EmptyScreen></EmptyScreen>;
+  }
   if (isLoading == false) {
     return (
       <SafeAreaView style={{ flex: 1 }}>

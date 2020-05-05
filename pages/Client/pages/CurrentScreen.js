@@ -15,7 +15,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
 import { LoadingScreen } from "../../../components/LoadingScreen";
-
+import { EmptyScreen } from "../../../components/EmptyScreen";
 fetchData = async (w) => {
   var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
@@ -293,7 +293,9 @@ export const CurrentScreen = ({ navigation }) => {
   if (isLoading == true) {
     getDetails();
   }
-
+  if (taskList.length == 0 && isLoading == false) {
+    return <EmptyScreen></EmptyScreen>;
+  }
   if (isLoading == false) {
     return (
       <SafeAreaView style={styles.container1}>
@@ -354,7 +356,7 @@ export const CurrentScreen = ({ navigation }) => {
                           style={{
                             paddingHorizontal: 10,
                             paddingVertical: 2,
-                            backgroundColor: "#7da453",
+                            backgroundColor: "green",
                             borderRadius: 10,
                           }}
                         >
@@ -440,7 +442,7 @@ export const CurrentScreen = ({ navigation }) => {
                         style={{
                           fontWeight: "bold",
                           textAlign: "center",
-                          color: "#7da453",
+                          color: "green",
                         }}
                       >
                         Task Completed. Click to rate freelancer.
@@ -490,9 +492,11 @@ const styles = StyleSheet.create({
     // marginTop: Constants.statusBarHeight,
   },
   container2: {
-    flex: 1,
-    backgroundColor: "#558b2f",
+    flexGrow: 1,
+    backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical: 100,
+    paddingBottom: 300,
   },
 });

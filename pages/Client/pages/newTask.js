@@ -243,7 +243,7 @@ export const NewTask = ({ navigation }) => {
                 customStyles={{
                   dateInput: { borderWidth: 0 },
                   placeholderText: {
-                    fontSize: width / 30,
+                    fontSize: 15,
                     color: "rgba(0,0,0,0.6)",
                   },
                 }}

@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet, Dimensions, Image } from "react-native";
 const { width, height } = Dimensions.get("screen");
 
-export const LoadingScreen = () => {
+export const EmptyScreen = () => {
   return (
     <View style={styles.container}>
       <Image

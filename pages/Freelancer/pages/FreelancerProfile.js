@@ -18,7 +18,6 @@ import Constants from "expo-constants";
 import * as DocumentPicker from "expo-document-picker";
 import * as FileSystem from "expo-file-system";
 import { LoadingScreen } from "../../../components/LoadingScreen";
-
 fetchData = async (w) => {
   console.log("");
   var response = await fetch("http://119.153.155.35:3000/" + w);
@@ -38,9 +37,17 @@ const getMyDetails = async (email) => {
     console.log(err);
     return params;
   }
-
+  if (params.length == 0) {
+    return [];
+  }
   var iden = params[0].id;
   var roles = [`id=${iden}`];
+
+  console.log("wait");
+  var imger = await fetch(
+    "http://119.153.155.35:3000/getimage" + JSON.stringify({ id: iden })
+  );
+  imger = await imger.json();
 
   roles = { table: "roles", item: "name", arr: roles };
   roles = JSON.stringify(roles);
@@ -53,6 +60,8 @@ const getMyDetails = async (email) => {
   }
 
   params = params[0];
+  params.imger = imger;
+  console.log("some");
 
   roles = roles[0].name;
 
@@ -120,6 +129,7 @@ export default function ClientProfile({ navigation }) {
   };
 
   const _pickDocument = async () => {
+    let boolen = false;
     let result = await DocumentPicker.getDocumentAsync({ type: "image/*" });
 
     console.log(result);
@@ -128,7 +138,23 @@ export default function ClientProfile({ navigation }) {
       encoding: FileSystem.EncodingType.Base64,
     });
     console.log(resp.length);
-    setimg(resp);
+    var imgerz = await resp;
+    Alert.alert(
+      "Uploading",
+      "Profile Picture is Uploading",
+      [
+        {
+          text: "Cancel Upload",
+          onPress: () => {
+            boolen = true;
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+    if (boolen) {
+      return;
+    }
 
     var params = [`id= ${details.id}`];
     params = { table: "images", arr: params };
@@ -148,16 +174,17 @@ export default function ClientProfile({ navigation }) {
           "Content-type": "application/json",
         },
 
-        body: JSON.stringify({ data: img, iden: details.id }), // This is your file object
+        body: JSON.stringify({ data: imgerz, iden: details.id }), // This is your file object
       });
     } catch (err) {
       console.log(err);
       return;
     }
+    imgerz = "";
 
     Alert.alert(
       "Profile Picture Updated",
-      "Press OK to continue",
+      "Scroll Down to Refresh",
       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
@@ -217,7 +244,7 @@ export default function ClientProfile({ navigation }) {
                 // resizeMode="contain"
                 // style={styles.canvas}
                 style={{ flex: 1, width: undefined, height: undefined }}
-                source={require("../../../images/profile.jpg")}
+                source={{ uri: "data:image/png;base64," + details.imger }}
               />
               <Button
                 title={"Change Picture"}

@@ -42,6 +42,12 @@ const getMyDetails = async (email) => {
   var iden = params[0].id;
   var roles = [`id=${iden}`];
 
+  console.log("wait");
+  var imger = await fetch(
+    "http://119.153.155.35:3000/getimage" + JSON.stringify({ id: iden })
+  );
+  imger = await imger.json();
+
   roles = { table: "roles", item: "name", arr: roles };
   roles = JSON.stringify(roles);
   roles = "getlogin" + roles;
@@ -53,6 +59,8 @@ const getMyDetails = async (email) => {
   }
 
   params = params[0];
+  params.imger = imger;
+  console.log("some");
 
   roles = roles[0].name;
 
@@ -114,8 +122,10 @@ export default function ClientProfile({ navigation }) {
   const [img, setimg] = React.useState("");
   const [isLoading, setIsLoading] = React.useState(true);
   const [details, setDetails] = React.useState({});
+  const [geti, seti] = React.useState("");
   const getDetails = async () => {
     setDetails(await getMyDetails(myEmail));
+
     setIsLoading(false);
   };
 
@@ -128,7 +138,20 @@ export default function ClientProfile({ navigation }) {
       encoding: FileSystem.EncodingType.Base64,
     });
     console.log(resp.length);
-    setimg(resp);
+    var imgerz = await resp;
+    Alert.alert(
+      "Uploading",
+      "Profile Picture is Uploading",
+      [
+        {
+          text: "Cancel Upload",
+          onPress: () => {
+            return;
+          },
+        },
+      ],
+      { cancelable: false }
+    );
 
     var params = [`id= ${details.id}`];
     params = { table: "images", arr: params };
@@ -148,16 +171,17 @@ export default function ClientProfile({ navigation }) {
           "Content-type": "application/json",
         },
 
-        body: JSON.stringify({ data: img, iden: details.id }), // This is your file object
+        body: JSON.stringify({ data: imgerz, iden: details.id }), // This is your file object
       });
     } catch (err) {
       console.log(err);
       return;
     }
+    imgerz = "";
 
     Alert.alert(
       "Profile Picture Updated",
-      "Press OK to continue",
+      "Scroll Down to Refresh",
       [{ text: "OK", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
@@ -192,8 +216,9 @@ export default function ClientProfile({ navigation }) {
                 // resizeMode="contain"
                 // style={styles.canvas}
                 style={{ flex: 1, width: undefined, height: undefined }}
-                source={require("../../../images/profile.jpg")}
+                source={{ uri: "data:image/png;base64," + details.imger }}
               />
+
               <Button
                 title={"Change Picture"}
                 onPress={() => _pickDocument()}

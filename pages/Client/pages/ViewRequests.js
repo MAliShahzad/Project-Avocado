@@ -6,7 +6,7 @@ import { RatingView } from "../../../components/RatingView";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Auth/Navigators/context";
 import { LoadingScreen } from "../../../components/LoadingScreen";
-
+import { EmptyScreen } from "../../../components/EmptyScreen";
 fetchData = async (w) => {
   var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
@@ -179,6 +179,9 @@ export const ViewRequests = ({ route, navigation }) => {
   };
   if (isLoading == true) {
     getDetails();
+  }
+  if (freelancerList.length == 0 && isLoading == false) {
+    return <EmptyScreen></EmptyScreen>;
   }
   if (isLoading == false) {
     return (

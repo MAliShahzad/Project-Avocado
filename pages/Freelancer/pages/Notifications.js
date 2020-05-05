@@ -12,6 +12,7 @@ import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../../Auth/Navigators/context";
 import { LoadingScreen } from "../../../components/LoadingScreen";
+import { EmptyScreen } from "../../../components/EmptyScreen";
 
 const getNotifications = async (email) => {
   var params = ["email='" + email + "'"];
@@ -24,7 +25,9 @@ const getNotifications = async (email) => {
     console.log(err);
     return params;
   }
-
+  if (params.length == 0) {
+    return [];
+  }
   var iden = params[0].id;
 
   var params = [`id= ${iden} ORDER BY created_date DESC`];
@@ -111,14 +114,18 @@ export const Notifications = ({ navigation }) => {
     console.log(taskList);
     setIsLoading(false);
   };
+
   const submitHandler = async () => {
     var outcome = await clearNotifications(myEmail);
     if (outcome == "Done") {
       getDetails();
     }
   };
-  if (isLoading == true) {
+  if (isLoading == true && isLoading == false) {
     getDetails();
+  }
+  if (taskList.length == 0) {
+    return <EmptyScreen></EmptyScreen>;
   }
   if (isLoading == false) {
     return (

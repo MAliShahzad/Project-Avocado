@@ -5,6 +5,7 @@ const { width, height } = Dimensions.get("screen");
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Auth/Navigators/context";
 import { LoadingScreen } from "../../../components/LoadingScreen";
+import { EmptyScreen } from "../../../components/EmptyScreen";
 
 fetchData = async (w) => {
   try {
@@ -178,6 +179,9 @@ export const BrowseFreelancers = ({ route, navigation }) => {
   };
   if (isLoading == true) {
     getDetails();
+  }
+  if (freelancerList.length == 0 && isLoading == false) {
+    return <EmptyScreen></EmptyScreen>;
   }
   if (isLoading == false) {
     return (
