@@ -16,6 +16,7 @@ import DatePicker from "react-native-datepicker";
 import { AuthContext } from "../../Auth/Navigators/context";
 const { width, height } = Dimensions.get("screen");
 import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 
 // import {
 //   DocumentPicker,
@@ -34,6 +35,7 @@ const InsertTask = async (
   task_info,
   task_category,
   file,
+  filename,
   due_date
 ) => {
   var iden = 0;
@@ -58,10 +60,8 @@ const InsertTask = async (
     "Yes",
     "None",
     "",
-    "",
     due_date,
   ];
-  console.log(params);
   params = JSON.stringify(params);
   params = "insertdetail" + params;
   try {
@@ -69,6 +69,21 @@ const InsertTask = async (
   } catch (err) {
     console.log(err);
     return "";
+  }
+
+  try {
+    var response = await fetch("http://119.153.155.35:3000/sendtaskfile", {
+      // Your POST endpoint
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+
+      body: JSON.stringify({ data: file, iden: iden, fname: filename }), // This is your file object
+    });
+  } catch (err) {
+    console.log(err);
+    return;
   }
 
   params = ["login='" + email + "'"];
@@ -106,13 +121,19 @@ export const NewTask = ({ navigation }) => {
   const [msg, setmsg] = useState("Done");
   const myEmail = getEmail();
   const [img, setimg] = useState("");
+  const [fn, setfn] = useState("");
 
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
 
-    setimg(result.uri);
-    alert(result.uri);
     console.log(result);
+    var resp = "";
+    resp = await FileSystem.readAsStringAsync(result.uri, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    console.log(resp.length);
+    setfn(result.name);
+    setimg(resp);
   };
 
   const submitHandler = async () => {
@@ -133,6 +154,7 @@ export const NewTask = ({ navigation }) => {
         description,
         category,
         img,
+        fn,
         deadline.substring(0, 4) +
           deadline.substring(5, 7) +
           deadline.substring(8, 10) +
@@ -221,7 +243,7 @@ export const NewTask = ({ navigation }) => {
                 customStyles={{
                   dateInput: { borderWidth: 0 },
                   placeholderText: {
-                    fontSize: 15,
+                    fontSize: width / 30,
                     color: "rgba(0,0,0,0.6)",
                   },
                 }}
@@ -239,7 +261,7 @@ export const NewTask = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <Image source={{ uri: img }} style={{ width: 200, height: 200 }} />
+        {/* <Image source={{ uri: img }} style={{ width: 200, height: 200 }} /> */}
         {/*<Text>{deadline.substring(0,4) + deadline.substring(5,7) + deadline.substring(8,10)}</Text>*/}
         <View style={{ padding: 10, marginBottom: 10 }}>
           <TouchableOpacity

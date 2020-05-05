@@ -14,6 +14,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 
 fetchData = async (w) => {
   var response = await fetch("http://119.153.155.35:3000/" + w);
@@ -96,6 +97,16 @@ const customerDeleteTask = async (task_id) => {
 
   params = [`id= ${task_id}`];
   params = { table: "freelancer", arr: params };
+  params = JSON.stringify(params);
+  params = "deltask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+  }
+
+  params = [`id= ${task_id}`];
+  params = { table: "files", arr: params };
   params = JSON.stringify(params);
   params = "deltask" + params;
   try {
@@ -343,7 +354,7 @@ export const CurrentScreen = ({ navigation }) => {
                           style={{
                             paddingHorizontal: 10,
                             paddingVertical: 2,
-                            backgroundColor: "green",
+                            backgroundColor: "#7da453",
                             borderRadius: 10,
                           }}
                         >
@@ -429,7 +440,7 @@ export const CurrentScreen = ({ navigation }) => {
                         style={{
                           fontWeight: "bold",
                           textAlign: "center",
-                          color: "green",
+                          color: "#7da453",
                         }}
                       >
                         Task Completed. Click to rate freelancer.
@@ -461,11 +472,7 @@ export const CurrentScreen = ({ navigation }) => {
       </SafeAreaView>
     );
   } else {
-    return (
-      <View style={styles.container2}>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };
 
@@ -483,11 +490,9 @@ const styles = StyleSheet.create({
     // marginTop: Constants.statusBarHeight,
   },
   container2: {
-    flexGrow: 1,
-    backgroundColor: "white",
+    flex: 1,
+    backgroundColor: "#558b2f",
     alignItems: "center",
     justifyContent: "center",
-    paddingVertical: 100,
-    paddingBottom: 300,
   },
 });

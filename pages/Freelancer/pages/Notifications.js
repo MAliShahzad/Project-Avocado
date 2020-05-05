@@ -11,6 +11,7 @@ import {
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../../Auth/Navigators/context";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 
 const getNotifications = async (email) => {
   var params = ["email='" + email + "'"];
@@ -151,11 +152,7 @@ export const Notifications = ({ navigation }) => {
       </SafeAreaView>
     );
   } else {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };
 const styles = StyleSheet.create({

@@ -4,6 +4,7 @@ import { Block, Text, theme } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Auth/Navigators/context";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 
 fetchData = async (w) => {
   try {
@@ -199,11 +200,7 @@ export const BrowseFreelancers = ({ route, navigation }) => {
       </ScrollView>
     );
   } else {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };
 

@@ -5,6 +5,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 import Dialog, {
@@ -23,6 +24,20 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
   if (route.params.taskDetails.status.length > 50)
     short_status = short_status + "...";
   const [isVisible, setIsVisible] = useState(false);
+
+  const downloader = async () => {
+    var params = ["email='" + myEmail + "'"];
+    params = { table: "EXTRA_DATA", item: "*", arr: params };
+    params = JSON.stringify(params);
+    params = "getlogin" + params;
+    try {
+      params = await fetchData(params);
+    } catch (err) {
+      console.log(err);
+      return params;
+    }
+  };
+
   return (
     <View style={styles.container}>
       <Card
@@ -72,14 +87,16 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
         caption={route.params.taskDetails.date.substring(0, 10)}
         avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
       />
-      <Card
-        borderless
-        captionColor="rgba(0,0,0,0.4)"
-        style={styles.card}
-        title="Attachment"
-        caption={route.params.taskDetails.attachment}
-        avatar="https://img.icons8.com/ios-filled/512/000000/attach.png"
-      />
+      <TouchableOpacity onPress={() => downloader()}>
+        <Card
+          borderless
+          captionColor="rgba(0,0,0,0.4)"
+          style={styles.card}
+          title="Attachment"
+          caption={route.params.taskDetails.attachment}
+          avatar="https://img.icons8.com/ios-filled/512/000000/attach.png"
+        />
+      </TouchableOpacity>
 
       <Card
         borderless
@@ -156,7 +173,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
-    height: theme.SIZES.BASE * 4,
+    height: theme.SIZES.BASE * 3.5,
     marginVertical: theme.SIZES.BASE * 0.75,
   },
 });

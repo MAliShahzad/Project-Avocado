@@ -216,7 +216,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
-    height: theme.SIZES.BASE * 4,
+    height: theme.SIZES.BASE * 3.5,
     marginVertical: theme.SIZES.BASE * 0.875,
   },
   ratingcard: {
@@ -225,7 +225,7 @@ const styles = StyleSheet.create({
     marginVertical: theme.SIZES.BASE * 0.875,
     justifyContent: "flex-start",
     width: width - theme.SIZES.BASE * 2,
-    height: theme.SIZES.BASE * 4,
+    height: theme.SIZES.BASE * 3.5,
     alignContent: "center",
     borderRadius: 10,
     flexDirection: "row",

@@ -22,7 +22,8 @@ fetchData = async (w) => {
 const validatelogin = async (email, password) => {
   // password = await bcrypt.hash(password, rounds);
   email = email.split(" ")[0];
-  email = email.toLowerCase();
+  email = email;
+  console.log(email);
 
   var params = ["login='" + email + "'"];
   params = { table: "U_SERS", item: "*", arr: params };
@@ -47,6 +48,7 @@ const validatelogin = async (email, password) => {
   if (password != params.secrets) {
     return "invalid password";
   } else if (password == params.secrets && email == params.login) {
+    console.log("error else if ");
     var role = [`id=${params.id}`];
     role = { table: "roles", item: "*", arr: role };
     role = JSON.stringify(role);
@@ -59,6 +61,7 @@ const validatelogin = async (email, password) => {
     }
     role = role[0];
     console.log("...");
+    console.log("error ?");
     return await role.name;
   }
 };

@@ -12,7 +12,7 @@ import {
 import { Card } from "react-native-elements";
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
-
+import { LoadingScreen } from "../../../components/LoadingScreen";
 fetchData = async (w) => {
   var response = await fetch("http://119.153.155.35:3000/" + w);
   response = await response.json();
@@ -192,11 +192,7 @@ export const CompletedScreen = ({ navigation }) => {
       </SafeAreaView>
     );
   } else {
-    return (
-      <View style={styles.container}>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };
 

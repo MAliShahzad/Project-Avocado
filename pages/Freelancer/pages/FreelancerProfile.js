@@ -15,6 +15,9 @@ import {
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
 import Constants from "expo-constants";
+import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 
 fetchData = async (w) => {
   console.log("");
@@ -110,9 +113,54 @@ export default function ClientProfile({ navigation }) {
   var myEmail = getEmail();
   const [isLoading, setIsLoading] = React.useState(true);
   const [details, setDetails] = React.useState({});
+  const [img, setimg] = React.useState("");
   const getDetails = async () => {
     setDetails(await getMyDetails(myEmail));
     setIsLoading(false);
+  };
+
+  const _pickDocument = async () => {
+    let result = await DocumentPicker.getDocumentAsync({ type: "image/*" });
+
+    console.log(result);
+    var resp = "";
+    resp = await FileSystem.readAsStringAsync(result.uri, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    console.log(resp.length);
+    setimg(resp);
+
+    var params = [`id= ${details.id}`];
+    params = { table: "images", arr: params };
+    params = JSON.stringify(params);
+    params = "dellogin" + params;
+    try {
+      params = await fetchData(params);
+    } catch (err) {
+      console.log(err);
+    }
+
+    try {
+      var response = await fetch("http://119.153.155.35:3000/senduserimage", {
+        // Your POST endpoint
+        method: "POST",
+        headers: {
+          "Content-type": "application/json",
+        },
+
+        body: JSON.stringify({ data: img, iden: details.id }), // This is your file object
+      });
+    } catch (err) {
+      console.log(err);
+      return;
+    }
+
+    Alert.alert(
+      "Profile Picture Updated",
+      "Press OK to continue",
+      [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
   };
 
   if (isLoading == true) {
@@ -170,6 +218,10 @@ export default function ClientProfile({ navigation }) {
                 // style={styles.canvas}
                 style={{ flex: 1, width: undefined, height: undefined }}
                 source={require("../../../images/profile.jpg")}
+              />
+              <Button
+                title={"Change Picture"}
+                onPress={() => _pickDocument()}
               />
             </View>
             <View style={styles.buttonAndText}>
@@ -237,11 +289,7 @@ export default function ClientProfile({ navigation }) {
       </SafeAreaView>
     );
   } else {
-    return (
-      <View styles={styles.container}>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 }
 
