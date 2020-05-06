@@ -22,7 +22,7 @@ export const EmptyScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: height * 0.83,
+    height: height * 0.825,
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",

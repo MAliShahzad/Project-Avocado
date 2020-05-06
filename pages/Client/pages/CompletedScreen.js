@@ -133,13 +133,15 @@ export const CompletedScreen = ({ navigation }) => {
     getDetails();
   }
   if (taskList.length == 0 && isLoading == false) {
-    <ScrollView
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
-      }
-    >
-      <EmptyScreen></EmptyScreen>
-    </ScrollView>;
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+        }
+      >
+        <EmptyScreen></EmptyScreen>
+      </ScrollView>
+    );
   }
   if (isLoading == false) {
     return (
