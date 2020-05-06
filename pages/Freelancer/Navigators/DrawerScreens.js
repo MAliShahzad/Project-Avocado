@@ -25,35 +25,95 @@ import {
 //   MaterialCommunityIcons,
 // } from "@expo/vector-icons";
 
+const getMyImage = async (email) => {
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
+
+  var iden = params[0].id;
+
+  console.log("wait");
+  var imger = await fetch(
+    "http://119.153.183.106:3000/getimage" + JSON.stringify({ id: iden })
+  );
+  imger = await imger.json();
+  return imger;
+};
+
 const Drawer = createDrawerNavigator();
 
 function CustomDrawerContent(props, { navigation }) {
   const { signOut } = React.useContext(AuthContext);
-  return (
-    <DrawerContentScrollView {...props}>
-      <View
-        style={{
-          height: 150,
-          backgroundColor: "white",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <Image
-          source={require("../../../images/profile.jpg")}
-          style={{ height: 120, width: 120, borderRadius: 60 }}
+  const { getEmail } = React.useContext(AuthContext);
+  const [isLoading, setLoading] = React.useState(true);
+  const [img, setimg] = React.useState("");
+  var myEmail = getEmail();
+  const getter = async (myEmail) => {
+    setimg(await getMyImage(myEmail));
+    setLoading(false);
+  };
+  if (isLoading == true) {
+    getter(myEmail);
+
+    return (
+      <DrawerContentScrollView {...props}>
+        <View
+          style={{
+            height: 150,
+            backgroundColor: "white",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={require("../../../images/profile.jpg")}
+            style={{ height: 120, width: 120, borderRadius: 60 }}
+          />
+        </View>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label="Logout"
+          onPress={() => signOut()}
+          icon={({ focused }) => (
+            <MaterialCommunityIcons name="logout" size={40} color="#98C739" />
+          )}
         />
-      </View>
-      <DrawerItemList {...props} />
-      <DrawerItem
-        label="Logout"
-        onPress={() => signOut()}
-        icon={({ focused }) => (
-          <MaterialCommunityIcons name="logout" size={40} color="#98C739" />
-        )}
-      />
-    </DrawerContentScrollView>
-  );
+      </DrawerContentScrollView>
+    );
+  } else {
+    return (
+      <DrawerContentScrollView {...props}>
+        <View
+          style={{
+            height: 150,
+            backgroundColor: "white",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <Image
+            source={{ uri: "data:image/png;base64," + img }}
+            style={{ height: 120, width: 120, borderRadius: 60 }}
+          />
+        </View>
+        <DrawerItemList {...props} />
+        <DrawerItem
+          label="Logout"
+          onPress={() => signOut()}
+          icon={({ focused }) => (
+            <MaterialCommunityIcons name="logout" size={40} color="#98C739" />
+          )}
+        />
+      </DrawerContentScrollView>
+    );
+  }
 }
 
 export const DrawerScreens = ({ navigation }) => {

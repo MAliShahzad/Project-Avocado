@@ -7,7 +7,13 @@ export const EmptyScreen = () => {
     <View style={styles.container}>
       <Image
         source={require("../images/avocado-logo.png")}
-        style={{ width: 90, height: 100, opacity: 0.5 }}
+        style={{
+          width: 90,
+          height: 100,
+          opacity: 0.5,
+          alignItems: "center",
+          justifyContent: "center",
+        }}
       />
       <Text style={styles.logoText}>Nothing to Display</Text>
     </View>
@@ -16,7 +22,7 @@ export const EmptyScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    height: height - 180,
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",

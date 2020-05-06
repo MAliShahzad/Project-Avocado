@@ -23,7 +23,7 @@ import * as FileSystem from "expo-file-system";
 //   DocumentPickerUtil,
 // } from "react-native-document-picker";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -72,7 +72,7 @@ const InsertTask = async (
   }
 
   try {
-    var response = await fetch("http://119.153.155.35:3000/sendtaskfile", {
+    var response = await fetch("http://119.153.183.106:3000/sendtaskfile", {
       // Your POST endpoint
       method: "POST",
       headers: {

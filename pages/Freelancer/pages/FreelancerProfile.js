@@ -20,7 +20,7 @@ import * as FileSystem from "expo-file-system";
 import { LoadingScreen } from "../../../components/LoadingScreen";
 fetchData = async (w) => {
   console.log("");
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   console.log(response);
   return await response;
@@ -45,7 +45,7 @@ const getMyDetails = async (email) => {
 
   console.log("wait");
   var imger = await fetch(
-    "http://119.153.155.35:3000/getimage" + JSON.stringify({ id: iden })
+    "http://119.153.183.106:3000/getimage" + JSON.stringify({ id: iden })
   );
   imger = await imger.json();
 
@@ -167,7 +167,7 @@ export default function ClientProfile({ navigation }) {
     }
 
     try {
-      var response = await fetch("http://119.153.155.35:3000/senduserimage", {
+      var response = await fetch("http://119.153.183.106:3000/senduserimage", {
         // Your POST endpoint
         method: "POST",
         headers: {

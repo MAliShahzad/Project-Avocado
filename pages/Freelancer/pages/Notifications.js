@@ -121,11 +121,19 @@ export const Notifications = ({ navigation }) => {
       getDetails();
     }
   };
-  if (isLoading == true && isLoading == false) {
+  if (isLoading == true) {
     getDetails();
   }
-  if (taskList.length == 0) {
-    return <EmptyScreen></EmptyScreen>;
+  if (taskList.length == 0 && isLoading == false) {
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+        }
+      >
+        <EmptyScreen></EmptyScreen>
+      </ScrollView>
+    );
   }
   if (isLoading == false) {
     return (

@@ -15,7 +15,7 @@ import { AuthContext } from "../../Auth/Navigators/context";
 import { LoadingScreen } from "../../../components/LoadingScreen";
 import { EmptyScreen } from "../../../components/EmptyScreen";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -133,7 +133,13 @@ export const CompletedScreen = ({ navigation }) => {
     getDetails();
   }
   if (taskList.length == 0 && isLoading == false) {
-    return <EmptyScreen></EmptyScreen>;
+    <ScrollView
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+      }
+    >
+      <EmptyScreen></EmptyScreen>
+    </ScrollView>;
   }
   if (isLoading == false) {
     return (
