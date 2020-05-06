@@ -10,10 +10,11 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { AuthContext } from "../../Auth/Navigators/context";
+import { LoadingScreen } from "../../../components/LoadingScreen";
 
 fetchData = async (w) => {
   console.log("");
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   console.log(response);
   return await response;
@@ -148,11 +149,7 @@ export default function ClientProfile({ navigation }) {
       </View>
     );
   } else {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 }
 

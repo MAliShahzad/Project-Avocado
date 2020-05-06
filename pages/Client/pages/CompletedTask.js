@@ -5,6 +5,7 @@ import {
   Image,
   Dimensions,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 import Rating from "../../../components/Rating";
@@ -16,8 +17,11 @@ import Dialog, {
   DialogTitle,
 } from "react-native-popup-dialog";
 import { RatingView } from "../../../components/RatingView";
+
+import * as FileSystem from "expo-file-system";
+import * as MediaLibrary from "expo-media-library";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -58,6 +62,66 @@ export const CompletedTask = ({ route, navigation }) => {
       />
     );
   }
+  const downloader = async () => {
+    Alert.alert(
+      "Downloading",
+      `Your attachement is downloading`,
+      [
+        {
+          text: "Cancel Download",
+          onPress: () => {
+            return;
+          },
+        },
+      ],
+      { cancelable: false }
+    );
+    var response = await fetch(
+      "http://119.153.183.106:3000/getfile" +
+        JSON.stringify({ id: route.params.taskDetails.id })
+    );
+    response = await response.json();
+    if (response == "Not") {
+      Alert.alert(
+        "No attachment",
+        `No file was attached to this task`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+      return;
+    }
+    try {
+      var filename = (await FileSystem.documentDirectory) + response.filename;
+      var respie = await FileSystem.writeAsStringAsync(
+        filename,
+        response.file,
+        {
+          encoding: FileSystem.EncodingType.Base64,
+        }
+      );
+
+      var resp = await MediaLibrary.requestPermissionsAsync();
+
+      resp = await MediaLibrary.createAssetAsync(
+        `${FileSystem.documentDirectory}${response.filename}`
+      );
+      Alert.alert(
+        "Download Done",
+        `${response.filename} has been downloaded`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+    } catch (err) {
+      Alert.alert(
+        "Error",
+        `Corrupted File uploaded by client`,
+        [{ text: "OK", onPress: () => console.log("OK Pressed") }],
+        { cancelable: false }
+      );
+    }
+    console.log(resp);
+  };
+
   return (
     <View style={styles.container}>
       <Card
@@ -103,13 +167,15 @@ export const CompletedTask = ({ route, navigation }) => {
         caption={route.params.taskDetails.date.substring(0, 10)}
         avatar="https://img.icons8.com/ios-filled/512/000000/deadline-icon.png"
       />
-      <Card
-        borderless
-        style={styles.card}
-        title="Attachment"
-        caption={route.params.taskDetails.attachment}
-        avatar="https://img.icons8.com/ios-filled/512/000000/attach.png"
-      />
+      <TouchableOpacity style={styles.card} onPress={() => downloader()}>
+        <Card
+          borderless
+          style={styles.card}
+          title="Attachment"
+          caption={route.params.taskDetails.attachment}
+          avatar="https://img.icons8.com/ios-filled/512/000000/attach.png"
+        />
+      </TouchableOpacity>
       <Card
         borderless
         style={styles.card}
@@ -154,7 +220,7 @@ const styles = StyleSheet.create({
     marginVertical: theme.SIZES.BASE * 0.75,
     justifyContent: "flex-start",
     width: width - theme.SIZES.BASE * 2,
-    height: theme.SIZES.BASE * 4,
+    height: theme.SIZES.BASE * 3.5,
     justifyContent: "center",
     borderRadius: 70,
   },
@@ -163,7 +229,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#c5e1a5",
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
-    height: theme.SIZES.BASE * 4,
+    height: theme.SIZES.BASE * 3.5,
     marginVertical: theme.SIZES.BASE * 0.75,
   },
 });

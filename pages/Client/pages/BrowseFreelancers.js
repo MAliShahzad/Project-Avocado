@@ -4,10 +4,12 @@ import { Block, Text, theme } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { AuthContext } from "../../Auth/Navigators/context";
+import { LoadingScreen } from "../../../components/LoadingScreen";
+import { EmptyScreen } from "../../../components/EmptyScreen";
 
 fetchData = async (w) => {
   try {
-    var response = await fetch("http://119.153.155.35:3000/" + w);
+    var response = await fetch("http://119.153.183.106:3000/" + w);
 
     response = await response.json();
     console.log(response);
@@ -51,16 +53,27 @@ const getFreelancerList = async (task_type) => {
     return [];
   }
 
-  params.forEach((w) => (w.rating = 0));
+  params.forEach((w) => (w.ratings = 0));
 
   params.forEach((w) => {
     for (let index = 0; index < query.length; index++) {
+      var bools = false;
       if (query[index].id == w.id) {
-        w.rating = query[index].ratings;
+        query[index].user_name = w.user_name;
+        query[index].category = w.category;
+        query[index].about_me = w.about_me;
+        query[index].phone_number = w.phone_number;
+
+        query[index].email = w.email;
+
+        bools = true;
       }
     }
+    if (!bools) {
+      query.push(w);
+    }
   });
-  return params;
+  return query;
 };
 
 const DisplayCard = ({
@@ -167,6 +180,9 @@ export const BrowseFreelancers = ({ route, navigation }) => {
   if (isLoading == true) {
     getDetails();
   }
+  if (freelancerList.length == 0 && isLoading == false) {
+    return <EmptyScreen></EmptyScreen>;
+  }
   if (isLoading == false) {
     return (
       <ScrollView>
@@ -175,7 +191,7 @@ export const BrowseFreelancers = ({ route, navigation }) => {
             return (
               <DisplayCard
                 name={freelancer.user_name}
-                ratings={freelancer.rating}
+                ratings={freelancer.ratings}
                 email={freelancer.email}
                 about_me={freelancer.about_me}
                 imageLink={freelancer.image}
@@ -188,11 +204,7 @@ export const BrowseFreelancers = ({ route, navigation }) => {
       </ScrollView>
     );
   } else {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };
 

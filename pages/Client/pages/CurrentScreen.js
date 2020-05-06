@@ -14,9 +14,10 @@ import Icon from "react-native-vector-icons/FontAwesome";
 
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
-
+import { LoadingScreen } from "../../../components/LoadingScreen";
+import { EmptyScreen } from "../../../components/EmptyScreen";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -47,6 +48,7 @@ const customerDeleteTask = async (task_id) => {
   }
   let customer_name = params[0].user_name;
 
+  let freelancer_iden = 0;
   params = [`id = ${task_id}`];
   params = { table: "freelancer", item: "user_id", arr: params };
   params = JSON.stringify(params);
@@ -57,7 +59,11 @@ const customerDeleteTask = async (task_id) => {
     console.log(err);
     return "";
   }
-  let freelancer_iden = params[0].user_id;
+  try {
+    let freelancer_iden = params[0].user_id;
+  } catch {
+    let freelancer_iden = 0;
+  }
 
   params = [`id= ${task_id} `];
   params = { table: "details", item: "name", arr: params };
@@ -71,20 +77,22 @@ const customerDeleteTask = async (task_id) => {
   }
   let task_name = params[0].name;
 
-  params = [
-    freelancer_iden,
-    "Task Deleted",
-    `${task_name} has been deleted and discontinued by ${customer_name}`,
-    "Unread",
-  ];
-  params = JSON.stringify(params);
-  params = "insertnotification" + params;
+  if (freelancer_iden != 0) {
+    params = [
+      freelancer_iden,
+      "Task Deleted",
+      `${task_name} has been deleted and discontinued by ${customer_name}`,
+      "Unread",
+    ];
+    params = JSON.stringify(params);
+    params = "insertnotification" + params;
 
-  try {
-    params = await fetchData(params);
-  } catch (err) {
-    console.log(err);
-    return "";
+    try {
+      params = await fetchData(params);
+    } catch (err) {
+      console.log(err);
+      return "";
+    }
   }
 
   params = [`id= ${task_id}`];
@@ -95,7 +103,16 @@ const customerDeleteTask = async (task_id) => {
     params = await fetchData(params);
   } catch (err) {
     console.log(err);
-    return "";
+  }
+
+  params = [`id= ${task_id}`];
+  params = { table: "files", arr: params };
+  params = JSON.stringify(params);
+  params = "deltask" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
   }
 
   params = [`id= ${task_id}`];
@@ -276,7 +293,17 @@ export const CurrentScreen = ({ navigation }) => {
   if (isLoading == true) {
     getDetails();
   }
-
+  if (taskList.length == 0 && isLoading == false) {
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+        }
+      >
+        <EmptyScreen></EmptyScreen>
+      </ScrollView>
+    );
+  }
   if (isLoading == false) {
     return (
       <SafeAreaView style={styles.container1}>
@@ -455,11 +482,7 @@ export const CurrentScreen = ({ navigation }) => {
       </SafeAreaView>
     );
   } else {
-    return (
-      <View style={styles.container2}>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };
 

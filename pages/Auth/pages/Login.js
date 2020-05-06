@@ -13,7 +13,7 @@ import { AuthContext } from "../Navigators/context";
 
 fetchData = async (w) => {
   console.log("----------------");
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   console.log(response);
   return await response;
@@ -21,6 +21,7 @@ fetchData = async (w) => {
 
 const validatelogin = async (email, password) => {
   // password = await bcrypt.hash(password, rounds);
+  email = email.split(" ")[0];
 
   var params = ["login='" + email + "'"];
   params = { table: "U_SERS", item: "*", arr: params };

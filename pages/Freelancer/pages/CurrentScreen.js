@@ -12,9 +12,10 @@ import { Card, Button } from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 import ProgressBar from "react-native-progress/Bar";
 import { AuthContext } from "../../Auth/Navigators/context";
-
+import { LoadingScreen } from "../../../components/LoadingScreen";
+import { EmptyScreen } from "../../../components/EmptyScreen";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   return await response;
 };
@@ -237,7 +238,17 @@ export const CurrentScreen = ({ navigation }) => {
   if (isLoading == true) {
     getDetails();
   }
-
+  if (taskList.length == 0 && isLoading == false) {
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+        }
+      >
+        <EmptyScreen></EmptyScreen>
+      </ScrollView>
+    );
+  }
   if (isLoading == false) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
@@ -334,10 +345,6 @@ export const CurrentScreen = ({ navigation }) => {
       </SafeAreaView>
     );
   } else {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };

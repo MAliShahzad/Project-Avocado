@@ -11,6 +11,8 @@ import {
 import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../../Auth/Navigators/context";
+import { LoadingScreen } from "../../../components/LoadingScreen";
+import { EmptyScreen } from "../../../components/EmptyScreen";
 
 const getNotifications = async (email) => {
   var params = ["email='" + email + "'"];
@@ -23,7 +25,9 @@ const getNotifications = async (email) => {
     console.log(err);
     return params;
   }
-
+  if (params.length == 0) {
+    return [];
+  }
   var iden = params[0].id;
 
   var params = [`id= ${iden} ORDER BY created_date DESC`];
@@ -40,17 +44,45 @@ const getNotifications = async (email) => {
   return params;
 };
 
+const clearNotifications = async (email) => {
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
+
+  var iden = params[0].id;
+
+  var params = [`id= ${iden}`];
+  params = { table: "notifications", arr: params };
+  params = JSON.stringify(params);
+  params = "dellogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
+
+  return "Done";
+};
+
 const NotificationCard = ({ navigation, types, details }) => {
   return (
     <View>
       <TouchableOpacity
-        style={{
-          height: theme.SIZES.BASE * 4.9,
-        }}
+      // style={{
+      //   height: theme.SIZES.BASE * 4.9,
+      // }}
       >
         <Card
-          flex
-          borderless
+          // flex
+          // borderless
           style={styles.card}
           title={types}
           caption={details}
@@ -82,43 +114,65 @@ export const Notifications = ({ navigation }) => {
     console.log(taskList);
     setIsLoading(false);
   };
+
+  const submitHandler = async () => {
+    var outcome = await clearNotifications(myEmail);
+    if (outcome == "Done") {
+      getDetails();
+    }
+  };
   if (isLoading == true) {
     getDetails();
+  }
+  if (taskList.length == 0 && isLoading == false) {
+    return (
+      <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
+        }
+      >
+        <EmptyScreen></EmptyScreen>
+      </ScrollView>
+    );
   }
   if (isLoading == false) {
     return (
       <SafeAreaView style={{ flex: 1 }}>
         <ScrollView
+          style={styles.container}
           refreshControl={
             <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
           }
         >
-          <View style={styles.container}>
-            <View style={{ alignItems: "center" }}>
-              {taskList.map((task) => (
-                <NotificationCard types={task.types} details={task.details} />
-              ))}
-            </View>
-            <View style={{ alignItems: "center" }}>
-              <TouchableOpacity style={styles.button}>
-                <Text style={styles.buttonText}>Clear Notifications</Text>
-              </TouchableOpacity>
-            </View>
+          <View style={{ alignItems: "center" }}>
+            {taskList.map((task) => (
+              <NotificationCard types={task.types} details={task.details} />
+            ))}
+          </View>
+          <View style={{ alignItems: "center" }}>
+            <TouchableOpacity
+              style={styles.button}
+              onPress={() => submitHandler()}
+            >
+              <Text style={styles.buttonText}>Clear Notifications</Text>
+            </TouchableOpacity>
+            {/* <TouchableOpacity
+              style={styles.button}
+              onPress={() => getDetails()}
+            >
+              <Text style={styles.buttonText}>Refresh Notifications</Text>
+            </TouchableOpacity> */}
           </View>
         </ScrollView>
       </SafeAreaView>
     );
   } else {
-    return (
-      <View>
-        <Text>Loading</Text>
-      </View>
-    );
+    return <LoadingScreen></LoadingScreen>;
   }
 };
 const styles = StyleSheet.create({
   container: {
-    //flexGrow: 1,
+    flexGrow: 1,
     backgroundColor: "white",
     paddingHorizontal: 20,
     // justifyContent: "flex-start",
@@ -130,10 +184,10 @@ const styles = StyleSheet.create({
     color: "#ffffff",
     backgroundColor: "#c5e1a5",
     borderWidth: 0,
-    width: width - theme.SIZES.BASE * 2,
-    height: 100,
-    marginVertical: 10,
-    borderRadius: 0,
+    width: width - theme.SIZES.BASE * 3,
+    height: theme.SIZES.BASE * 4,
+    marginVertical: theme.SIZES.BASE * 0.6,
+    borderRadius: 10,
   },
   button: {
     width: 300,

@@ -16,13 +16,14 @@ import DatePicker from "react-native-datepicker";
 import { AuthContext } from "../../Auth/Navigators/context";
 const { width, height } = Dimensions.get("screen");
 import * as DocumentPicker from "expo-document-picker";
+import * as FileSystem from "expo-file-system";
 
 // import {
 //   DocumentPicker,
 //   DocumentPickerUtil,
 // } from "react-native-document-picker";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.155.35:3000/" + w);
+  var response = await fetch("http://119.153.183.106:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -34,17 +35,23 @@ const InsertTask = async (
   task_info,
   task_category,
   file,
+  filename,
   due_date
 ) => {
   var iden = 0;
+  var pem = "";
   if (task_info.length < task_name.length) {
-    return "no description";
+    pem = task_info;
+  } else {
+    pem = task_name;
   }
-  for (let index = 0; index < task_name.length; index++) {
+  for (let index = 0; index < pem.length; index++) {
     var num = task_name.charCodeAt(index);
     iden += task_info.charCodeAt(index);
     iden += Math.pow(num, 2);
   }
+  iden = iden % (Math.random() * (2, 147, 483, 640 - 500000) + 500000);
+  iden = parseInt(iden);
   var params = [
     iden,
     task_name,
@@ -53,10 +60,8 @@ const InsertTask = async (
     "Yes",
     "None",
     "",
-    file,
     due_date,
   ];
-  console.log(params);
   params = JSON.stringify(params);
   params = "insertdetail" + params;
   try {
@@ -64,6 +69,21 @@ const InsertTask = async (
   } catch (err) {
     console.log(err);
     return "";
+  }
+
+  try {
+    var response = await fetch("http://119.153.183.106:3000/sendtaskfile", {
+      // Your POST endpoint
+      method: "POST",
+      headers: {
+        "Content-type": "application/json",
+      },
+
+      body: JSON.stringify({ data: file, iden: iden, fname: filename }), // This is your file object
+    });
+  } catch (err) {
+    console.log(err);
+    return;
   }
 
   params = ["login='" + email + "'"];
@@ -101,13 +121,19 @@ export const NewTask = ({ navigation }) => {
   const [msg, setmsg] = useState("Done");
   const myEmail = getEmail();
   const [img, setimg] = useState("");
+  const [fn, setfn] = useState("");
 
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
 
-    setimg(result.uri);
-    alert(result.uri);
     console.log(result);
+    var resp = "";
+    resp = await FileSystem.readAsStringAsync(result.uri, {
+      encoding: FileSystem.EncodingType.Base64,
+    });
+    console.log(resp.length);
+    setfn(result.name);
+    setimg(resp);
   };
 
   const submitHandler = async () => {
@@ -127,7 +153,8 @@ export const NewTask = ({ navigation }) => {
         title,
         description,
         category,
-        img.split("/")[img.split("/").length - 1].split(".")[0],
+        img,
+        fn,
         deadline.substring(0, 4) +
           deadline.substring(5, 7) +
           deadline.substring(8, 10) +
@@ -234,7 +261,7 @@ export const NewTask = ({ navigation }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <Image source={{ uri: img }} style={{ width: 200, height: 200 }} />
+        {/* <Image source={{ uri: img }} style={{ width: 200, height: 200 }} /> */}
         {/*<Text>{deadline.substring(0,4) + deadline.substring(5,7) + deadline.substring(8,10)}</Text>*/}
         <View style={{ padding: 10, marginBottom: 10 }}>
           <TouchableOpacity
