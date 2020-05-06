@@ -149,7 +149,7 @@ export const Notifications = ({ navigation }) => {
               <NotificationCard types={task.types} details={task.details} />
             ))}
           </View>
-          <View style={{ alignItems: "center" }}>
+          <View style={{ alignItems: "center", paddingBottom: 40 }}>
             <TouchableOpacity
               style={styles.button}
               onPress={() => submitHandler()}
