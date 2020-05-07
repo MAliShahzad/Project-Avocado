@@ -5,6 +5,7 @@ import {
   StyleSheet,
   Text,
   Button,
+  ScrollView,
   Alert,
   Dimensions,
   TouchableOpacity,
@@ -55,26 +56,29 @@ export const FreelancerViewsClient = ({ route, navigation }) => {
     return <LoadingScreen></LoadingScreen>;
   }
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          resizeMode="cover"
-          style={{ flex: 1, width: undefined, height: undefined }}
-          source={{ uri: "data:image/png;base64," + imger }}
-        />
-      </View>
-      {/* <View style={styles.buttonAndText}>
-        <View style={styles.textContainer}>
-          <Text style={styles.bigText}>{route.params.user_name}</Text>
-          <Text>{route.params.email}</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            resizeMode="cover"
+            style={{ flex: 1, width: undefined, height: undefined }}
+            source={{ uri: "data:image/png;base64," + imger }}
+          />
         </View>
-      </View>
-      <View style={styles.lowerPortion}>
-        <View style={{ padding: 20 }}>
-          <Text>Who am I?</Text>
-          <Text>{route.params.about_me}</Text>
+        <View style={styles.buttonAndText}>
+          <View style={styles.textContainer}>
+            <Text style={styles.bigText}>{route.params.user_name}</Text>
+            <Text>{route.params.email}</Text>
+          </View>
         </View>
-      </View> */}
+        <View style={styles.lowerPortion}>
+          <View style={{ padding: 20 }}>
+            <Text>Who am I?</Text>
+            <Text>{route.params.about_me}</Text>
+          </View>
+        </View>
+      </View>{" "}
+      */}
       <View style={styles.buttonAndText}>
         <View style={styles.textContainer}>
           <Text style={styles.bigText}>{route.params.user_name}</Text>
@@ -82,7 +86,6 @@ export const FreelancerViewsClient = ({ route, navigation }) => {
           <Text>{route.params.email}</Text>
         </View>
       </View>
-
       <View style={styles.lowerPortion}>
         <View style={styles.lowerPortion1}>
           <View style={{ paddingBottom: 20 }}>
@@ -104,7 +107,7 @@ export const FreelancerViewsClient = ({ route, navigation }) => {
           <View style={{ height: 20 }}></View>
         </View>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 

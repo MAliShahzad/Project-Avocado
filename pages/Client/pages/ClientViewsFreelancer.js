@@ -6,6 +6,7 @@ import {
   Text,
   Button,
   Alert,
+  ScrollView,
   Dimensions,
   TouchableOpacity,
 } from "react-native";
@@ -183,52 +184,52 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
     //     <Text style={styles.buttonText}>Request</Text>
     //   </TouchableOpacity>
     // </View>
-
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          resizeMode="cover"
-          // style={styles.canvas}
-          style={{ flex: 1, width: undefined, height: undefined }}
-          source={{ uri: "data:image/png;base64," + imger }}
-        />
-      </View>
-      <View style={styles.buttonAndText}>
-        <View style={styles.textContainer}>
-          <Text style={styles.bigText}>{route.params.name}</Text>
-          <Text style={styles.bigText2}>Freelancer</Text>
-          <Text>{route.params.email}</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            resizeMode="cover"
+            // style={styles.canvas}
+            style={{ flex: 1, width: undefined, height: undefined }}
+            source={{ uri: "data:image/png;base64," + imger }}
+          />
         </View>
-      </View>
-      <View style={styles.lowerPortion}>
-        <View style={styles.lowerPortion1}>
-          <View style={{ paddingBottom: 20 }}>
-            <View
-              style={{
-                justifyContent: "center",
-                alignItems: "center",
-                padding: 20,
-              }}
-            >
-              <Text style={{ fontWeight: "bold", fontSize: 20 }}>
-                Who am I?
-              </Text>
+        <View style={styles.buttonAndText}>
+          <View style={styles.textContainer}>
+            <Text style={styles.bigText}>{route.params.name}</Text>
+            <Text style={styles.bigText2}>Freelancer</Text>
+            <Text>{route.params.email}</Text>
+          </View>
+        </View>
+        <View style={styles.lowerPortion}>
+          <View style={styles.lowerPortion1}>
+            <View style={{ paddingBottom: 20 }}>
+              <View
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  padding: 20,
+                }}
+              >
+                <Text style={{ fontWeight: "bold", fontSize: 20 }}>
+                  Who am I?
+                </Text>
+              </View>
+
+              <Text>{route.params.about_me}</Text>
             </View>
 
-            <Text>{route.params.about_me}</Text>
+            <View style={{ height: 20 }}></View>
           </View>
 
-          <View style={{ height: 20 }}></View>
+          <CustomButton
+            title="Request"
+            style={{ backgroundColor: "#8B7136", margin: 20 }}
+            onPress={() => submitHandler()}
+          />
         </View>
 
-        <CustomButton
-          title="Request"
-          style={{ backgroundColor: "#8B7136", margin: 20 }}
-          onPress={() => submitHandler()}
-        />
-      </View>
-
-      {/* <TouchableOpacity
+        {/* <TouchableOpacity
   onPress={() => {
     getDetails();
   }}
@@ -246,7 +247,8 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
     <Text>Refresh</Text>
   </View>
 </TouchableOpacity> */}
-    </View>
+      </View>
+    </ScrollView>
   );
 };
 
