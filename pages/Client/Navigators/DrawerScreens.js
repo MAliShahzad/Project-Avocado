@@ -106,7 +106,9 @@ function CustomDrawerContent(props, { navigation }) {
             />
           </TouchableOpacity>
         </View>
-        <DrawerItemList {...props} />
+        <View style={{ fontFamily: "Roboto" }}>
+          <DrawerItemList {...props} />
+        </View>
         <DrawerItem
           label="Logout"
           onPress={() => signOut()}
@@ -179,7 +181,7 @@ export const DrawerScreens = ({ navigation }) => {
         }}
       />
       <Drawer.Screen
-        name="Notification Tasks"
+        name="Notifications"
         component={NotificationScreens}
         options={{
           drawerIcon: ({ focused }) => (

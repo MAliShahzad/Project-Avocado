@@ -136,7 +136,7 @@ export default function ClientProfile({ navigation }) {
     Alert.alert(
       "Profile Picture is Uploading",
       "Please Wait for Upload to Complete",
-      [{ text: " ", onPress: () => console.log("OK Pressed") }],
+      [{ text: "ok", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
 

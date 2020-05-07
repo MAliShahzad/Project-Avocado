@@ -36,7 +36,8 @@ const InsertTask = async (
   task_category,
   file,
   filename,
-  due_date
+  due_date,
+  temp
 ) => {
   var iden = 0;
   var pem = "";
@@ -49,6 +50,7 @@ const InsertTask = async (
     var num = task_name.charCodeAt(index);
     iden += task_info.charCodeAt(index);
     iden += Math.pow(num, 2);
+    iden += temp;
   }
   iden = iden % (Math.random() * (2, 147, 483, 640 - 500000) + 500000);
   iden = parseInt(iden);
@@ -122,6 +124,7 @@ export const NewTask = ({ navigation }) => {
   const myEmail = getEmail();
   const [img, setimg] = useState("");
   const [fn, setfn] = useState("");
+  const [temp, settemp] = useState(0);
 
   const _pickDocument = async () => {
     let result = await DocumentPicker.getDocumentAsync({});
@@ -147,6 +150,12 @@ export const NewTask = ({ navigation }) => {
         deadline.substring(8, 10)
     );
     //receive message of 'Valid' from db
+    Alert.alert(
+      "Uploading",
+      "Uploading your file.",
+      [{ text: "cancel upload", onPress: () => console.log("OK Pressed") }],
+      { cancelable: false }
+    );
     setmsg(
       await InsertTask(
         myEmail,
@@ -158,10 +167,12 @@ export const NewTask = ({ navigation }) => {
         deadline.substring(0, 4) +
           deadline.substring(5, 7) +
           deadline.substring(8, 10) +
-          "060000"
+          "060000",
+        temp
       )
     );
     if (msg == "Done") {
+      settemp(temp + 1);
       Alert.alert(
         "Congratulations",
         "A new task has been added.",

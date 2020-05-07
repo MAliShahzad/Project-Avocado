@@ -8,10 +8,10 @@ import { NewScreens } from "../Navigators/NewScreens";
 
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
-const Tabs = createMaterialTopTabNavigator();
+const client_Tabs = createMaterialTopTabNavigator();
 
 export const TabScreens = () => (
-  <Tabs.Navigator
+  <client_Tabs.Navigator
     // screenOptions={({ route }) => ({
     //   tabBarIcon: ({ focused, color, size }) => {
     //     let iconName;
@@ -37,20 +37,20 @@ export const TabScreens = () => (
       },
     }}
   >
-    <Tabs.Screen
+    <client_Tabs.Screen
       name="CurrentScreen"
       component={CurrentScreens}
       options={{ title: "Current" }}
     />
-    <Tabs.Screen
+    <client_Tabs.Screen
       name="CompletedScreen"
       component={CompletedScreens}
       options={{ title: "Completed" }}
     />
-    <Tabs.Screen
+    <client_Tabs.Screen
       name="NewTask"
       component={NewScreens}
       options={{ title: "New" }}
     />
-  </Tabs.Navigator>
+  </client_Tabs.Navigator>
 );

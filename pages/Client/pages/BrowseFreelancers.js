@@ -183,9 +183,10 @@ export const BrowseFreelancers = ({ route, navigation }) => {
   if (freelancerList.length == 0 && isLoading == false) {
     return <EmptyScreen></EmptyScreen>;
   }
+
   if (isLoading == false) {
     return (
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           {freelancerList.map((freelancer) => {
             return (
@@ -215,8 +216,8 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     // justifyContent: "flex-start",
     paddingVertical: 50,
-    paddingBottom: 2000,
-    flex: 1,
+    paddingBottom: height * 0.64,
+    // flex: 1,
     width,
   },
   pic: {

@@ -65,20 +65,8 @@ export const FreelancerViewsClient = ({ route, navigation }) => {
             source={{ uri: "data:image/png;base64," + imger }}
           />
         </View>
-        <View style={styles.buttonAndText}>
-          <View style={styles.textContainer}>
-            <Text style={styles.bigText}>{route.params.user_name}</Text>
-            <Text>{route.params.email}</Text>
-          </View>
-        </View>
-        <View style={styles.lowerPortion}>
-          <View style={{ padding: 20 }}>
-            <Text>Who am I?</Text>
-            <Text>{route.params.about_me}</Text>
-          </View>
-        </View>
-      </View>{" "}
-      */}
+      </View>
+
       <View style={styles.buttonAndText}>
         <View style={styles.textContainer}>
           <Text style={styles.bigText}>{route.params.user_name}</Text>
@@ -100,11 +88,10 @@ export const FreelancerViewsClient = ({ route, navigation }) => {
                 Who am I?
               </Text>
             </View>
-
             <Text>{route.params.about_me}</Text>
           </View>
 
-          <View style={{ height: 20 }}></View>
+          {/* <View style={{ height: 20 }}></View> */}
         </View>
       </View>
     </ScrollView>
@@ -128,7 +115,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: "white",
     width: Dimensions.get("window").width,
-    height: 320,
+    height: Dimensions.get("window").height * 0.3,
   },
   bigText: {
     fontWeight: "bold",
@@ -155,7 +142,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     backgroundColor: "white",
     // flex: 1,
-    height: 400,
+    height: Dimensions.get("window").height * 0.375,
     // alignItems: "center",
     // justifyContent: "center",
     width: Dimensions.get("window").width,

@@ -5,6 +5,8 @@ import { AuthContext } from "./pages/Auth/Navigators/context";
 import { ClientApp } from "./pages/Client/ClientApp";
 import { FreelancerApp } from "./pages/Freelancer/FreelancerApp";
 import { AuthScreens } from "./pages/Auth/Navigators/AuthoScreens";
+import { LoadingScreen } from "./components/LoadingScreen";
+import { Updates } from "expo";
 
 const myIp = "http://119.153.148.170:3000/";
 
@@ -41,23 +43,20 @@ export default function App() {
       signOut: () => {
         setIsLoading(false);
         setUserToken(null);
+        Updates.reload();
       },
     };
   }, []);
 
-  // React.useEffect(() => {
-  //   setTimeout(() => {
-  //     setIsLoading(false);
-  //   }, 1000);
-  // }, []);
+  React.useEffect(() => {
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 1000);
+  }, []);
 
-  // if (isLoading) {
-  //   return (
-  //     <View>
-  //       <Text>Loading</Text>
-  //     </View>
-  //   );
-  // }
+  if (isLoading) {
+    return <LoadingScreen />;
+  }
   return (
     <AuthContext.Provider value={authContext}>
       <NavigationContainer>{HomeSelector(userToken)}</NavigationContainer>
