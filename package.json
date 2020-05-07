@@ -40,6 +40,7 @@
     "react-native-tab-view": "^2.14.0",
     "react-native-web": "~0.11.7",
     "expo-document-picker": "~8.1.0",
+    "expo-file-system": "~8.1.0",
     "expo-media-library": "~8.1.0",
     "expo-image-manipulator": "~8.1.0"
   },
