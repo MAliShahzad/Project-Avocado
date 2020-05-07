@@ -16,8 +16,9 @@ import {
 import { AuthContext } from "../../Auth/Navigators/context";
 import Constants from "expo-constants";
 import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
+
 import { LoadingScreen } from "../../../components/LoadingScreen";
+import * as ImageManipulator from "expo-image-manipulator";
 
 fetchData = async (w) => {
   console.log("");
@@ -133,25 +134,24 @@ export default function ClientProfile({ navigation }) {
     let result = await DocumentPicker.getDocumentAsync({ type: "image/*" });
 
     console.log(result);
-    var resp = "";
-    resp = await FileSystem.readAsStringAsync(result.uri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-    console.log(resp.length);
-    var imgerz = await resp;
+
     Alert.alert(
-      "Uploading",
       "Profile Picture is Uploading",
-      [
-        {
-          text: "Cancel Upload",
-          onPress: () => {
-            return;
-          },
-        },
-      ],
+      "Please Wait for Upload to Complete",
+      [{ text: " ", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
+
+    const resu = await ImageManipulator.manipulateAsync(
+      result.uri,
+      [{ resize: { width: 1000, height: 900 } }],
+      {
+        compress: 0.3,
+        format: ImageManipulator.SaveFormat.JPEG,
+        base64: true,
+      }
+    );
+    var imgerz = await resu.base64;
 
     var params = [`id= ${details.id}`];
     params = { table: "images", arr: params };
@@ -213,7 +213,7 @@ export default function ClientProfile({ navigation }) {
           <View style={styles.container}>
             <View style={styles.imageContainer}>
               <Image
-                // resizeMode="contain"
+                resizeMode="cover"
                 // style={styles.canvas}
                 style={{ flex: 1, width: undefined, height: undefined }}
                 source={{ uri: "data:image/png;base64," + details.imger }}
@@ -256,7 +256,7 @@ export default function ClientProfile({ navigation }) {
                   <Text>{details.about_me}</Text>
                 </View>
                 <CustomButton
-                  title="Change description"
+                  title="Change description1"
                   style={{ backgroundColor: "#8B7136", margin: 20 }}
                   onPress={() =>
                     navigation.navigate("EditDescription", myEmail)
@@ -309,7 +309,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: "white",
     width: Dimensions.get("window").width,
-    height: 250,
+    height: 400,
   },
   bigText: {
     fontWeight: "bold",

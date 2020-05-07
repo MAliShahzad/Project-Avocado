@@ -5,35 +5,78 @@ import {
   StyleSheet,
   Text,
   Button,
+  ScrollView,
   Alert,
   Dimensions,
   TouchableOpacity,
 } from "react-native";
+
+import { LoadingScreen } from "../../../components/LoadingScreen";
 //import { Card } from "react-native-elements";
 
+fetchData = async (w) => {
+  console.log("");
+  var response = await fetch("http://119.153.183.106:3000/" + w);
+  response = await response.json();
+  console.log(response);
+  return await response;
+};
+
+const getImg = async (email) => {
+  var params = ["email='" + email + "'"];
+  params = { table: "EXTRA_DATA", item: "*", arr: params };
+  params = JSON.stringify(params);
+  params = "getlogin" + params;
+  try {
+    params = await fetchData(params);
+  } catch (err) {
+    console.log(err);
+    return params;
+  }
+
+  var iden = params[0].id;
+  var imger = await fetch(
+    "http://119.153.183.106:3000/getimage" + JSON.stringify({ id: iden })
+  );
+  imger = await imger.json();
+  return imger;
+};
+
 export const FreelancerViewsClient = ({ route, navigation }) => {
+  const [isloading, setloading] = React.useState(true);
+  const [imger, setimger] = React.useState("");
+  const getter = async () => {
+    setimger(await getImg(route.params.email));
+    setloading(false);
+  };
+  if (isloading == true) {
+    getter(route.params.email);
+    return <LoadingScreen></LoadingScreen>;
+  }
   return (
-    <View style={styles.container}>
-      <View style={styles.imageContainer}>
-        <Image
-          style={{ flex: 1, width: undefined, height: undefined }}
-          source={require("../../../images/profile.jpg")}
-        />
-      </View>
-      <View style={styles.buttonAndText}>
-        <View style={styles.textContainer}>
-          <Text style={styles.bigText}>{route.params.user_name}</Text>
-          <Text>{route.params.email}</Text>
+    <ScrollView>
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image
+            resizeMode="cover"
+            style={{ flex: 1, width: undefined, height: undefined }}
+            source={{ uri: "data:image/png;base64," + imger }}
+          />
+        </View>
+        <View style={styles.buttonAndText}>
+          <View style={styles.textContainer}>
+            <Text style={styles.bigText}>{route.params.user_name}</Text>
+            <Text>{route.params.email}</Text>
+          </View>
+        </View>
+        <View style={styles.lowerPortion}>
+          <View style={{ padding: 20 }}>
+            <Text>Who am I?</Text>
+            <Text>{route.params.about_me}</Text>
+          </View>
         </View>
       </View>
-      <View style={styles.lowerPortion}>
-        <View style={{ padding: 20 }}>
-          <Text>Who am I?</Text>
-          <Text>{route.params.about_me}</Text>
-        </View>
-      </View>
-      
-    </View>
+    </ScrollView>
   );
 };
 
@@ -54,7 +97,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: "white",
     width: Dimensions.get("window").width,
-    height: 250,
+    height: 400,
   },
   bigText: {
     fontWeight: "bold",

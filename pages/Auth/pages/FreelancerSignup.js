@@ -94,6 +94,7 @@ const validateSignup = async (
   role,
   category
 ) => {
+  email = email.split(" ")[0];
   if (password != repassword) {
     return "Re-entered password wrong";
   }

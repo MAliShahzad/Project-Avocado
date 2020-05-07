@@ -285,7 +285,7 @@ const styles = StyleSheet.create({
     borderWidth: 0,
     width: width - theme.SIZES.BASE * 2,
     height: theme.SIZES.BASE * 4,
-    marginVertical: theme.SIZES.BASE * 0.875,
+    marginVertical: theme.SIZES.BASE * 0.5,
   },
   ratingcard: {
     backgroundColor: "#c5e1a5",
