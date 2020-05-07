@@ -34,6 +34,7 @@ const validatelogin = async (email, password) => {
     return "";
   }
   if (params.length == 0) {
+    console.log("not user");
     return "not user";
   }
 
@@ -59,7 +60,7 @@ const validatelogin = async (email, password) => {
     role = role[0];
     console.log("...");
     return await role.name;
-  }
+  } else return "not user";
 };
 
 export const Login = ({ navigation }) => {

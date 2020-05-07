@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Text, View, StyleSheet, Dimensions, Image } from "react-native";
 const { width, height } = Dimensions.get("screen");
 
-export const EmptyScreen = () => {
+export const EmptyScreenNotification = () => {
   return (
     <View style={styles.container}>
       <Image
@@ -22,7 +22,7 @@ export const EmptyScreen = () => {
 
 const styles = StyleSheet.create({
   container: {
-    height: height * 0.825,
+    height: height * 0.9,
     backgroundColor: "white",
     alignItems: "center",
     justifyContent: "center",

@@ -72,12 +72,16 @@ const customerDisplayJobRequest = async (task_id) => {
     return [];
   }
   params.forEach((w) => {
+    w.rating = 0;
+  });
+  params.forEach((w) => {
     for (let index = 0; index < query.length; index++) {
       if (query[index].id == w.id) {
         w.rating = query[index].ratings;
       }
     }
   });
+  console.log("maroof");
   return params;
 };
 
@@ -175,10 +179,12 @@ export const ViewRequests = ({ route, navigation }) => {
     //     image: "../../../images/mustafaAsif.jpeg"
     //   }
     // ])
+
     setIsLoading(false);
   };
   if (isLoading == true) {
     getDetails();
+    console.log(freelancerList);
   }
   if (freelancerList.length == 0 && isLoading == false) {
     return <EmptyScreen></EmptyScreen>;

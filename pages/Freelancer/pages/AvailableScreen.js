@@ -21,6 +21,7 @@ fetchData = async (w) => {
 };
 
 const getJobsList = async (email) => {
+  console.log(email, "bakwas");
   var params = [`email = \'${email}\'`];
   params = { table: "EXTRA_DATA", item: "category,id", arr: params };
   params = JSON.stringify(params);
@@ -36,9 +37,9 @@ const getJobsList = async (email) => {
   }
   var request_id = params[0].id;
 
-  if (params.length == 0) {
-    return [];
-  }
+  // if (params.length == 0) {
+  //   return [];
+  // }
   var task_type = params[0].category;
 
   params = [

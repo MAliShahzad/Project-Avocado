@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { theme } from "galio-framework";
+
 import {
   View,
   Image,
@@ -210,7 +212,7 @@ const styles = StyleSheet.create({
   lowerPortion: {
     backgroundColor: "white",
     // flex: 1,
-    height: 240,
+    height: theme.SIZES.BASE * 13,
     // alignItems: "center",
     // justifyContent: "center",
     width: Dimensions.get("window").width,
@@ -233,16 +235,16 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 300,
-    height: 50,
-    backgroundColor: "#255d00",
-    marginVertical: 10,
+    height: theme.SIZES.BASE * 3.5,
+    backgroundColor: "#c5e1a5",
+    marginVertical: 5,
     borderRadius: 25,
     justifyContent: "center",
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "500",
-    color: "#ffffff",
+    color: "black",
     textAlign: "center",
   },
 });

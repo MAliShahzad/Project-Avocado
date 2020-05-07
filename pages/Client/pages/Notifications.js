@@ -12,7 +12,7 @@ import { Block, Text, theme, Button, Icon, Card } from "galio-framework";
 const { width, height } = Dimensions.get("screen");
 import { AuthContext } from "../../Auth/Navigators/context";
 import { LoadingScreen } from "../../../components/LoadingScreen";
-import { EmptyScreen } from "../../../components/EmptyScreen";
+import { EmptyScreenNotification } from "../../../components/EmptyScreenNotification";
 
 const getNotifications = async (email) => {
   var params = ["email='" + email + "'"];
@@ -131,7 +131,7 @@ export const Notifications = ({ navigation }) => {
           <RefreshControl refreshing={refreshing} onRefresh={getDetails} />
         }
       >
-        <EmptyScreen></EmptyScreen>
+        <EmptyScreenNotification></EmptyScreenNotification>
       </ScrollView>
     );
   }
@@ -149,7 +149,7 @@ export const Notifications = ({ navigation }) => {
               <NotificationCard types={task.types} details={task.details} />
             ))}
           </View>
-          <View style={{ alignItems: "center", paddingBottom: 40 }}>
+          <View style={{ alignItems: "center" }}>
             <TouchableOpacity
               style={styles.button}
               onPress={() => submitHandler()}

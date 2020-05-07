@@ -187,7 +187,7 @@ export const ClientViewsFreelancer = ({ route, navigation }) => {
     <View style={styles.container}>
       <View style={styles.imageContainer}>
         <Image
-          // resizeMode="contain"
+          resizeMode="cover"
           // style={styles.canvas}
           style={{ flex: 1, width: undefined, height: undefined }}
           source={{ uri: "data:image/png;base64," + imger }}
@@ -267,7 +267,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: "white",
     width: Dimensions.get("window").width,
-    height: 250,
+    height: 400,
   },
   bigText: {
     fontWeight: "bold",

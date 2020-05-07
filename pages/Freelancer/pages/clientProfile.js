@@ -31,6 +31,9 @@ const getMyDetails = async (email) => {
     console.log(err);
     return params;
   }
+  if (params.length == 0) {
+    return [];
+  }
 
   var iden = params[0].id;
   var roles = [`id=${iden}`];

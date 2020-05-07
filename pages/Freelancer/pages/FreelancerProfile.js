@@ -16,7 +16,7 @@ import {
 import { AuthContext } from "../../Auth/Navigators/context";
 import Constants from "expo-constants";
 import * as DocumentPicker from "expo-document-picker";
-import * as FileSystem from "expo-file-system";
+import * as ImageManipulator from "expo-image-manipulator";
 import { LoadingScreen } from "../../../components/LoadingScreen";
 fetchData = async (w) => {
   console.log("");
@@ -129,32 +129,27 @@ export default function ClientProfile({ navigation }) {
   };
 
   const _pickDocument = async () => {
-    let boolen = false;
     let result = await DocumentPicker.getDocumentAsync({ type: "image/*" });
 
     console.log(result);
-    var resp = "";
-    resp = await FileSystem.readAsStringAsync(result.uri, {
-      encoding: FileSystem.EncodingType.Base64,
-    });
-    console.log(resp.length);
-    var imgerz = await resp;
+
     Alert.alert(
-      "Uploading",
       "Profile Picture is Uploading",
-      [
-        {
-          text: "Cancel Upload",
-          onPress: () => {
-            boolen = true;
-          },
-        },
-      ],
+      "Please Wait for Upload to Complete",
+      [{ text: " ", onPress: () => console.log("OK Pressed") }],
       { cancelable: false }
     );
-    if (boolen) {
-      return;
-    }
+
+    const resu = await ImageManipulator.manipulateAsync(
+      result.uri,
+      [{ resize: { width: 1000, height: 900 } }],
+      {
+        compress: 0.3,
+        format: ImageManipulator.SaveFormat.JPEG,
+        base64: true,
+      }
+    );
+    var imgerz = await resu.base64;
 
     var params = [`id= ${details.id}`];
     params = { table: "images", arr: params };
@@ -241,7 +236,7 @@ export default function ClientProfile({ navigation }) {
           <View style={styles.container}>
             <View style={styles.imageContainer}>
               <Image
-                // resizeMode="contain"
+                resizeMode="cover"
                 // style={styles.canvas}
                 style={{ flex: 1, width: undefined, height: undefined }}
                 source={{ uri: "data:image/png;base64," + details.imger }}
@@ -337,7 +332,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     backgroundColor: "white",
     width: Dimensions.get("window").width,
-    height: 250,
+    height: 400,
   },
   bigText: {
     fontWeight: "bold",

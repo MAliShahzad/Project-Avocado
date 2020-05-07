@@ -6,6 +6,7 @@ import {
   Text,
   Dimensions,
   StyleSheet,
+  TouchableOpacity,
 } from "react-native";
 import {
   createDrawerNavigator,
@@ -95,10 +96,15 @@ function CustomDrawerContent(props, { navigation }) {
             justifyContent: "center",
           }}
         >
-          <Image
-            source={require("../../../images/profile.jpg")}
+          <TouchableOpacity
             style={{ height: 120, width: 120, borderRadius: 60 }}
-          />
+            onPress={() => getter(myEmail)}
+          >
+            <Image
+              source={require("../../../images/profile.jpg")}
+              style={{ height: 120, width: 120, borderRadius: 60 }}
+            />
+          </TouchableOpacity>
         </View>
         <DrawerItemList {...props} />
         <DrawerItem
@@ -121,10 +127,15 @@ function CustomDrawerContent(props, { navigation }) {
             justifyContent: "center",
           }}
         >
-          <Image
-            source={{ uri: "data:image/png;base64," + img }}
+          <TouchableOpacity
             style={{ height: 120, width: 120, borderRadius: 60 }}
-          />
+            onPress={() => getter(myEmail)}
+          >
+            <Image
+              source={{ uri: "data:image/png;base64," + img }}
+              style={{ height: 120, width: 120, borderRadius: 60 }}
+            />
+          </TouchableOpacity>
         </View>
         <DrawerItemList {...props} />
         <DrawerItem
