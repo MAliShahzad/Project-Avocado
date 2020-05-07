@@ -17,6 +17,11 @@
     "@react-navigation/stack": "^5.2.9",
     "bootstrap": "^4.4.1",
     "expo": "~37.0.3",
+    "expo-document-picker": "~8.1.0",
+    "expo-file-system": "~8.1.0",
+    "expo-image-manipulator": "~8.1.0",
+    "expo-media-library": "~8.1.0",
+    "fiction-expo-restart": "^1.0.4",
     "galio-framework": "^0.6.3",
     "prop-types": "^15.7.2",
     "react": "~16.9.0",
@@ -38,11 +43,7 @@
     "react-native-simple-crypto": "^0.2.8",
     "react-native-stars": "^1.2.1",
     "react-native-tab-view": "^2.14.0",
-    "react-native-web": "~0.11.7",
-    "expo-document-picker": "~8.1.0",
-    "expo-file-system": "~8.1.0",
-    "expo-media-library": "~8.1.0",
-    "expo-image-manipulator": "~8.1.0"
+    "react-native-web": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.8.6",
