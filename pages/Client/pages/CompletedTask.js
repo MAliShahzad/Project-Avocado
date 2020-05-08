@@ -21,7 +21,7 @@ import { RatingView } from "../../../components/RatingView";
 import * as FileSystem from "expo-file-system";
 import * as MediaLibrary from "expo-media-library";
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.183.106:3000/" + w);
+  var response = await fetch("http://182.176.112.68:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;
@@ -77,7 +77,7 @@ export const CompletedTask = ({ route, navigation }) => {
       { cancelable: false }
     );
     var response = await fetch(
-      "http://119.153.183.106:3000/getfile" +
+      "http://182.176.112.68:3000/getfile" +
         JSON.stringify({ id: route.params.taskDetails.id })
     );
     response = await response.json();

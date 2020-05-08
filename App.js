@@ -8,7 +8,7 @@ import { AuthScreens } from "./pages/Auth/Navigators/AuthoScreens";
 import { LoadingScreen } from "./components/LoadingScreen";
 import { Updates } from "expo";
 
-const myIp = "http://119.153.148.170:3000/";
+const myIp = "http://182.176.112.68:3000/";
 
 const HomeSelector = (userToken) => {
   if (userToken == "CT") return <ClientApp />;

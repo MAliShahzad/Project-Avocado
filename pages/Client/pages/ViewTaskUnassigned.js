@@ -43,7 +43,7 @@ export const ViewTaskUnassigned = ({ route, navigation }) => {
       { cancelable: false }
     );
     var response = await fetch(
-      "http://119.153.183.106:3000/getfile" + JSON.stringify({ id: iden })
+      "http://182.176.112.68:3000/getfile" + JSON.stringify({ id: iden })
     );
     response = await response.json();
     if (response == "Not") {

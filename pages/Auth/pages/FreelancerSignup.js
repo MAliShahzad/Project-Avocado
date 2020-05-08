@@ -15,7 +15,7 @@ const { width, height } = Dimensions.get("screen");
 // import { validateSignup } from "../../../temp_fetch";
 
 fetchData = async (w) => {
-  var response = await fetch("http://119.153.183.106:3000/" + w);
+  var response = await fetch("http://182.176.112.68:3000/" + w);
   response = await response.json();
   // console.log(response);
   return await response;

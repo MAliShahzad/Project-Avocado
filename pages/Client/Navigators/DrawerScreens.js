@@ -29,7 +29,7 @@ const Drawer = createDrawerNavigator();
 
 fetchData = async (w) => {
   console.log("");
-  var response = await fetch("http://119.153.183.106:3000/" + w);
+  var response = await fetch("http://182.176.112.68:3000/" + w);
   response = await response.json();
   console.log(response);
   return await response;
@@ -51,7 +51,7 @@ const getMyImage = async (email) => {
 
   console.log("wait");
   var imger = await fetch(
-    "http://119.153.183.106:3000/getimage" + JSON.stringify({ id: iden })
+    "http://182.176.112.68:3000/getimage" + JSON.stringify({ id: iden })
   );
   imger = await imger.json();
   return imger;
