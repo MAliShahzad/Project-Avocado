@@ -7,9 +7,9 @@
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./images/app_logo.png",
+    "icon": "./images/avocado-logo.png",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./images/avocado-logo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
